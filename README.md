@@ -1,7 +1,7 @@
-# NawaMan's NullableJ
+# NullableJ
 
-Common utilities used within DSSB application.
-It is designed with Lombok's Extension in mind.
+Java Uitility used to deal with 'null'.
+It is designed to used with Lombok's Extension.
 This means it will be the most beneficial when used with Lombok's extension methods
   although you can use the utilities without that.
 The use of Lomlok's extension methods particularly magnify the value of null-safty done to all the utility methods.
