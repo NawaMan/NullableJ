@@ -252,18 +252,31 @@ public class NullableJTest {
     
     @Test
     public void testWhenContains() {
-        val toLowerCase = (Function<String, String>)String::toLowerCase;
-        assertEquals("",    "AB"          ._whenContains(",").map(toLowerCase).orElse(""));
-        assertEquals("a,b", "A,B"         ._whenContains(",").map(toLowerCase).orElse(""));
-        assertEquals("",    ((String)null)._whenContains(",").map(toLowerCase).orElse(""));
+        assertEquals("",    "AB"          ._whenContains(",").map(String::toLowerCase).orElse(""));
+        assertEquals("a,b", "A,B"         ._whenContains(",").map(String::toLowerCase).orElse(""));
+        assertEquals("",    ((String)null)._whenContains(",").map(String::toLowerCase).orElse(""));
     }
     
     @Test
     public void testWhenNotContains() {
-        val toLowerCase = (Function<String, String>)String::toLowerCase;
-        assertEquals("ab", "AB"          ._whenNotContains(",").map(toLowerCase).orElse(""));
-        assertEquals("",   "A,B"         ._whenNotContains(",").map(toLowerCase).orElse(""));
-        assertEquals("",   ((String)null)._whenNotContains(",").map(toLowerCase).orElse(""));
+        assertEquals("ab", "AB"          ._whenNotContains(",").map(String::toLowerCase).orElse(""));
+        assertEquals("",   "A,B"         ._whenNotContains(",").map(String::toLowerCase).orElse(""));
+        assertEquals("",   ((String)null)._whenNotContains(",").map(String::toLowerCase).orElse(""));
+    }
+    
+    @Test
+    public void testWhenMatches() {
+        assertEquals(42, "42"      ._whenMatches("^[0-9]+$").map(Integer::parseInt).orElse(-1).intValue());
+        assertEquals(-1, "Blue"    ._whenMatches("^[0-9]+$").map(Integer::parseInt).orElse(-1).intValue());
+        assertEquals(-1, nullString._whenMatches("^[0-9]+$").map(Integer::parseInt).orElse(-1).intValue());
+    }
+    
+    @Test
+    public void testWhenNotMatches() {
+        assertEquals("Number",    "42"      ._whenNotMatches("^[0-9]+$").map(s->"NotNumber").orElse("Number"));
+        assertEquals("NotNumber", "Blue"    ._whenNotMatches("^[0-9]+$").map(s->"NotNumber").orElse("Number"));
+        // This does not useful but it is logical.
+        assertEquals("Number",    nullString._whenNotMatches("^[0-9]+$").map(s->"NotNumber").orElse("Number"));
     }
     
 }
