@@ -69,3 +69,38 @@ and the dependencies to Lombok and NullableJ.
 ```
 
 See [UseNullableJGradle](https://github.com/NawaMan/UseNullableJGradle) for more information.
+
+## Use in Maven project
+
+Add the maven repository ...
+
+It basically boils down to adding NawaMan maven repository (hosted by github).
+
+```xml
+<repository>
+	<id>Nullable-mvn-repo</id>
+	<url>https://raw.githubusercontent.com/nawaman/nawaman-maven-repository/master/</url>
+	<snapshots>
+		<enabled>true</enabled>
+		<updatePolicy>always</updatePolicy>
+	</snapshots>
+</repository>
+```
+
+and the dependencies to Lombok and NullableJ.
+
+```xml
+<dependency>
+	<groupId>nawaman</groupId>
+	<artifactId>nullablej</artifactId>
+	<version>0.4.0</version>
+</dependency>
+<dependency>
+	<groupId>junit</groupId>
+	<artifactId>junit</artifactId>
+	<version>4.11</version>
+	<scope>test</scope>
+</dependency>
+
+
+See [UseNullableJMaven](https://github.com/NawaMan/UseNullableJMaven) for more information.
