@@ -35,8 +35,8 @@ import lombok.val;
 import lombok.experimental.ExtensionMethod;
 
 @SuppressWarnings("javadoc")
-@ExtensionMethod({ Nullable.class })
-public class NullableTest {
+@ExtensionMethod({ NullableJ.class })
+public class NullableJTest {
     
     private final String nullString = (String)null;
     private final String emptyString = "";

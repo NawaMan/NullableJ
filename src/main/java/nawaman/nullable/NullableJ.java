@@ -32,7 +32,7 @@ import lombok.val;
  * 
  * @author NawaMan -- nawa@nawaman.net
  */
-public class Nullable {
+public class NullableJ {
     
     //== Objects ==
     
