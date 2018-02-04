@@ -11,14 +11,46 @@ The use of Lomlok's extension methods particularly magnify the value of null-saf
 For example, you can write code like this...
 
 ```Java
+// string CAN BE NULL.
+return string._whenMatches("^[0-9]+$").map(Integer::parseInt).orElse(-1);	// <-- see '_when(...)'
+```
+
+The above code parse the string to an int **or** return -1 if the string is **null** or does not contains an interger.
+
+## Using NullableJ
+
+The example code above made use of [https://dzone.com/articles/lomboks-extension-methods](Lombok's Extension methods).
+So for the above code to complie, the following annotation must be added to the class the above code it on using.
+
+```Java
+import nawaman.nullable.NullableJ;
+
+...
+
 @ExtensionMethod({ NullableJ.class })
-public class Main {
-	/** This method parse number from the given string, return -1 if the string does not contains a value number or null. */
-	public int parseNumber(String theGivenString) {
-		// theGivenString CAN BE NULL.
-		return theGivenString._whenMatches("^[0-9]+$").map(Integer::parseInt).orElse(-1);	// <-- see '_when(...)'
-	}
-}
+```
+
+If you do not like using Lombok's ExtensionMethods,
+  use can straight out calling those method from NullableJ
+
+```Java
+import nawaman.nullable.NullableJ;
+
+...
+
+// string CAN BE NULL.
+return NullableJ._whenMatches(string, "^[0-9]+$").map(Integer::parseInt).orElse(-1);	// <-- see '_when(...)'
+```
+
+or with static import ...
+
+```Java
+import static nawaman.nullable.NullableJ._as;
+
+...
+
+// string CAN BE NULL.
+return _whenMatches(string, "^[0-9]+$").map(Integer::parseInt).orElse(-1);	// <-- see '_when(...)'
 ```
 
 ## Use in Gradle project
