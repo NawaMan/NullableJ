@@ -20,7 +20,7 @@ The above code parse the string to an int **or** return -1 if the string is **nu
 
 ## Using NullableJ
 
-The example code above made use of @ExtensionMethod.
+The example code above makes use of @ExtensionMethod.
 So for the above code to compile, the following annotation must be added to the class the above code it on using.
 
 ```Java
@@ -31,8 +31,8 @@ import nawaman.nullable.NullableJ;
 @ExtensionMethod({ NullableJ.class })
 ```
 
-@ExtensionMethod do have some limitation,
-  see [the "Limitation" section in my article](https://dzone.com/articles/lomboks-extension-methods) for more information.
+@ExtensionMethod do have some limitations,
+  see [the "Limitations" section in my article](https://dzone.com/articles/lomboks-extension-methods) for more information.
 If you do not like using @ExtensionMethod,
   use can straight out calling those method from NullableJ
 
@@ -41,7 +41,6 @@ import nawaman.nullable.NullableJ;
 
 ...
 
-// string CAN BE NULL.
 return NullableJ._whenMatches(string, "^[0-9]+$").map(Integer::parseInt).orElse(-1);
 ```
 
@@ -52,8 +51,7 @@ import static nawaman.nullable.NullableJ._as;
 
 ...
 
-// string CAN BE NULL.
-return _whenMatches(string, "^[0-9]+$").map(Integer::parseInt).orElse(-1);	// <-- see '_when(...)'
+return _whenMatches(string, "^[0-9]+$").map(Integer::parseInt).orElse(-1);
 ```
 
 See below on how to setup a [Gradle](#use-in-gradle-project) or [Maven](#use-in-maven-project) to use NullableJ.
