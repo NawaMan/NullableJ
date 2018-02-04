@@ -110,6 +110,6 @@ and the dependencies to Lombok and NullableJ.
 	<version>4.11</version>
 	<scope>test</scope>
 </dependency>
-
+```
 
 See [UseNullableJMaven](https://github.com/NawaMan/UseNullableJMaven) for more information.
