@@ -12,7 +12,8 @@ For example, you can write code like this...
 
 ```Java
 // string CAN BE NULL.
-return string._whenMatches("^[0-9]+$").map(Integer::parseInt).orElse(-1);	// <-- see '_when(...)'
+return string._whenMatches("^[0-9]+$").map(Integer::parseInt).orElse(-1);
+//            ^^^^^^^^^^^^
 ```
 
 The above code parse the string to an int **or** return -1 if the string is **null** or does not contains an integer.
@@ -41,7 +42,7 @@ import nawaman.nullable.NullableJ;
 ...
 
 // string CAN BE NULL.
-return NullableJ._whenMatches(string, "^[0-9]+$").map(Integer::parseInt).orElse(-1);	// <-- see '_when(...)'
+return NullableJ._whenMatches(string, "^[0-9]+$").map(Integer::parseInt).orElse(-1);
 ```
 
 or with static import ...
