@@ -53,6 +53,10 @@ import static nawaman.nullable.NullableJ._as;
 return _whenMatches(string, "^[0-9]+$").map(Integer::parseInt).orElse(-1);	// <-- see '_when(...)'
 ```
 
+See below on how to setup a [#use-in-gradle-project](Gradle) or [#use-in-maven-project](Maven) to use NullableJ.
+
+https://github.com/NawaMan/NullableJ/blob/master/src/test/java/nawaman/nullable/NullableJTest.java
+
 ## Use in Gradle project
 
 Add the maven repository ...

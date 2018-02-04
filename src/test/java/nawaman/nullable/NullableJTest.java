@@ -273,10 +273,11 @@ public class NullableJTest {
     
     @Test
     public void testWhenNotMatches() {
-        assertEquals("Number",    "42"      ._whenNotMatches("^[0-9]+$").map(s->"NotNumber").orElse("Number"));
-        assertEquals("NotNumber", "Blue"    ._whenNotMatches("^[0-9]+$").map(s->"NotNumber").orElse("Number"));
+        val toNotNumber = (Function<String, String>)(s->"NotNumber");
+        assertEquals("Number",    "42"      ._whenNotMatches("^[0-9]+$").map(toNotNumber).orElse("Number"));
+        assertEquals("NotNumber", "Blue"    ._whenNotMatches("^[0-9]+$").map(toNotNumber).orElse("Number"));
         // This does not useful but it is logical.
-        assertEquals("Number",    nullString._whenNotMatches("^[0-9]+$").map(s->"NotNumber").orElse("Number"));
+        assertEquals("Number",    nullString._whenNotMatches("^[0-9]+$").map(toNotNumber).orElse("Number"));
     }
     
 }
