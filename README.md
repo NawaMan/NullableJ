@@ -3,8 +3,8 @@
 ![alt "Build status"](https://travis-ci.org/NawaMan/NullableJ.svg?branch=master)
 
 Java Uitility used to deal with 'null'.
-It is designed to used with Lombok's Extension.
-This means it will be the most beneficial when used with Lombok's extension methods
+It is designed to used with Lombok @ExtensionMethod (see [here](https://dzone.com/articles/lomboks-extension-methods) and [here](https://projectlombok.org/features/experimental/ExtensionMethod)).
+This means it will be the most beneficial when used with @ExtensionMethod
   although you can use the utilities without that.
 The use of Lomlok's extension methods particularly magnify the value of null-safty done to all the utility methods.
 
@@ -15,11 +15,11 @@ For example, you can write code like this...
 return string._whenMatches("^[0-9]+$").map(Integer::parseInt).orElse(-1);	// <-- see '_when(...)'
 ```
 
-The above code parse the string to an int **or** return -1 if the string is **null** or does not contains an interger.
+The above code parse the string to an int **or** return -1 if the string is **null** or does not contains an integer.
 
 ## Using NullableJ
 
-The example code above made use of [https://dzone.com/articles/lomboks-extension-methods](Lombok's Extension methods).
+The example code above made use of @ExtensionMethod.
 So for the above code to compile, the following annotation must be added to the class the above code it on using.
 
 ```Java
@@ -30,9 +30,9 @@ import nawaman.nullable.NullableJ;
 @ExtensionMethod({ NullableJ.class })
 ```
 
-Lombok's Extension methods do have some limitation,
-  see [https://dzone.com/articles/lomboks-extension-methods](my article on Lombok's Extension methods) for my information.
-If you do not like using Lombok's ExtensionMethods,
+@ExtensionMethod do have some limitation,
+  see [the "Limitation" section in my article](https://dzone.com/articles/lomboks-extension-methods) for more information.
+If you do not like using @ExtensionMethod,
   use can straight out calling those method from NullableJ
 
 ```Java
@@ -59,7 +59,7 @@ See below on how to setup a [#use-in-gradle-project](Gradle) or [#use-in-maven-p
 
 ## API
 
-The best and most up-to-date way to see all the methods and how to use them is to see the unit tests: [https://github.com/NawaMan/NullableJ/blob/master/src/test/java/nawaman/nullable/NullableJTest.java](HERE).
+The best and most up-to-date way to see all the methods and how to use them is to see [the unit tests](https://github.com/NawaMan/NullableJ/blob/master/src/test/java/nawaman/nullable/NullableJTest.java).
 It is easy to read, promise!
 
 ## Use in Gradle project
