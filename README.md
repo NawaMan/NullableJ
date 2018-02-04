@@ -36,4 +36,4 @@ and the dependencies to Lombok and NullableJ.
     compile     'nawaman:nullablej:0.4.0'
 ```
 
-See [UseNullableJGradle!](https://github.com/NawaMan/UseNullableJGradle) for more information.
+See [UseNullableJGradle](https://github.com/NawaMan/UseNullableJGradle) for more information.
