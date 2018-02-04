@@ -1,6 +1,4 @@
-
 group   = theGroup
-name    = theName
 version = theVersion
 
 apply plugin: 'java'
