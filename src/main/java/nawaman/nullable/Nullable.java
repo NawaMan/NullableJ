@@ -17,11 +17,13 @@ package nawaman.nullable;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.regex.Pattern;
 
 import lombok.val;
 
@@ -53,6 +55,29 @@ public class Nullable {
     public static boolean _isNotNull(Object theGivenObject) {
         return (theGivenObject != null);
     }
+    /**
+     * Returns {@code true} if theGivenObject equals to the expected value. 
+     * 
+     * @param  theGivenObject   the given object.
+     * @param theExpectedValue  the expected value.
+     * @return {@code true} if theGivenObject is null.
+     **/
+    public static boolean _equalsTo(Object theGivenObject, Object theExpectedValue) {
+        val equalsTo = Objects.equals(theGivenObject, theExpectedValue);
+        return equalsTo;
+    }
+    
+    /**
+     * Returns {@code true} if theGivenObject is not null. 
+     * 
+     * @param  theGivenObject    the given object.
+     * @param  theExpectedValue  the expected value.
+     * @return {@code true} if theGivenObject is not null.
+     **/
+    public static boolean _notEqualsTo(Object theGivenObject, Object theExpectedValue) {
+        val equalsTo = Objects.equals(theGivenObject, theExpectedValue);
+        return !equalsTo;
+    }
     
     /**
      * Returns elseValue if theGivenObject is null. 
@@ -63,7 +88,8 @@ public class Nullable {
      * @return theGivenObject if not null or elseValue if null.
      **/
     public static <OBJECT> OBJECT _or(OBJECT theGivenObject, OBJECT elseValue) {
-        return (theGivenObject == null) ? elseValue : theGivenObject;
+        val result = (theGivenObject == null) ? elseValue : theGivenObject;
+        return result;
     }
     
     /**
@@ -75,7 +101,8 @@ public class Nullable {
      * @return theGivenObject if not null or value from the elseSupplier if null.
      **/
     public static <OBJECT> OBJECT _orGet(OBJECT theGivenObject, Supplier<? extends OBJECT> elseSupplier) {
-        return (theGivenObject == null) ? elseSupplier.get() : theGivenObject;
+        val result = (theGivenObject == null) ? elseSupplier.get() : theGivenObject;
+        return result;
     }
     
     /**
@@ -114,19 +141,22 @@ public class Nullable {
     }
     
     /**
-     * Return the given object if the test yields {@code true} or else return null.
+     * Return the Optional of the given object if the test yields {@code true} or else return {@code Optional.empty}.
      * 
      * @param  theGivenObject  the given object.
      * @param  theTest         the test.
      * @param  <OBJECT>        the data type of the given object.
-     * @return  the original object or null.
+     * @return  the Optional of the original object or {@code Optional.empty}.
      */
-    public static <OBJECT> OBJECT _when(OBJECT theGivenObject, Predicate<OBJECT> theTest) {
+    public static <OBJECT> Optional<OBJECT> _when(OBJECT theGivenObject, Predicate<OBJECT> theTest) {
         if (theGivenObject == null)
-            return null;
-        if (theTest.test(theGivenObject))
-            return theGivenObject;
-        return null;
+            return Optional.empty();
+        
+        val conditionResult = theTest.test(theGivenObject);
+        if (!conditionResult)
+            return Optional.empty();
+        
+        return Optional.of(theGivenObject);
     }
     
     /**
@@ -139,9 +169,11 @@ public class Nullable {
      * @return  the original object as the type class or null.
      */
     public static <OBJECT, CLASS> CLASS _as(OBJECT theGivenObject, Class<CLASS> theClass) {
-        if (theClass.isInstance(theGivenObject))
-            return theClass.cast(theGivenObject);
-        return null;
+        val isInstanceOf = theClass.isInstance(theGivenObject);
+        if (!isInstanceOf)
+            return null;
+        
+        return theClass.cast(theGivenObject);
     }
     
     /**
@@ -352,6 +384,192 @@ public class Nullable {
         
         val trimmedString = theGivenString.trim();
         return trimmedString;
+    }
+    
+    /**
+     * Check if the given string contains the needle.
+     * 
+     * @param theGivenString  the given string.
+     * @param theNeedle       the needle.
+     * @return  if the given string contains the needle or {@code false} if it is null.
+     */
+    public static boolean _contains(String theGivenString, CharSequence theNeedle) {
+        if (theGivenString == null)
+            return false;
+        
+        val theResult = theGivenString.contains(theNeedle);
+        return theResult;
+    }
+    
+    /**
+     * Check if the given string contains the needle.
+     * 
+     * @param theGivenString  the given string.
+     * @param theNeedle       the needle.
+     * @return  if the given string DOES NOT contain the needle or {@code true} if it is null.
+     */
+    public static boolean _notContains(String theGivenString, CharSequence theNeedle) {
+        if (theGivenString == null)
+            return true;
+        
+        val theResult = !theGivenString.contains(theNeedle);
+        return theResult;
+    }
+    
+    /**
+     * Check if the given string matches the regular expression.
+     * 
+     * @param theGivenString  the given string.
+     * @param theRegex        the regular expression.
+     * @return  if the given string matches the regular expression or false if it is null.
+     */
+    public static boolean _matches(String theGivenString, String theRegex) {
+        if (theGivenString == null)
+            return false;
+        
+        val theResult = theGivenString.matches(theRegex);
+        return theResult;
+    }
+    
+    /**
+     * Check if the given string matches the regular expression.
+     * 
+     * @param theGivenString  the given string.
+     * @param theRegex        the regular expression.
+     * @return  if the given string DOES NOT match the regular expression or true if it is null.
+     */
+    public static boolean _notMatches(String theGivenString, String theRegex) {
+        if (theGivenString == null)
+            return true;
+        
+        val theResult = !theGivenString.matches(theRegex);
+        return theResult;
+    }
+    
+    /**
+     * Check if the given string matches the regular expression.
+     * 
+     * @param theGivenString  the given string.
+     * @param theRegex        the regular expression.
+     * @return  if the given string matches the regular expression or false if it is null.
+     */
+    public static boolean _matches(String theGivenString, Pattern theRegex) {
+        if (theGivenString == null)
+            return false;
+        
+        val theResult = theRegex.matcher(theGivenString).find();
+        return theResult;
+    }
+    
+    /**
+     * Check if the given string matches the regular expression.
+     * 
+     * @param theGivenString  the given string.
+     * @param theRegex        the regular expression.
+     * @return  if the given string DOES NOT match the regular expression or true if it is null.
+     */
+    public static boolean _notMatches(String theGivenString, Pattern theRegex) {
+        if (theGivenString == null)
+            return true;
+        
+        val theResult = !theRegex.matcher(theGivenString).find();
+        return theResult;
+    }
+    
+    /**
+     * Check if the given string contains the needle.
+     * 
+     * @param theGivenString  the given string.
+     * @param theNeedle       the needle.
+     * @return  the Optional of the original string if it contains the value otherwise return {@code Optional.empty()}.
+     */
+    public static Optional<String> _whenContains(String theGivenString, CharSequence theNeedle) {
+        if (theGivenString == null)
+            return Optional.empty();
+        
+        val isContains = theGivenString.contains(theNeedle);
+        val theResult  = isContains ? theGivenString : null;
+        return Optional.ofNullable(theResult);
+    }
+    
+    /**
+     * Check if the given string contains the needle.
+     * 
+     * @param theGivenString  the given string.
+     * @param theNeedle       the needle.
+     * @return  the Optional of the original string if it DOES NOT contain the needle otherwise return {@code null}.
+     */
+    public static Optional<String> _whenNotContains(String theGivenString, CharSequence theNeedle) {
+        if (theGivenString == null)
+            return Optional.empty();
+        
+        val isContains = theGivenString.contains(theNeedle);
+        val theResult  = isContains ? null : theGivenString;
+        return Optional.ofNullable(theResult);
+    }
+    
+    /**
+     * Check if the given string matches the regular expression.
+     * 
+     * @param theGivenString  the given string.
+     * @param theRegex        the regular expression.
+     * @return  the Optional of the original string if it matches the needle otherwise return {@code Optional.empty()}.
+     */
+    public static Optional<String> _whenMatches(String theGivenString, String theRegex) {
+        if (theGivenString == null)
+            return Optional.empty();
+        
+        val isMatches = theGivenString.matches(theRegex);
+        val theResult  = isMatches ? theGivenString : null;
+        return Optional.ofNullable(theResult);
+    }
+    
+    /**
+     * Check if the given string matches the regular expression.
+     * 
+     * @param theGivenString  the given string.
+     * @param theRegex        the regular expression.
+     * @return  the Optional of the original string if it DOES NOT contain the needle otherwise return {@code Optional.empty()}.
+     */
+    public static Optional<String> _whenNotMatches(String theGivenString, String theRegex) {
+        if (theGivenString == null)
+            return Optional.empty();
+        
+        val isMatches = theGivenString.matches(theRegex);
+        val theResult  = isMatches ? null : theGivenString;
+        return Optional.ofNullable(theResult);
+    }
+    
+    /**
+     * Check if the given string matches the regular expression.
+     * 
+     * @param theGivenString  the given string.
+     * @param theRegex        the regular expression.
+     * @return  the Optional of the original string if it matches the needle otherwise return {@code Optional.empty()}.
+     */
+    public static Optional<String> _whenMatches(String theGivenString, Pattern theRegex) {
+        if (theGivenString == null)
+            return Optional.empty();
+        
+        val isMatches = theRegex.matcher(theGivenString).find();
+        val theResult  = isMatches ? theGivenString : null;
+        return Optional.ofNullable(theResult);
+    }
+    
+    /**
+     * Check if the given string matches the regular expression.
+     * 
+     * @param theGivenString  the given string.
+     * @param theRegex        the regular expression.
+     * @return  the Optional of the original string if it DOES NOT contain the needle otherwise return {@code Optional.empty()}.
+     */
+    public static Optional<String> _whenNotMatches(String theGivenString, Pattern theRegex) {
+        if (theGivenString == null)
+            return Optional.empty();
+        
+        val isMatches = theRegex.matcher(theGivenString).find();
+        val theResult  = isMatches ? null : theGivenString;
+        return Optional.ofNullable(theResult);
     }
     
 }
