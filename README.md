@@ -54,14 +54,14 @@ import static nawaman.nullable.NullableJ._as;
 return _whenMatches(string, "^[0-9]+$").map(Integer::parseInt).orElse(-1);
 ```
 
-See below on how to setup a [Gradle](#use-in-gradle-project) or [Maven](#use-in-maven-project) to use NullableJ.
+See below on how to setup a [Gradle](#using-nullablej-in-gradle-project) or [Maven](#using-nullablej-in-maven-project) to use NullableJ.
 
 ## API
 
 The best and most up-to-date way to see all the methods and how to use them is to see [the unit tests](https://github.com/NawaMan/NullableJ/blob/master/src/test/java/nawaman/nullable/NullableJTest.java).
 It is easy to read, promise!
 
-## Use in Gradle project
+## Using NullableJ in Gradle project
 
 Add the maven repository ...
 
@@ -78,11 +78,9 @@ and the dependencies to Lombok and NullableJ.
 
 See [UseNullableJGradle](https://github.com/NawaMan/UseNullableJGradle) for more information.
 
-## Use in Maven project
+## Using NullableJ in Maven project
 
-Add the maven repository ...
-
-It basically boils down to adding NawaMan maven repository (hosted by github).
+Adding the required maven repository (hosted by github).
 
 ```xml
 <repository>
