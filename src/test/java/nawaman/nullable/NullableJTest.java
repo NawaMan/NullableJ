@@ -273,6 +273,7 @@ public class NullableJTest {
     
     @Test
     public void testWhenNotMatches() {
+        // This variable is needed as Lombok ExtensionMethods has some problem when compile with Oracle JDK.
         val toNotNumber = (Function<String, String>)(s->"NotNumber");
         assertEquals("Number",    "42"      ._whenNotMatches("^[0-9]+$").map(toNotNumber).orElse("Number"));
         assertEquals("NotNumber", "Blue"    ._whenNotMatches("^[0-9]+$").map(toNotNumber).orElse("Number"));
