@@ -98,9 +98,21 @@ public class NullableJTest {
     
     @Test
     public void testOrGet() {
-        Supplier<String> erorrMessage =  ()->"Another" + " " + "String";
+        Supplier<String> erorrMessage = ()->"Another" + " " + "String";
         assertEquals("String",        "String"._orGet(erorrMessage));
         assertEquals("Another String", nullString._orGet(erorrMessage));
+    }
+    
+    @Test
+    public void testOrNullObject() {
+        assertEquals("String", "String"  ._orNullObject(String.class));
+        assertEquals("",       nullString._orNullObject(String.class));
+    }
+    
+    @Test
+    public void testOrElseNullObject() {
+        assertEquals("String", Optional.of("String")          ._orElseNullObject(String.class).orElse(null));
+        assertEquals("",       Optional.ofNullable(nullString)._orElseNullObject(String.class).orElse(null));
     }
     
     @Test

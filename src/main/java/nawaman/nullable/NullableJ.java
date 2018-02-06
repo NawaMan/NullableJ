@@ -106,6 +106,32 @@ public class NullableJ {
     }
     
     /**
+     * Returns the null object.
+     * 
+     * @param  theGivenObject  the given object.
+     * @param  theObjectClass  the class of the given data.
+     * @param  <OBJECT>        the data type of the given object.
+     * @return theGivenObject if not null or value from the elseSupplier if null.
+     **/
+    public static <OBJECT> OBJECT _orNullObject(OBJECT theGivenObject, Class<OBJECT> theObjectClass) {
+        val result = (theGivenObject == null) ? NullObjects.nullObjectOf(theObjectClass) : theGivenObject;
+        return result;
+    }
+    
+    /**
+     * Returns the null object.
+     * 
+     * @param  theOptionalObject  the optional object.
+     * @param  theObjectClass     the class of the given data.
+     * @param  <OBJECT>           the data type of the given object.
+     * @return theGivenObject if not null or value from the elseSupplier if null.
+     **/
+    public static <OBJECT> Optional<OBJECT> _orElseNullObject(Optional<OBJECT> theOptionalObject, Class<OBJECT> theObjectClass) {
+        val result = theOptionalObject.isPresent() ? theOptionalObject : Optional.ofNullable(NullObjects.nullObjectOf(theObjectClass));
+        return result;
+    }
+    
+    /**
      * Extension method to create optional of theGivenObject. 
      * 
      * @param  theGivenObject  the given object.
