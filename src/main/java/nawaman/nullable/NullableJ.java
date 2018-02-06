@@ -637,6 +637,7 @@ public class NullableJ {
             return null;
         return list.get(index);
     }
+    
     /**
      * Get the element in the array at the index and return orValue if fail.
      * 
@@ -654,6 +655,7 @@ public class NullableJ {
             return orValue;
         if (index >= array.length)
             return orValue;
+        
         return array[index];
     }
     /**
@@ -673,6 +675,48 @@ public class NullableJ {
             return orValue;
         if (index >= list.size())
             return orValue;
+        
+        return list.get(index);
+    }
+    
+    /**
+     * Get the element in the array at the index and return the value from orSupplier if fail.
+     * 
+     * @param array       the array.
+     * @param index       the index.
+     * @param orSupplier  the supplier or the value to return if getting the value fail.
+     * @return  the value at the index or null.
+     */
+    public static <OBJECT> OBJECT _get(OBJECT[] array, int index, Supplier<OBJECT> orSupplier) {
+        if (array == null)
+            return orSupplier.get();
+        if (array.length == 0)
+            return orSupplier.get();
+        if (index < 0)
+            return orSupplier.get();
+        if (index >= array.length)
+            return orSupplier.get();
+        
+        return array[index];
+    }
+    /**
+     * Get the element in the array at the index and return the value from orSupplier if fail.
+     * 
+     * @param list        the list.
+     * @param index       the index.
+     * @param orSupplier  the supplier or the value to return if getting the value fail.
+     * @return  the value at the index or null.
+     */
+    public static <OBJECT> OBJECT _get(List<OBJECT> list, int index, Supplier<OBJECT> orSupplier) {
+        if (list == null)
+            return orSupplier.get();
+        if (list.isEmpty())
+            return orSupplier.get();
+        if (index < 0)
+            return orSupplier.get();
+        if (index >= list.size())
+            return orSupplier.get();
+        
         return list.get(index);
     }
     
