@@ -311,6 +311,7 @@ public class NullableJTest {
         assertEquals(null, array2._get(2));
         assertEquals(null, array2._get(-1));
     }
+    
     @Test
     public void testGetList() {
         List<String> list1 = asList("One", "Two");
@@ -415,6 +416,24 @@ public class NullableJTest {
         assertEquals("none: 1", list2._get(1, returnNone));
         assertEquals("none: 2", list2._get(2, returnNone));
         assertEquals("none: -1", list2._get(-1, returnNone));
+    }
+    
+    @Test
+    public void testGetFirstArray() {
+        String[] array1 = new String[] { "One", "Two" };
+        assertEquals("One", array1._first());
+        
+        String[] array2 = null;
+        assertEquals(null, array2._first());
+    }
+    
+    @Test
+    public void testGetFirstList() {
+        List<String> list1 = asList("One", "Two");
+        assertEquals("One", list1._first());
+        
+        List<String> list2 = null;
+        assertEquals(null, list2._first());
     }
     
 }
