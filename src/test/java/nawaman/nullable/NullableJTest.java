@@ -326,4 +326,33 @@ public class NullableJTest {
         assertEquals(null, list2._get(-1));
     }
     
+    @Test
+    public void testGetOrArray() {
+        String[] array1 = new String[] { "One", "Two" };
+        assertEquals("One",  array1._get(0, "none"));
+        assertEquals("Two",  array1._get(1, "none"));
+        assertEquals("none", array1._get(2, "none"));
+        assertEquals("none", array1._get(-1, "none"));
+        
+        String[] array2 = null;
+        assertEquals("none", array2._get(0, "none"));
+        assertEquals("none", array2._get(1, "none"));
+        assertEquals("none", array2._get(2, "none"));
+        assertEquals("none", array2._get(-1, "none"));
+    }
+    @Test
+    public void testGetOrList() {
+        List<String> list1 = asList("One", "Two");
+        assertEquals("One",  list1._get(0, "none"));
+        assertEquals("Two",  list1._get(1, "none"));
+        assertEquals("none", list1._get(2, "none"));
+        assertEquals("none", list1._get(-1, "none"));
+        
+        List<String> list2 = null;
+        assertEquals("none", list2._get(0, "none"));
+        assertEquals("none", list2._get(1, "none"));
+        assertEquals("none", list2._get(2, "none"));
+        assertEquals("none", list2._get(-1, "none"));
+    }
+    
 }

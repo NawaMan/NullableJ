@@ -602,7 +602,7 @@ public class NullableJ {
     //== Array and Collection ==
     
     /**
-     * Get the element in the array at the index.
+     * Get the element in the array at the index and return {@code null} if fail.
      * 
      * @param array  the array.
      * @param index  the index.
@@ -620,7 +620,7 @@ public class NullableJ {
         return array[index];
     }
     /**
-     * Get the element in the array at the index.
+     * Get the element in the array at the index and return {@code null} if fail.
      * 
      * @param list   the list.
      * @param index  the index.
@@ -635,6 +635,44 @@ public class NullableJ {
             return null;
         if (index >= list.size())
             return null;
+        return list.get(index);
+    }
+    /**
+     * Get the element in the array at the index and return orValue if fail.
+     * 
+     * @param array    the array.
+     * @param index    the index.
+     * @param orValue  the value to return if getting the value fail.
+     * @return  the value at the index or null.
+     */
+    public static <OBJECT> OBJECT _get(OBJECT[] array, int index, OBJECT orValue) {
+        if (array == null)
+            return orValue;
+        if (array.length == 0)
+            return orValue;
+        if (index < 0)
+            return orValue;
+        if (index >= array.length)
+            return orValue;
+        return array[index];
+    }
+    /**
+     * Get the element in the array at the index and return orValue if fail.
+     * 
+     * @param list   the list.
+     * @param index  the index.
+     * @param orValue  the value to return if getting the value fail.
+     * @return  the value at the index or null.
+     */
+    public static <OBJECT> OBJECT _get(List<OBJECT> list, int index, OBJECT orValue) {
+        if (list == null)
+            return orValue;
+        if (list.isEmpty())
+            return orValue;
+        if (index < 0)
+            return orValue;
+        if (index >= list.size())
+            return orValue;
         return list.get(index);
     }
     
