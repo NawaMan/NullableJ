@@ -386,4 +386,35 @@ public class NullableJTest {
         assertEquals("none", list2._get(-1, returnNone));
     }
     
+    @Test
+    public void testGetOrFunctionArray() {
+        String[] array1 = new String[] { "One", "Two" };
+        Function<Integer, String> returnNone = index->("none: " + index);
+        assertEquals("One",  array1._get(0, returnNone));
+        assertEquals("Two",  array1._get(1, returnNone));
+        assertEquals("none: 2", array1._get(2, returnNone));
+        assertEquals("none: -1", array1._get(-1, returnNone));
+        
+        String[] array2 = null;
+        assertEquals("none: 0", array2._get(0, returnNone));
+        assertEquals("none: 1", array2._get(1, returnNone));
+        assertEquals("none: 2", array2._get(2, returnNone));
+        assertEquals("none: -1", array2._get(-1, returnNone));
+    }
+    @Test
+    public void testGetOrFunctionList() {
+        List<String> list1 = asList("One", "Two");
+        Function<Integer, String> returnNone = index->("none: " + index);
+        assertEquals("One",  list1._get(0, returnNone));
+        assertEquals("Two",  list1._get(1, returnNone));
+        assertEquals("none: 2", list1._get(2, returnNone));
+        assertEquals("none: -1", list1._get(-1, returnNone));
+        
+        List<String> list2 = null;
+        assertEquals("none: 0", list2._get(0, returnNone));
+        assertEquals("none: 1", list2._get(1, returnNone));
+        assertEquals("none: 2", list2._get(2, returnNone));
+        assertEquals("none: -1", list2._get(-1, returnNone));
+    }
+    
 }

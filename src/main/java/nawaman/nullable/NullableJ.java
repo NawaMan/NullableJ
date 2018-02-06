@@ -684,7 +684,7 @@ public class NullableJ {
      * 
      * @param array       the array.
      * @param index       the index.
-     * @param orSupplier  the supplier or the value to return if getting the value fail.
+     * @param orSupplier  the supplier of the value to return if getting the value fail.
      * @return  the value at the index or null.
      */
     public static <OBJECT> OBJECT _get(OBJECT[] array, int index, Supplier<OBJECT> orSupplier) {
@@ -704,7 +704,7 @@ public class NullableJ {
      * 
      * @param list        the list.
      * @param index       the index.
-     * @param orSupplier  the supplier or the value to return if getting the value fail.
+     * @param orSupplier  the supplier of the value to return if getting the value fail.
      * @return  the value at the index or null.
      */
     public static <OBJECT> OBJECT _get(List<OBJECT> list, int index, Supplier<OBJECT> orSupplier) {
@@ -716,6 +716,47 @@ public class NullableJ {
             return orSupplier.get();
         if (index >= list.size())
             return orSupplier.get();
+        
+        return list.get(index);
+    }
+    
+    /**
+     * Get the element in the array at the index and return the value from orFunction if fail.
+     * 
+     * @param array       the array.
+     * @param index       the index.
+     * @param orFunction  the function that create the value to return if getting the value fail.
+     * @return  the value at the index or null.
+     */
+    public static <OBJECT> OBJECT _get(OBJECT[] array, int index, Function<Integer, OBJECT> orFunction) {
+        if (array == null)
+            return orFunction.apply(index);
+        if (array.length == 0)
+            return orFunction.apply(index);
+        if (index < 0)
+            return orFunction.apply(index);
+        if (index >= array.length)
+            return orFunction.apply(index);
+        
+        return array[index];
+    }
+    /**
+     * Get the element in the array at the index and return the value from orSupplier if fail.
+     * 
+     * @param list        the list.
+     * @param index       the index.
+     * @param orFunction  the function that create the value to return if getting the value fail.
+     * @return  the value at the index or null.
+     */
+    public static <OBJECT> OBJECT _get(List<OBJECT> list, int index, Function<Integer, OBJECT> orFunction) {
+        if (list == null)
+            return orFunction.apply(index);
+        if (list.isEmpty())
+            return orFunction.apply(index);
+        if (index < 0)
+            return orFunction.apply(index);
+        if (index >= list.size())
+            return orFunction.apply(index);
         
         return list.get(index);
     }
