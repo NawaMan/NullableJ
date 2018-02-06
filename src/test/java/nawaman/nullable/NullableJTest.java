@@ -15,6 +15,7 @@
 //  ========================================================================
 package nawaman.nullable;
 
+import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
@@ -22,6 +23,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
@@ -291,6 +293,37 @@ public class NullableJTest {
         assertEquals("NotNumber", "Blue"    ._whenNotMatches("^[0-9]+$").map(toNotNumber).orElse("Number"));
         // This does not useful but it is logical.
         assertEquals("Number",    nullString._whenNotMatches("^[0-9]+$").map(toNotNumber).orElse("Number"));
+    }
+    
+    //== Array and Collection ==
+    
+    @Test
+    public void testGetArray() {
+        String[] array1 = new String[] { "One", "Two" };
+        assertEquals("One", array1._get(0));
+        assertEquals("Two", array1._get(1));
+        assertEquals(null,  array1._get(2));
+        assertEquals(null,  array1._get(-1));
+        
+        String[] array2 = null;
+        assertEquals(null, array2._get(0));
+        assertEquals(null, array2._get(1));
+        assertEquals(null, array2._get(2));
+        assertEquals(null, array2._get(-1));
+    }
+    @Test
+    public void testGetList() {
+        List<String> list1 = asList("One", "Two");
+        assertEquals("One", list1._get(0));
+        assertEquals("Two", list1._get(1));
+        assertEquals(null,  list1._get(2));
+        assertEquals(null,  list1._get(-1));
+        
+        List<String> list2 = null;
+        assertEquals(null, list2._get(0));
+        assertEquals(null, list2._get(1));
+        assertEquals(null, list2._get(2));
+        assertEquals(null, list2._get(-1));
     }
     
 }

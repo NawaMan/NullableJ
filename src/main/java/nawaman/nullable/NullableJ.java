@@ -17,6 +17,7 @@ package nawaman.nullable;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -596,6 +597,45 @@ public class NullableJ {
         val isMatches = theRegex.matcher(theGivenString).find();
         val theResult  = isMatches ? null : theGivenString;
         return Optional.ofNullable(theResult);
+    }
+    
+    //== Array and Collection ==
+    
+    /**
+     * Get the element in the array at the index.
+     * 
+     * @param array  the array.
+     * @param index  the index.
+     * @return  the value at the index or null.
+     */
+    public static <OBJECT> OBJECT _get(OBJECT[] array, int index) {
+        if (array == null)
+            return null;
+        if (array.length == 0)
+            return null;
+        if (index < 0)
+            return null;
+        if (index >= array.length)
+            return null;
+        return array[index];
+    }
+    /**
+     * Get the element in the array at the index.
+     * 
+     * @param list   the list.
+     * @param index  the index.
+     * @return  the value at the index or null.
+     */
+    public static <OBJECT> OBJECT _get(List<OBJECT> list, int index) {
+        if (list == null)
+            return null;
+        if (list.isEmpty())
+            return null;
+        if (index < 0)
+            return null;
+        if (index >= list.size())
+            return null;
+        return list.get(index);
     }
     
 }
