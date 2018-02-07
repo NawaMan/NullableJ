@@ -817,31 +817,60 @@ public class NullableJ {
     }
     
     /**
-     * Check if all elements in the the given array pass all the check by the predicate.
+     * Check if all elements in the the given array pass all the check by the condition.
      * 
      * @param array      the array.
-     * @param predicate  the predicate.
-     * @return  the value at the last index or null.
+     * @param condition  the condition.
+     * @return  {@code true} if all elements pass the condition.
      */
-    public static <OBJECT> boolean _containsAllWith(OBJECT[] array, Predicate<OBJECT> predicate) {
+    public static <OBJECT> boolean _containsAllWith(OBJECT[] array, Predicate<OBJECT> condition) {
         if (array == null)
             return false;
         if (array.length == 0)
             return false;
-        return Arrays.stream(array).allMatch(predicate);
+        return Arrays.stream(array).allMatch(condition);
     }
     /**
-     * Check if all elements in the the given list pass all the check by the predicate.
+     * Check if all elements in the the given list pass all the check by the condition.
      * 
      * @param list       the list.
-     * @param predicate  the predicate.
-     * @return  the value at the last index or null.
+     * @param condition  the condition.
+     * @return  {@code true} if all elements pass the condition.
      */
-    public static <OBJECT> boolean _containsAllWith(List<OBJECT> list, Predicate<OBJECT> predicate) {
+    public static <OBJECT> boolean _containsAllWith(List<OBJECT> list, Predicate<OBJECT> condition) {
         if (list == null)
             return false;
         if (list.isEmpty())
             return false;
-        return list.stream().allMatch(predicate);
+        return list.stream().allMatch(condition);
+    }
+    
+    /**
+     * Check if at lease one element in the the given array pass all the check by the predicate.
+     * 
+     * @param array      the array.
+     * @param predicate  the predicate.
+     * @return  {@code true} if some elements pass the condition.
+     */
+    public static <OBJECT> boolean _containsSomeWith(OBJECT[] array, Predicate<OBJECT> predicate) {
+        if (array == null)
+            return false;
+        if (array.length == 0)
+            return false;
+        return Arrays.stream(array).anyMatch(predicate);
+    }
+    /**
+     * Check if at lease one element in the the given list pass all the check by the predicate.
+     * 
+     * @param list       the list.
+     * @param predicate  the predicate.
+     * @return  {@code true} if some elements pass the condition.
+     */
+    public static <OBJECT> boolean _containsSomeWith(List<OBJECT> list, Predicate<OBJECT> predicate) {
+        if (list == null)
+            return false;
+        if (list.isEmpty())
+            return false;
+        return list.stream().anyMatch(predicate);
     }
 }
