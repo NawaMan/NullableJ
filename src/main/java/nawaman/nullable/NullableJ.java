@@ -17,6 +17,7 @@ package nawaman.nullable;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -815,4 +816,32 @@ public class NullableJ {
         return list.get(list.size() - 1);
     }
     
+    /**
+     * Check if all elements in the the given array pass all the check by the predicate.
+     * 
+     * @param array      the array.
+     * @param predicate  the predicate.
+     * @return  the value at the last index or null.
+     */
+    public static <OBJECT> boolean _containsAllWith(OBJECT[] array, Predicate<OBJECT> predicate) {
+        if (array == null)
+            return false;
+        if (array.length == 0)
+            return false;
+        return Arrays.stream(array).allMatch(predicate);
+    }
+    /**
+     * Check if all elements in the the given list pass all the check by the predicate.
+     * 
+     * @param list       the list.
+     * @param predicate  the predicate.
+     * @return  the value at the last index or null.
+     */
+    public static <OBJECT> boolean _containsAllWith(List<OBJECT> list, Predicate<OBJECT> predicate) {
+        if (list == null)
+            return false;
+        if (list.isEmpty())
+            return false;
+        return list.stream().allMatch(predicate);
+    }
 }

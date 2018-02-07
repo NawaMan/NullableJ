@@ -454,4 +454,32 @@ public class NullableJTest {
         assertEquals(null, list2._last());
     }
     
+    @Test
+    public void testContainsAllWithArray() {
+        val length3 = (Predicate<String>)s->s.length() == 3;
+        
+        String[] array1 = new String[] { "One", "Two" };
+        assertTrue(array1._containsAllWith(length3));
+        
+        String[] array2 = new String[] { "One", "Two", "Three" };
+        assertFalse(array2._containsAllWith(length3));
+        
+        String[] arrayNull = null;
+        assertFalse(arrayNull._containsAllWith(length3));
+    }
+    
+    @Test
+    public void testContainsAllWithList() {
+        val length3 = (Predicate<String>)s->s.length() == 3;
+        
+        List<String> list1 = asList("One", "Two");
+        assertTrue(list1._containsAllWith(length3));
+        
+        List<String> list2 = asList("One", "Two", "Three");
+        assertFalse(list2._containsAllWith(length3));
+        
+        String[] listNull = null;
+        assertFalse(listNull._containsAllWith(length3));
+    }
+    
 }
