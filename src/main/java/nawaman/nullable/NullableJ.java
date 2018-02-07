@@ -788,4 +788,31 @@ public class NullableJ {
         return list.get(0);
     }
     
+    /**
+     * Get the last element in the array and return {@code null} if fail.
+     * 
+     * @param array  the array.
+     * @return  the value at the last index or null.
+     */
+    public static <OBJECT> OBJECT _last(OBJECT[] array) {
+        if (array == null)
+            return null;
+        if (array.length == 0)
+            return null;
+        return array[array.length - 1];
+    }
+    /**
+     * Get the last element in the array at the index and return {@code null} if fail.
+     * 
+     * @param list   the list.
+     * @return  the value at the last index or null.
+     */
+    public static <OBJECT> OBJECT _last(List<OBJECT> list) {
+        if (list == null)
+            return null;
+        if (list.isEmpty())
+            return null;
+        return list.get(list.size() - 1);
+    }
+    
 }

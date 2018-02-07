@@ -436,4 +436,22 @@ public class NullableJTest {
         assertEquals(null, list2._first());
     }
     
+    @Test
+    public void testGetLastArray() {
+        String[] array1 = new String[] { "One", "Two" };
+        assertEquals("Two", array1._last());
+        
+        String[] array2 = null;
+        assertEquals(null, array2._last());
+    }
+    
+    @Test
+    public void testGetLastList() {
+        List<String> list1 = asList("One", "Two");
+        assertEquals("Two", list1._last());
+        
+        List<String> list2 = null;
+        assertEquals(null, list2._last());
+    }
+    
 }
