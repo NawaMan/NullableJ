@@ -25,7 +25,9 @@ import static org.junit.Assert.assertTrue;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
@@ -384,6 +386,30 @@ public class NullableJTest {
     }
     
     @Test
+    public void testGetSupplier() {
+        Supplier<String> oneSupplier  = ()->"One";
+        Supplier<String> nullSupplier = null;
+        assertEquals("One", oneSupplier ._get());
+        assertEquals(null,  nullSupplier._get());
+    }
+    
+    @Test
+    public void testGetFunction() {
+        Function<String, String> oneFunction  = key->"One:"+key;
+        Function<String, String> nullFunction = null;
+        assertEquals("One:1", oneFunction ._get("1"));
+        assertEquals(null,    nullFunction._get("1"));
+    }
+    
+    @Test
+    public void testApplyFunction() {
+        Function<String, String> oneFunction  = key->"One:"+key;
+        Function<String, String> nullFunction = null;
+        assertEquals("One:1", oneFunction ._apply("1"));
+        assertEquals(null,    nullFunction._apply("1"));
+    }
+    
+    @Test
     public void testGetArray() {
         String[] array1 = new String[] { "One", "Two" };
         assertEquals("One", array1._get(0));
@@ -414,6 +440,19 @@ public class NullableJTest {
     }
     
     @Test
+    public void testGetMap() {
+        Map<String, String> map1 = Collections.singletonMap("1", "One");
+        assertEquals("One", map1._get("1"));
+        assertEquals(null,  map1._get("2"));
+        assertEquals(null,  map1._get(null));
+        
+        Map<String, String> map2 = null;
+        assertEquals(null,  map2._get("1"));
+        assertEquals(null,  map2._get("2"));
+        assertEquals(null,  map2._get(null));
+    }
+    
+    @Test
     public void testGetOrArray() {
         String[] array1 = new String[] { "One", "Two" };
         assertEquals("One",  array1._get(0, "none"));
@@ -440,6 +479,19 @@ public class NullableJTest {
         assertEquals("none", list2._get(1, "none"));
         assertEquals("none", list2._get(2, "none"));
         assertEquals("none", list2._get(-1, "none"));
+    }
+    
+    @Test
+    public void testGetOrMap() {
+        Map<String, String> map1 = Collections.singletonMap("1", "One");
+        assertEquals("One",  map1._get("1", "Else"));
+        assertEquals("Else", map1._get("2", "Else"));
+        assertEquals("Else", map1._get(null, "Else"));
+        
+        Map<String, String> map2 = null;
+        assertEquals("Else", map2._get("1", "Else"));
+        assertEquals("Else", map2._get("2", "Else"));
+        assertEquals("Else", map2._get(null, "Else"));
     }
     
     @Test
@@ -474,6 +526,20 @@ public class NullableJTest {
     }
     
     @Test
+    public void testGetOrSupplierMap() {
+        Map<String, String> map1 = Collections.singletonMap("1", "One");
+        Supplier<String> orElse = ()->"Else";
+        assertEquals("One",  map1._get("1",  orElse));
+        assertEquals("Else", map1._get("2",  orElse));
+        assertEquals("Else", map1._get(null, orElse));
+        
+        Map<String, String> map2 = null;
+        assertEquals("Else", map2._get("1",  orElse));
+        assertEquals("Else", map2._get("2",  orElse));
+        assertEquals("Else", map2._get(null, orElse));
+    }
+    
+    @Test
     public void testGetOrFunctionArray() {
         String[] array1 = new String[] { "One", "Two" };
         Function<Integer, String> returnNone = index->("none: " + index);
@@ -502,6 +568,20 @@ public class NullableJTest {
         assertEquals("none: 1", list2._get(1, returnNone));
         assertEquals("none: 2", list2._get(2, returnNone));
         assertEquals("none: -1", list2._get(-1, returnNone));
+    }
+    
+    @Test
+    public void testGetOrFunctionalMap() {
+        Map<String, String> map1 = Collections.singletonMap("1", "One");
+        Function<String,String> orElse = key->"Else-"+key;
+        assertEquals("One",      map1._get("1",  orElse));
+        assertEquals("Else-2",   map1._get("2",  orElse));
+        assertEquals("Else-null", map1._get(null, orElse));
+        
+        Map<String, String> map2 = null;
+        assertEquals("Else-1",    map2._get("1",  orElse));
+        assertEquals("Else-2",    map2._get("2",  orElse));
+        assertEquals("Else-null", map2._get(null, orElse));
     }
     
     @Test

@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -111,7 +112,7 @@ public class NullableJ {
      * @return theGivenObject if not null or value from the elseSupplier if null.
      **/
     public static <OBJECT> OBJECT _orGet(OBJECT theGivenObject, Supplier<? extends OBJECT> elseSupplier) {
-        val result = (theGivenObject == null) ? elseSupplier.get() : theGivenObject;
+        val result = (theGivenObject == null) ? _get(elseSupplier) : theGivenObject;
         return result;
     }
     
@@ -712,6 +713,44 @@ public class NullableJ {
     }
     
     /**
+     * Get value from the supplier and return null if the supplier is null.
+     * 
+     * @param supplier  the supplier.
+     * @return  the value at the index or null.
+     */
+    public static <OBJECT> OBJECT _get(Supplier<OBJECT> supplier) {
+        if (supplier == null)
+            return null;
+        return supplier.get();
+    }
+    
+    /**
+     * Get value from the function with the key and return null fail.
+     * 
+     * @param function  the function.
+     * @param key       the key.
+     * @return  the value at the index or null.
+     */
+    public static <KEY, VALUE> VALUE _get(Function<KEY, VALUE> function, KEY key) {
+        if (function == null)
+            return null;
+        return function.apply(key);
+    }
+    
+    /**
+     * Get value from the function with the key and return null fail.
+     * 
+     * @param function  the function.
+     * @param key       the key.
+     * @return  the value at the index or null.
+     */
+    public static <KEY, VALUE> VALUE _apply(Function<KEY, VALUE> function, KEY key) {
+        if (function == null)
+            return null;
+        return function.apply(key);
+    }
+    
+    /**
      * Get the element in the array at the index and return {@code null} if fail.
      * 
      * @param array  the array.
@@ -747,6 +786,28 @@ public class NullableJ {
         if (index >= list.size())
             return null;
         return list.get(index);
+    }
+    
+    /**
+     * Get the element in the map associating with the key and return {@code null} if fail.
+     * 
+     * @param map  the map.
+     * @param key  the key.
+     * @return  the value at the index or null.
+     */
+    public static <KEY, VALUE> VALUE _get(Map<KEY, VALUE> map, KEY key) {
+        if (map == null)
+            return null;
+        if (map.isEmpty())
+            return null;
+        try {
+            if (!map.containsKey(key))
+                return null;
+        } catch (NullPointerException e) {
+            // Some map throws exception for null key.
+            return null;
+        }
+        return map.get(key);
     }
     
     /**
@@ -791,6 +852,29 @@ public class NullableJ {
     }
     
     /**
+     * Get the element in the map associating with the key and return the default value if fail.
+     * 
+     * @param map      the map.
+     * @param key      the key.
+     * @param orValue  the default value.
+     * @return  the value at the index or null.
+     */
+    public static <KEY, VALUE> VALUE _get(Map<KEY, VALUE> map, KEY key, VALUE orValue) {
+        if (map == null)
+            return orValue;
+        if (map.isEmpty())
+            return orValue;
+        try {
+            if (!map.containsKey(key))
+                return orValue;
+        } catch (NullPointerException e) {
+            // Some map throws exception for null key.
+            return orValue;
+        }
+        return _or(map.get(key), orValue);
+    }
+    
+    /**
      * Get the element in the array at the index and return the value from orSupplier if fail.
      * 
      * @param array       the array.
@@ -832,6 +916,29 @@ public class NullableJ {
     }
     
     /**
+     * Get the element in the map associating with the key and return the orSupplier if fail.
+     * 
+     * @param map      the map.
+     * @param key      the key.
+     * @param orSupplier  the supplier of the value to return if getting the value fail.
+     * @return  the value at the index or null.
+     */
+    public static <KEY, VALUE> VALUE _get(Map<KEY, VALUE> map, KEY key, Supplier<VALUE> orSupplier) {
+        if (map == null)
+            return _get(orSupplier);
+        if (map.isEmpty())
+            return _get(orSupplier);
+        try {
+            if (!map.containsKey(key))
+                return _get(orSupplier);
+        } catch (NullPointerException e) {
+            // Some map throws exception for null key.
+            return _get(orSupplier);
+        }
+        return _orGet(map.get(key), orSupplier);
+    }
+    
+    /**
      * Get the element in the array at the index and return the value from orFunction if fail.
      * 
      * @param array       the array.
@@ -852,7 +959,7 @@ public class NullableJ {
         return array[index];
     }
     /**
-     * Get the element in the array at the index and return the value from orSupplier if fail.
+     * Get the element in the array at the index and return the value from orFunction if fail.
      * 
      * @param list        the list.
      * @param index       the index.
@@ -870,6 +977,29 @@ public class NullableJ {
             return orFunction.apply(index);
         
         return list.get(index);
+    }
+    
+    /**
+     * Get the element in the map associating with the key and return the orFunction if fail.
+     * 
+     * @param map      the map.
+     * @param key      the key.
+     * @param orFunction  the function that create the value to return if getting the value fail.
+     * @return  the value at the index or null.
+     */
+    public static <KEY, VALUE> VALUE _get(Map<KEY, VALUE> map, KEY key, Function<KEY, VALUE> orFunction) {
+        if (map == null)
+            return _get(orFunction, key);
+        if (map.isEmpty())
+            return _get(orFunction, key);
+        try {
+            if (!map.containsKey(key))
+                return _get(orFunction, key);
+        } catch (NullPointerException e) {
+            // Some map throws exception for null key.
+            return _get(orFunction, key);
+        }
+        return _orGet(map.get(key), ()->_get(orFunction, key));
     }
     
     /**
