@@ -31,6 +31,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.junit.Test;
@@ -343,6 +344,41 @@ public class NullableJTest {
         
         Stream<String> stream2 = null;
         assertEquals(0, stream2._toList().size());
+    }
+    
+    @Test
+    public void testOnlyNonNullArray() {
+        String[] array1 = new String[] {"One", null, "Two"};
+        assertEquals(2, array1._onlyNonNull$()._toList().size());
+        
+        String[] arrayNull = null;
+        assertEquals(0, arrayNull._onlyNonNull$()._toList().size());
+    }
+    
+    @Test
+    public void testOnlyNonNullList() {
+        List<String> list1 = asList("One", null, "Two");
+        assertEquals(2, list1._onlyNonNull$()._toList().size());
+        
+        List<String> listNull = null;
+        assertEquals(0, listNull._onlyNonNull$()._toList().size());
+    }
+    
+    @Test
+    public void testOnlyNonNullStream() {
+        Stream<String> stream1 = asList("One", null, "Two").stream();
+        assertEquals(2, stream1._onlyNonNull$()._toList().size());
+        
+        Stream<String> stream2 = null;
+        assertEquals(0, stream2._onlyNonNull$()._toList().size());
+        
+        // extra
+        
+        assertEquals("3,3", asList("One", null, "Two").stream()
+                ._onlyNonNull$()
+                .map(String::length)
+                .map(Object::toString)
+                .collect(Collectors.joining(",")));
     }
     
     @Test

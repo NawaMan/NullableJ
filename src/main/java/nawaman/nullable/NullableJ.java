@@ -634,6 +634,43 @@ public class NullableJ {
             return Stream.empty();
         return list.stream();
     }
+    /**
+     * Returns the stream of from the given list but does not contains null value.
+     * 
+     * @param array  the array.
+     * @return  the stream.
+     */
+    public static <OBJECT> Stream<OBJECT> _onlyNonNull$(OBJECT[] array) {
+        if (array == null)
+            return Stream.empty();
+        if (array.length == 0)
+            return Stream.empty();
+        return stream(array).filter(Objects::nonNull);
+    }
+    
+    /**
+     * Returns the stream of from the given list but does not contains null value.
+     * 
+     * @param list  the list.
+     * @return  the stream.
+     */
+    public static <OBJECT> Stream<OBJECT> _onlyNonNull$(List<OBJECT> list) {
+        if (list == null)
+            return Stream.empty();
+        return list.stream().filter(Objects::nonNull);
+    }
+    
+    /**
+     * Returns the stream of from the given stream but does not contains null value.
+     * 
+     * @param stream  the stream.
+     * @return  the stream.
+     */
+    public static <OBJECT> Stream<OBJECT> _onlyNonNull$(Stream<OBJECT> stream) {
+        if (stream == null)
+            return Stream.empty();
+        return stream.filter(Objects::nonNull);
+    }
     
     /**
      * Returns the list of the given array.
