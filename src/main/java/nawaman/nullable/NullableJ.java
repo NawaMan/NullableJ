@@ -608,6 +608,32 @@ public class NullableJ {
     //== Array and Collection ==
     
     /**
+     * Returns the stream of the given array.
+     * 
+     * @param array  the array.
+     * @return  the stream.
+     */
+    public static <OBJECT> Stream<OBJECT> _stream$(OBJECT[] array) {
+        if (array == null)
+            return Stream.empty();
+        if (array.length == 0)
+            return Stream.empty();
+        return stream(array);
+    }
+    
+    /**
+     * Returns the stream of the given object.
+     * 
+     * @param list  the list.
+     * @return  the stream.
+     */
+    public static <OBJECT> Stream<OBJECT> _stream$(List<OBJECT> list) {
+        if (list == null)
+            return Stream.empty();
+        return list.stream();
+    }
+    
+    /**
      * Get the element in the array at the index and return {@code null} if fail.
      * 
      * @param array  the array.
@@ -625,6 +651,7 @@ public class NullableJ {
             return null;
         return array[index];
     }
+    
     /**
      * Get the element in the array at the index and return {@code null} if fail.
      * 

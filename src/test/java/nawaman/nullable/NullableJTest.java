@@ -16,6 +16,7 @@
 package nawaman.nullable;
 
 import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.joining;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
@@ -296,6 +297,24 @@ public class NullableJTest {
     }
     
     //== Array and Collection ==
+    
+    @Test
+    public void testStreamArray() {
+        String[] array1 = new String[] { "One", "Two" };
+        assertEquals("OneTwo", array1._stream$().collect(joining()));
+        
+        String[] array2 = null;
+        assertEquals("", array2._stream$().collect(joining()));
+    }
+    
+    @Test
+    public void testStreamList() {
+        List<String> list1 = asList("One", "Two");
+        assertEquals("OneTwo", list1._stream$().collect(joining()));
+        
+        String[] list2 = null;
+        assertEquals("", list2._stream$().collect(joining()));
+    }
     
     @Test
     public void testGetArray() {
