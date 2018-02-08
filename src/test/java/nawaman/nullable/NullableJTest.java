@@ -510,4 +510,32 @@ public class NullableJTest {
         assertFalse(listNull._hasSomeWith(length5));
     }
     
+    @Test
+    public void testButOnlyWithArray() {
+        val length5 = (Predicate<String>)s->s.length() == 5;
+        
+        String[] array1 = new String[] { "One", "Two" };
+        assertEquals(0, array1._butOnlyWith(length5).length);
+        
+        String[] array2 = new String[] { "One", "Two", "Three" };
+        assertEquals(1, array2._butOnlyWith(length5).length);
+        
+        String[] arrayNull = null;
+        assertNull(arrayNull._butOnlyWith(length5));
+    }
+    
+    @Test
+    public void testButOnlyWithList() {
+        val length5 = (Predicate<String>)s->s.length() == 5;
+        
+        List<String> list1 = asList("One", "Two");
+        assertEquals(0, list1._butOnlyWith(length5).size());
+        
+        List<String> list2 = asList("One", "Two", "Three");
+        assertEquals(1, list2._butOnlyWith(length5).size());
+        
+        String[] listNull = null;
+        assertNull(listNull._butOnlyWith(length5));
+    }
+    
 }

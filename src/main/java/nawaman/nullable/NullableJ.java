@@ -15,6 +15,10 @@
 //  ========================================================================
 package nawaman.nullable;
 
+import static java.lang.reflect.Array.newInstance;
+import static java.util.Arrays.stream;
+import static java.util.stream.Collectors.toList;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
@@ -26,6 +30,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 import lombok.val;
 
@@ -846,31 +851,84 @@ public class NullableJ {
     }
     
     /**
-     * Check if at lease one element in the the given array pass all the check by the predicate.
+     * Check if at lease one element in the the given array pass all the check by the condition.
      * 
      * @param array      the array.
-     * @param predicate  the predicate.
+     * @param condition  the condition.
      * @return  {@code true} if some elements pass the condition.
      */
-    public static <OBJECT> boolean _hasSomeWith(OBJECT[] array, Predicate<OBJECT> predicate) {
+    public static <OBJECT> boolean _hasSomeWith(OBJECT[] array, Predicate<OBJECT> condition) {
         if (array == null)
             return false;
         if (array.length == 0)
             return false;
-        return Arrays.stream(array).anyMatch(predicate);
+        return Arrays.stream(array).anyMatch(condition);
     }
     /**
-     * Check if at lease one element in the the given list pass all the check by the predicate.
+     * Check if at lease one element in the the given list pass all the check by the condition.
      * 
      * @param list       the list.
-     * @param predicate  the predicate.
+     * @param condition  the condition.
      * @return  {@code true} if some elements pass the condition.
      */
-    public static <OBJECT> boolean _hasSomeWith(List<OBJECT> list, Predicate<OBJECT> predicate) {
+    public static <OBJECT> boolean _hasSomeWith(List<OBJECT> list, Predicate<OBJECT> condition) {
         if (list == null)
             return false;
         if (list.isEmpty())
             return false;
-        return list.stream().anyMatch(predicate);
+        return list.stream().anyMatch(condition);
+    }
+    
+    /**
+     * Returns the array contains the element that match the given condition.
+     * 
+     * @param array      the array.
+     * @param condition  the condition.
+     * @return  the element with only the matching elements.
+     */
+    public static <OBJECT> Stream<OBJECT> _butOnlyWith$(OBJECT[] array, Predicate<OBJECT> condition) {
+        if (array == null)
+            return Stream.empty();
+        return stream(array).filter(condition);
+    }
+    /**
+     * Check if at lease one element in the the given list pass all the check by the condition.
+     * 
+     * @param list       the list.
+     * @param condition  the condition.
+     * @return  the element with only the matching elements.
+     */
+    public static <OBJECT> Stream<OBJECT> _butOnlyWith$(List<OBJECT> list, Predicate<OBJECT> condition) {
+        if (list == null)
+            return Stream.empty();
+        return list.stream().filter(condition);
+    }
+    
+    /**
+     * Returns the array contains the element that match the given condition.
+     * 
+     * @param array      the array.
+     * @param condition  the condition.
+     * @return  the element with only the matching elements or null if the given element is null.
+     */
+    @SuppressWarnings("unchecked")
+    public static <OBJECT> OBJECT[] _butOnlyWith(OBJECT[] array, Predicate<OBJECT> condition) {
+        if (array == null)
+            return null;
+        val list = _butOnlyWith$(array, condition).collect(toList());
+        val newArray = (OBJECT[])newInstance(array.getClass().getComponentType(), list.size());
+        return list.toArray(newArray);
+    }
+    /**
+     * Check if at lease one element in the the given list pass all the check by the condition.
+     * 
+     * @param list       the list.
+     * @param condition  the condition.
+     * @return  the element with only the matching elements or null if the given element is null.
+     */
+    public static <OBJECT> List<OBJECT> _butOnlyWith(List<OBJECT> list, Predicate<OBJECT> condition) {
+        if (list == null)
+            return null;
+        return _butOnlyWith$(list, condition).collect(toList());
     }
 }
