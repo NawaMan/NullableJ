@@ -122,8 +122,9 @@ public class NullObjects implements IFindNullObject {
      * 
      * @param clzz  the class.
      * @return  the null object found. This method return null if it cannot find some.
+     * @param <OBJECT>  the type of the object.
      */
-    public static final <T> T nullObjectOf(Class<T> clzz) {
+    public static final <OBJECT> OBJECT nullObjectOf(Class<OBJECT> clzz) {
         val nullObj = instance.findNullObjectOf(clzz);
         return nullObj;
     }

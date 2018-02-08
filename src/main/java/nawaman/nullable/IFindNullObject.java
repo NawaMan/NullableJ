@@ -26,7 +26,8 @@ public interface IFindNullObject {
      * 
      * @param clzz  the class.
      * @return  the null object.
+     * @param <OBJECT>  the type of the object.
      */
-    public <T> T findNullObjectOf(Class<T> clzz);
+    public <OBJECT> OBJECT findNullObjectOf(Class<OBJECT> clzz);
     
 }

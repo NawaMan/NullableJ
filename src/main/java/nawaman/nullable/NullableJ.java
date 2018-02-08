@@ -616,6 +616,8 @@ public class NullableJ {
      * 
      * @param array  the array.
      * @return  the stream.
+     * 
+     * @param <OBJECT> the type of the data in the array.
      */
     public static <OBJECT> Stream<OBJECT> _stream$(OBJECT[] array) {
         if (array == null)
@@ -630,6 +632,8 @@ public class NullableJ {
      * 
      * @param list  the list.
      * @return  the stream.
+     * 
+     * @param <OBJECT> the type of the data in the list.
      */
     public static <OBJECT> Stream<OBJECT> _stream$(List<OBJECT> list) {
         if (list == null)
@@ -641,6 +645,8 @@ public class NullableJ {
      * 
      * @param array  the array.
      * @return  the stream.
+     * 
+     * @param <OBJECT> the type of the data in the array.
      */
     public static <OBJECT> Stream<OBJECT> _butOnlyNonNull$(OBJECT[] array) {
         if (array == null)
@@ -655,6 +661,8 @@ public class NullableJ {
      * 
      * @param list  the list.
      * @return  the stream.
+     * 
+     * @param <OBJECT> the type of the data in the list.
      */
     public static <OBJECT> Stream<OBJECT> _butOnlyNonNull$(List<OBJECT> list) {
         if (list == null)
@@ -667,6 +675,8 @@ public class NullableJ {
      * 
      * @param stream  the stream.
      * @return  the stream.
+     * 
+     * @param <OBJECT> the type of the data in the stream.
      */
     public static <OBJECT> Stream<OBJECT> _butOnlyNonNull$(Stream<OBJECT> stream) {
         if (stream == null)
@@ -679,6 +689,8 @@ public class NullableJ {
      * 
      * @param array  the array.
      * @return  the list.
+     * 
+     * @param <OBJECT> the type of the data in the list.
      */
     public static <OBJECT> List<OBJECT> _toList(OBJECT[] array) {
         if (array == null)
@@ -693,6 +705,8 @@ public class NullableJ {
      * 
      * @param list  the list.
      * @return  the list.
+     * 
+     * @param <OBJECT> the type of the data in the list.
      */
     public static <OBJECT> List<OBJECT> _toList(List<OBJECT> list) {
         if (list == null)
@@ -705,6 +719,8 @@ public class NullableJ {
      * 
      * @param stream  the stream.
      * @return  the list.
+     * 
+     * @param <OBJECT> the type of the data in the stream.
      */
     public static <OBJECT> List<OBJECT> _toList(Stream<OBJECT> stream) {
         if (stream == null)
@@ -717,6 +733,8 @@ public class NullableJ {
      * 
      * @param supplier  the supplier.
      * @return  the value at the index or null.
+     * 
+     * @param <OBJECT> the type of the data in the supplier.
      */
     public static <OBJECT> OBJECT _get(Supplier<OBJECT> supplier) {
         if (supplier == null)
@@ -730,6 +748,9 @@ public class NullableJ {
      * @param function  the function.
      * @param key       the key.
      * @return  the value at the index or null.
+     * 
+     * @param <KEY>   the type of the key of the function.
+     * @param <VALUE> the type of the value of the function.
      */
     public static <KEY, VALUE> VALUE _get(Function<KEY, VALUE> function, KEY key) {
         if (function == null)
@@ -743,6 +764,9 @@ public class NullableJ {
      * @param function  the function.
      * @param key       the key.
      * @return  the value at the index or null.
+     * 
+     * @param <KEY>   the type of the key of the function.
+     * @param <VALUE> the type of the value of the function.
      */
     public static <KEY, VALUE> VALUE _apply(Function<KEY, VALUE> function, KEY key) {
         if (function == null)
@@ -756,6 +780,8 @@ public class NullableJ {
      * @param array  the array.
      * @param index  the index.
      * @return  the value at the index or null.
+     * 
+     * @param <OBJECT> the type of the data in the array.
      */
     public static <OBJECT> OBJECT _get(OBJECT[] array, int index) {
         if (array == null)
@@ -775,6 +801,8 @@ public class NullableJ {
      * @param list   the list.
      * @param index  the index.
      * @return  the value at the index or null.
+     * 
+     * @param <OBJECT> the type of the data in the list.
      */
     public static <OBJECT> OBJECT _get(List<OBJECT> list, int index) {
         if (list == null)
@@ -794,6 +822,9 @@ public class NullableJ {
      * @param map  the map.
      * @param key  the key.
      * @return  the value at the index or null.
+     * 
+     * @param <KEY>   the type of the key of the map.
+     * @param <VALUE> the type of the value of the map.
      */
     public static <KEY, VALUE> VALUE _get(Map<KEY, VALUE> map, KEY key) {
         if (map == null)
@@ -817,6 +848,8 @@ public class NullableJ {
      * @param index    the index.
      * @param orValue  the value to return if getting the value fail.
      * @return  the value at the index or null.
+     * 
+     * @param <OBJECT> the type of the data in the array.
      */
     public static <OBJECT> OBJECT _get(OBJECT[] array, int index, OBJECT orValue) {
         if (array == null)
@@ -837,6 +870,8 @@ public class NullableJ {
      * @param index  the index.
      * @param orValue  the value to return if getting the value fail.
      * @return  the value at the index or null.
+     * 
+     * @param <OBJECT> the type of the data in the list.
      */
     public static <OBJECT> OBJECT _get(List<OBJECT> list, int index, OBJECT orValue) {
         if (list == null)
@@ -858,6 +893,9 @@ public class NullableJ {
      * @param key      the key.
      * @param orValue  the default value.
      * @return  the value at the index or null.
+     * 
+     * @param <KEY>   the type of the key of the map.
+     * @param <VALUE> the type of the value of the map.
      */
     public static <KEY, VALUE> VALUE _get(Map<KEY, VALUE> map, KEY key, VALUE orValue) {
         if (map == null)
@@ -881,6 +919,8 @@ public class NullableJ {
      * @param index       the index.
      * @param orSupplier  the supplier of the value to return if getting the value fail.
      * @return  the value at the index or null.
+     * 
+     * @param <OBJECT> the type of the data in the array.
      */
     public static <OBJECT> OBJECT _get(OBJECT[] array, int index, Supplier<OBJECT> orSupplier) {
         if (array == null)
@@ -901,6 +941,8 @@ public class NullableJ {
      * @param index       the index.
      * @param orSupplier  the supplier of the value to return if getting the value fail.
      * @return  the value at the index or null.
+     * 
+     * @param <OBJECT> the type of the data in the list.
      */
     public static <OBJECT> OBJECT _get(List<OBJECT> list, int index, Supplier<OBJECT> orSupplier) {
         if (list == null)
@@ -922,6 +964,9 @@ public class NullableJ {
      * @param key      the key.
      * @param orSupplier  the supplier of the value to return if getting the value fail.
      * @return  the value at the index or null.
+     * 
+     * @param <KEY>   the type of the key of the map.
+     * @param <VALUE> the type of the value of the map.
      */
     public static <KEY, VALUE> VALUE _get(Map<KEY, VALUE> map, KEY key, Supplier<VALUE> orSupplier) {
         if (map == null)
@@ -945,6 +990,8 @@ public class NullableJ {
      * @param index       the index.
      * @param orFunction  the function that create the value to return if getting the value fail.
      * @return  the value at the index or null.
+     * 
+     * @param <OBJECT> the type of the data in the array.
      */
     public static <OBJECT> OBJECT _get(OBJECT[] array, int index, Function<Integer, OBJECT> orFunction) {
         if (array == null)
@@ -965,6 +1012,8 @@ public class NullableJ {
      * @param index       the index.
      * @param orFunction  the function that create the value to return if getting the value fail.
      * @return  the value at the index or null.
+     * 
+     * @param <OBJECT> the type of the data in the list.
      */
     public static <OBJECT> OBJECT _get(List<OBJECT> list, int index, Function<Integer, OBJECT> orFunction) {
         if (list == null)
@@ -986,6 +1035,9 @@ public class NullableJ {
      * @param key      the key.
      * @param orFunction  the function that create the value to return if getting the value fail.
      * @return  the value at the index or null.
+     * 
+     * @param <KEY>   the type of the key of the map.
+     * @param <VALUE> the type of the value of the map.
      */
     public static <KEY, VALUE> VALUE _get(Map<KEY, VALUE> map, KEY key, Function<KEY, VALUE> orFunction) {
         if (map == null)
@@ -1007,6 +1059,8 @@ public class NullableJ {
      * 
      * @param array  the array.
      * @return  the value at the 0th index or null.
+     * 
+     * @param <OBJECT> the type of the data in the array.
      */
     public static <OBJECT> OBJECT _first(OBJECT[] array) {
         if (array == null)
@@ -1020,6 +1074,8 @@ public class NullableJ {
      * 
      * @param list   the list.
      * @return  the value at the 0th index or null.
+     * 
+     * @param <OBJECT> the type of the data in the list.
      */
     public static <OBJECT> OBJECT _first(List<OBJECT> list) {
         if (list == null)
@@ -1034,6 +1090,8 @@ public class NullableJ {
      * 
      * @param array  the array.
      * @return  the value at the last index or null.
+     * 
+     * @param <OBJECT> the type of the data in the array.
      */
     public static <OBJECT> OBJECT _last(OBJECT[] array) {
         if (array == null)
@@ -1047,6 +1105,8 @@ public class NullableJ {
      * 
      * @param list   the list.
      * @return  the value at the last index or null.
+     * 
+     * @param <OBJECT> the type of the data in the list.
      */
     public static <OBJECT> OBJECT _last(List<OBJECT> list) {
         if (list == null)
@@ -1062,6 +1122,8 @@ public class NullableJ {
      * @param array      the array.
      * @param condition  the condition.
      * @return  {@code true} if all elements pass the condition.
+     * 
+     * @param <OBJECT> the type of the data in the array.
      */
     public static <OBJECT> boolean _hasAllWith(OBJECT[] array, Predicate<OBJECT> condition) {
         if (array == null)
@@ -1076,6 +1138,8 @@ public class NullableJ {
      * @param list       the list.
      * @param condition  the condition.
      * @return  {@code true} if all elements pass the condition.
+     * 
+     * @param <OBJECT> the type of the data in the list.
      */
     public static <OBJECT> boolean _hasAllWith(List<OBJECT> list, Predicate<OBJECT> condition) {
         if (list == null)
@@ -1091,6 +1155,8 @@ public class NullableJ {
      * @param array      the array.
      * @param condition  the condition.
      * @return  {@code true} if some elements pass the condition.
+     * 
+     * @param <OBJECT> the type of the data in the array.
      */
     public static <OBJECT> boolean _hasSomeWith(OBJECT[] array, Predicate<OBJECT> condition) {
         if (array == null)
@@ -1105,6 +1171,8 @@ public class NullableJ {
      * @param list       the list.
      * @param condition  the condition.
      * @return  {@code true} if some elements pass the condition.
+     * 
+     * @param <OBJECT> the type of the data in the list.
      */
     public static <OBJECT> boolean _hasSomeWith(List<OBJECT> list, Predicate<OBJECT> condition) {
         if (list == null)
@@ -1120,6 +1188,8 @@ public class NullableJ {
      * @param array      the array.
      * @param condition  the condition.
      * @return  the element with only the matching elements.
+     * 
+     * @param <OBJECT> the type of the data in the array.
      */
     public static <OBJECT> Stream<OBJECT> _butOnlyWith$(OBJECT[] array, Predicate<OBJECT> condition) {
         if (array == null)
@@ -1132,6 +1202,8 @@ public class NullableJ {
      * @param list       the list.
      * @param condition  the condition.
      * @return  the element with only the matching elements.
+     * 
+     * @param <OBJECT> the type of the data in the list.
      */
     public static <OBJECT> Stream<OBJECT> _butOnlyWith$(List<OBJECT> list, Predicate<OBJECT> condition) {
         if (list == null)
@@ -1145,6 +1217,8 @@ public class NullableJ {
      * @param array      the array.
      * @param condition  the condition.
      * @return  the element with only the matching elements or null if the given element is null.
+     * 
+     * @param <OBJECT> the type of the data in the array.
      */
     @SuppressWarnings("unchecked")
     public static <OBJECT> OBJECT[] _butOnlyWith(OBJECT[] array, Predicate<OBJECT> condition) {
@@ -1161,6 +1235,8 @@ public class NullableJ {
      * @param list       the list.
      * @param condition  the condition.
      * @return  the element with only the matching elements or null if the given element is null.
+     * 
+     * @param <OBJECT> the type of the data in the list.
      */
     public static <OBJECT> List<OBJECT> _butOnlyWith(List<OBJECT> list, Predicate<OBJECT> condition) {
         if (list == null)
@@ -1174,6 +1250,8 @@ public class NullableJ {
      * @param stream  the stream.
      * @param mapper  the mapper.
      * @return  the element with only the matching elements or null if the given element is null.
+     * @param <OBJECT>     the type of the data in the stream.
+     * @param <COLLECTION> the type of the collection.
      */
     public static <OBJECT, COLLECTION extends Collection<OBJECT>> Stream<OBJECT> _flatMap$(Stream<OBJECT> stream, Function<OBJECT, COLLECTION> mapper) {
         if (stream == null)
