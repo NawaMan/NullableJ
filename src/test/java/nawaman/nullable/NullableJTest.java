@@ -455,59 +455,59 @@ public class NullableJTest {
     }
     
     @Test
-    public void testContainsAllWithArray() {
+    public void testHasAllWithArray() {
         val length3 = (Predicate<String>)s->s.length() == 3;
         
         String[] array1 = new String[] { "One", "Two" };
-        assertTrue(array1._containsAllWith(length3));
+        assertTrue(array1._hasAllWith(length3));
         
         String[] array2 = new String[] { "One", "Two", "Three" };
-        assertFalse(array2._containsAllWith(length3));
+        assertFalse(array2._hasAllWith(length3));
         
         String[] arrayNull = null;
-        assertFalse(arrayNull._containsAllWith(length3));
+        assertFalse(arrayNull._hasAllWith(length3));
     }
     
     @Test
-    public void testContainsAllWithList() {
+    public void testHasAllWithList() {
         val length3 = (Predicate<String>)s->s.length() == 3;
         
         List<String> list1 = asList("One", "Two");
-        assertTrue(list1._containsAllWith(length3));
+        assertTrue(list1._hasAllWith(length3));
         
         List<String> list2 = asList("One", "Two", "Three");
-        assertFalse(list2._containsAllWith(length3));
+        assertFalse(list2._hasAllWith(length3));
         
         String[] listNull = null;
-        assertFalse(listNull._containsAllWith(length3));
+        assertFalse(listNull._hasAllWith(length3));
     }
     
     @Test
-    public void testContainsSomeWithArray() {
+    public void testHasSomeWithArray() {
         val length5 = (Predicate<String>)s->s.length() == 5;
         
         String[] array1 = new String[] { "One", "Two" };
-        assertFalse(array1._containsSomeWith(length5));
+        assertFalse(array1._hasSomeWith(length5));
         
         String[] array2 = new String[] { "One", "Two", "Three" };
-        assertTrue(array2._containsSomeWith(length5));
+        assertTrue(array2._hasSomeWith(length5));
         
         String[] arrayNull = null;
-        assertFalse(arrayNull._containsSomeWith(length5));
+        assertFalse(arrayNull._hasSomeWith(length5));
     }
     
     @Test
-    public void testContainsSomeWithList() {
+    public void testHasSomeWithList() {
         val length5 = (Predicate<String>)s->s.length() == 5;
         
         List<String> list1 = asList("One", "Two");
-        assertFalse(list1._containsSomeWith(length5));
+        assertFalse(list1._hasSomeWith(length5));
         
         List<String> list2 = asList("One", "Two", "Three");
-        assertTrue(list2._containsSomeWith(length5));
+        assertTrue(list2._hasSomeWith(length5));
         
         String[] listNull = null;
-        assertFalse(listNull._containsSomeWith(length5));
+        assertFalse(listNull._hasSomeWith(length5));
     }
     
 }

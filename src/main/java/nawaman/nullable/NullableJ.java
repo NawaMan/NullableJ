@@ -823,7 +823,7 @@ public class NullableJ {
      * @param condition  the condition.
      * @return  {@code true} if all elements pass the condition.
      */
-    public static <OBJECT> boolean _containsAllWith(OBJECT[] array, Predicate<OBJECT> condition) {
+    public static <OBJECT> boolean _hasAllWith(OBJECT[] array, Predicate<OBJECT> condition) {
         if (array == null)
             return false;
         if (array.length == 0)
@@ -837,7 +837,7 @@ public class NullableJ {
      * @param condition  the condition.
      * @return  {@code true} if all elements pass the condition.
      */
-    public static <OBJECT> boolean _containsAllWith(List<OBJECT> list, Predicate<OBJECT> condition) {
+    public static <OBJECT> boolean _hasAllWith(List<OBJECT> list, Predicate<OBJECT> condition) {
         if (list == null)
             return false;
         if (list.isEmpty())
@@ -852,7 +852,7 @@ public class NullableJ {
      * @param predicate  the predicate.
      * @return  {@code true} if some elements pass the condition.
      */
-    public static <OBJECT> boolean _containsSomeWith(OBJECT[] array, Predicate<OBJECT> predicate) {
+    public static <OBJECT> boolean _hasSomeWith(OBJECT[] array, Predicate<OBJECT> predicate) {
         if (array == null)
             return false;
         if (array.length == 0)
@@ -866,7 +866,7 @@ public class NullableJ {
      * @param predicate  the predicate.
      * @return  {@code true} if some elements pass the condition.
      */
-    public static <OBJECT> boolean _containsSomeWith(List<OBJECT> list, Predicate<OBJECT> predicate) {
+    public static <OBJECT> boolean _hasSomeWith(List<OBJECT> list, Predicate<OBJECT> predicate) {
         if (list == null)
             return false;
         if (list.isEmpty())
