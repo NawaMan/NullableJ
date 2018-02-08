@@ -22,6 +22,7 @@ import static java.util.stream.Collectors.toList;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -640,7 +641,7 @@ public class NullableJ {
      * @param array  the array.
      * @return  the stream.
      */
-    public static <OBJECT> Stream<OBJECT> _onlyNonNull$(OBJECT[] array) {
+    public static <OBJECT> Stream<OBJECT> _butOnlyNonNull$(OBJECT[] array) {
         if (array == null)
             return Stream.empty();
         if (array.length == 0)
@@ -654,7 +655,7 @@ public class NullableJ {
      * @param list  the list.
      * @return  the stream.
      */
-    public static <OBJECT> Stream<OBJECT> _onlyNonNull$(List<OBJECT> list) {
+    public static <OBJECT> Stream<OBJECT> _butOnlyNonNull$(List<OBJECT> list) {
         if (list == null)
             return Stream.empty();
         return list.stream().filter(Objects::nonNull);
@@ -666,7 +667,7 @@ public class NullableJ {
      * @param stream  the stream.
      * @return  the stream.
      */
-    public static <OBJECT> Stream<OBJECT> _onlyNonNull$(Stream<OBJECT> stream) {
+    public static <OBJECT> Stream<OBJECT> _butOnlyNonNull$(Stream<OBJECT> stream) {
         if (stream == null)
             return Stream.empty();
         return stream.filter(Objects::nonNull);
@@ -1023,6 +1024,7 @@ public class NullableJ {
         val newArray = (OBJECT[])newInstance(array.getClass().getComponentType(), list.size());
         return list.toArray(newArray);
     }
+    
     /**
      * Check if at lease one element in the the given list pass all the check by the condition.
      * 
@@ -1034,6 +1036,19 @@ public class NullableJ {
         if (list == null)
             return null;
         return _butOnlyWith$(list, condition).collect(toList());
+    }
+    
+    /**
+     * Access to collection with the mapper and flatmap them.
+     * 
+     * @param stream  the stream.
+     * @param mapper  the mapper.
+     * @return  the element with only the matching elements or null if the given element is null.
+     */
+    public static <OBJECT, COLLECTION extends Collection<OBJECT>> Stream<OBJECT> _flatMap$(Stream<OBJECT> stream, Function<OBJECT, COLLECTION> mapper) {
+        if (stream == null)
+            return Stream.empty();
+        return _butOnlyNonNull$(_butOnlyNonNull$(stream.map(mapper)).flatMap(Collection::stream));
     }
     
 }

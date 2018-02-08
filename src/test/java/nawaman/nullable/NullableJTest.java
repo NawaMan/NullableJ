@@ -24,6 +24,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
@@ -36,6 +37,7 @@ import java.util.stream.Stream;
 
 import org.junit.Test;
 
+import lombok.Getter;
 import lombok.val;
 import lombok.experimental.ExtensionMethod;
 
@@ -349,33 +351,33 @@ public class NullableJTest {
     @Test
     public void testOnlyNonNullArray() {
         String[] array1 = new String[] {"One", null, "Two"};
-        assertEquals(2, array1._onlyNonNull$()._toList().size());
+        assertEquals(2, array1._butOnlyNonNull$()._toList().size());
         
         String[] arrayNull = null;
-        assertEquals(0, arrayNull._onlyNonNull$()._toList().size());
+        assertEquals(0, arrayNull._butOnlyNonNull$()._toList().size());
     }
     
     @Test
     public void testOnlyNonNullList() {
         List<String> list1 = asList("One", null, "Two");
-        assertEquals(2, list1._onlyNonNull$()._toList().size());
+        assertEquals(2, list1._butOnlyNonNull$()._toList().size());
         
         List<String> listNull = null;
-        assertEquals(0, listNull._onlyNonNull$()._toList().size());
+        assertEquals(0, listNull._butOnlyNonNull$()._toList().size());
     }
     
     @Test
     public void testOnlyNonNullStream() {
         Stream<String> stream1 = asList("One", null, "Two").stream();
-        assertEquals(2, stream1._onlyNonNull$()._toList().size());
+        assertEquals(2, stream1._butOnlyNonNull$()._toList().size());
         
         Stream<String> stream2 = null;
-        assertEquals(0, stream2._onlyNonNull$()._toList().size());
+        assertEquals(0, stream2._butOnlyNonNull$()._toList().size());
         
         // extra
         
         assertEquals("3,3", asList("One", null, "Two").stream()
-                ._onlyNonNull$()
+                ._butOnlyNonNull$()
                 .map(String::length)
                 .map(Object::toString)
                 .collect(Collectors.joining(",")));
@@ -620,6 +622,44 @@ public class NullableJTest {
         
         String[] listNull = null;
         assertNull(listNull._butOnlyWith(length5));
+    }
+
+    @Getter
+    static class Person {
+        String name;
+        List<Person> children = new ArrayList<>();
+        Person(String name) {
+            this.name = name;
+        }
+    }
+    
+    @Test
+    public void testflatMap$() {
+        Person p    = new Person("p");
+        Person p1   = new Person("p1");
+        Person p11  = new Person("p11");
+        Person p12  = new Person("p12");
+        Person p2   = new Person("p2");
+        Person p21  = new Person("p21");
+        Person p22  = new Person("p22");
+        
+        p.children.add(p1);
+        p.children.add(p2);
+        
+        p1.children.add(p11);
+        p1.children.add(p12);
+        
+        p2.children.add(p21);
+        p2.children.add(p22);
+        
+        val mapper = (Function<Person, List<Person>>)Person::getChildren;
+        assertEquals("[p11, p12, p21, p22]", p.children.stream()._flatMap$(mapper).map(Person::getName)._toList().toString());
+        
+        p2.children.add(null);
+        assertEquals("[p11, p12, p21, p22]", p.children.stream()._flatMap$(mapper).map(Person::getName)._toList().toString());
+        
+        Stream<Person> nullStream = null;
+        assertEquals("[]", nullStream._flatMap$(mapper).map(Person::getName)._toList().toString());
     }
     
 }
