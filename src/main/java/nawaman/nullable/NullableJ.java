@@ -22,6 +22,7 @@ import static java.util.stream.Collectors.toList;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -30,6 +31,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import lombok.val;
@@ -631,6 +633,44 @@ public class NullableJ {
         if (list == null)
             return Stream.empty();
         return list.stream();
+    }
+    
+    /**
+     * Returns the list of the given array.
+     * 
+     * @param array  the array.
+     * @return  the list.
+     */
+    public static <OBJECT> List<OBJECT> _toList(OBJECT[] array) {
+        if (array == null)
+            return Collections.emptyList();
+        if (array.length == 0)
+            return Collections.emptyList();
+        return stream(array).collect(Collectors.toList());
+    }
+    
+    /**
+     * Returns the list of the given list (a copy using stream().collect(toList())).
+     * 
+     * @param list  the list.
+     * @return  the list.
+     */
+    public static <OBJECT> List<OBJECT> _toList(List<OBJECT> list) {
+        if (list == null)
+            return Collections.emptyList();
+        return list.stream().collect(Collectors.toList());
+    }
+    
+    /**
+     * Returns the list of the given object.
+     * 
+     * @param stream  the stream.
+     * @return  the list.
+     */
+    public static <OBJECT> List<OBJECT> _toList(Stream<OBJECT> stream) {
+        if (stream == null)
+            return Collections.emptyList();
+        return stream.collect(Collectors.toList());
     }
     
     /**

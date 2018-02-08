@@ -31,6 +31,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import org.junit.Test;
 
@@ -314,6 +315,34 @@ public class NullableJTest {
         
         String[] list2 = null;
         assertEquals("", list2._stream$().collect(joining()));
+    }
+    
+    @Test
+    public void testToListArray() {
+        String[] array1 = new String[] { "One", "Two" };
+        assertEquals(2, array1._toList().size());
+        
+        String[] array2 = null;
+        assertEquals(0, array2._toList().size());
+    }
+    
+    @Test
+    public void testToListList() {
+        List<String> list1 = asList("One", "Two");
+        assertEquals(2, list1._toList().size());
+        assertFalse(list1 == list1._toList());
+        
+        List<String> list2 = null;
+        assertEquals(0, list2._toList().size());
+    }
+    
+    @Test
+    public void testToListStream() {
+        List<String> stream1 = asList("One", "Two");
+        assertEquals(2, stream1._stream$()._toList().size());
+        
+        Stream<String> stream2 = null;
+        assertEquals(0, stream2._toList().size());
     }
     
     @Test
