@@ -70,4 +70,4 @@ They can be used as normal static methods but the naming is done with the intent
 
 ### `NullObjects`
 `NullObjects` will try to find the best candidate value to use as null object for a given class.
-Find more information [here](https://github.com/NawaMan/NullableJ/blob/master/NullObjects.md).
+Find more information [here](https://nawaman.github.io/NullableJ/NullObjects).
