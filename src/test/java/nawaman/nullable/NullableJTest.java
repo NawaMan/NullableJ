@@ -63,39 +63,39 @@ public class NullableJTest {
     }
     
     @Test
-    public void testIsNull() {
+    public void test_isNull() {
         assertFalse("String"._isNull());
         assertTrue( nullString._isNull());
     }
     
     @Test
-    public void testIsNotNull() {
+    public void test_isNotNull() {
         assertTrue( "String"._isNotNull());
         assertFalse(nullString._isNotNull());
     }
     
     @Test
-    public void testEqualsTo() {
+    public void test_equalsTo() {
         assertTrue( "String" ._equalsTo("String"));
         assertTrue( "Integer"._equalsTo("Integer"));
         assertFalse(nullString._equalsTo("String"));
     }
     
     @Test
-    public void testNotEqualsTo() {
+    public void test_notEqualsTo() {
         assertFalse("String" ._notEqualsTo("String"));
         assertFalse("Integer"._notEqualsTo("Integer"));
         assertTrue( nullString._notEqualsTo("String"));
     }
     
     @Test
-    public void testOr() {
+    public void test_or() {
         assertEquals("String",         "String"  ._or("Another String"));
         assertEquals("Another String", nullString._or("Another String"));
     }
     
     @Test
-    public void testOr_subClass() {
+    public void test_or__subClass() {
         StringBuffer  someBuffer = new StringBuffer("String");
         StringBuffer  nullBuffer = null;
         CharSequence  someResult = someBuffer._or("Another String");
@@ -106,26 +106,26 @@ public class NullableJTest {
     }
     
     @Test
-    public void testOrGet() {
+    public void test_orGet() {
         Supplier<String> erorrMessage = ()->"Another" + " " + "String";
         assertEquals("String",        "String"._orGet(erorrMessage));
         assertEquals("Another String", nullString._orGet(erorrMessage));
     }
     
     @Test
-    public void testOrNullObject() {
+    public void test_orNullObject() {
         assertEquals("String", "String"  ._orNullObject(String.class));
         assertEquals("",       nullString._orNullObject(String.class));
     }
     
     @Test
-    public void testOrElseNullObject() {
+    public void test_orElseNullObject() {
         assertEquals("String", Optional.of("String")          ._orElseNullObject(String.class).orElse(null));
         assertEquals("",       Optional.ofNullable(nullString)._orElseNullObject(String.class).orElse(null));
     }
     
     @Test
-    public void testToOptional() {
+    public void test_toOptional() {
         assertTrue("String"._toOptional() instanceof Optional);
         assertTrue("String"._toOptional().isPresent());
         assertEquals("String", "String"._toOptional().get());
@@ -135,7 +135,7 @@ public class NullableJTest {
     }
     
     @Test
-    public void testWhenNotNull() {
+    public void test_whenNotNull() {
         assertTrue("String"._whenNotNull() instanceof Optional);
         assertTrue("String"._whenNotNull().isPresent());
         assertEquals("String", "String"._whenNotNull().get());
@@ -149,7 +149,7 @@ public class NullableJTest {
     }
     
     @Test
-    public void testWhenNotNull_action() {
+    public void test_whenNotNull_action() {
         val someResult = new AtomicReference<String>("NULL");
         val nullResult = new AtomicReference<String>("NULL");
         "String"  ._whenNotNull(saveStringTo(someResult));
@@ -160,7 +160,7 @@ public class NullableJTest {
     }
     
     @Test
-    public void testWhen() {
+    public void test_when() {
         assertEquals("The original string", "The original string"._when(contains("original")).orElse("Another string"));
         assertEquals("Another string",      "The original string"._when(contains("another" )).orElse("Another string"));
         assertEquals("Another string",      nullString           ._when(contains("original")).orElse("Another string"));
@@ -168,35 +168,35 @@ public class NullableJTest {
     }
     
     @Test
-    public void testAs() {
+    public void test_as() {
         assertEquals(IntOf(1234), IntOf(1234)._as(Integer.class));
         assertEquals(null,        IntOf(1234)._as(Double.class));
         assertEquals(0.0,         IntOf(1234)._as(Double.class)._or(0.0), 0.0);
     }
     
     @Test
-    public void testMapTo() {
+    public void test_mapTo() {
         val itsLength    = (Function<String, Integer>)String::length;
         assertEquals( 6, "String"  ._mapTo(itsLength)._or(-1));
         assertEquals(-1, nullString._mapTo(itsLength)._or(-1));
     }
     
     @Test
-    public void testMapBy() {
+    public void test_mapBy() {
         val surroundingWithQuotes = (Function<String, String>)(str->("\'" + str + "\'"));
         assertEquals("\'String\'", "String"  ._mapBy(surroundingWithQuotes)._or("null"));
         assertEquals("null",       nullString._mapBy(surroundingWithQuotes)._or("null"));
     }
     
     @Test
-    public void testMapFrom() {
+    public void test_mapFrom() {
         val stringToInt = (Function<String, Integer>)(str->Integer.parseInt(str));
         assertEquals(42, "42"      ._mapFrom(stringToInt)._or(0));
         assertEquals( 0, nullString._mapFrom(stringToInt)._or(0));
     }
     
     @Test
-    public void testOrPrimitive() {
+    public void test_or__primitive() {
         val nullInteger        = (Integer)null;
         val nullLong           = (Long)null;
         val nullDouble         = (Double)null;
@@ -217,14 +217,14 @@ public class NullableJTest {
     }
     
     @Test
-    public void testIsEmpty() {
+    public void test_isEmpty() {
         assertFalse("String"   ._isEmpty());
         assertTrue( nullString ._isEmpty());
         assertTrue( emptyString._isEmpty());
     }
     
     @Test
-    public void testIsBlank() {
+    public void test_isBlank() {
         assertFalse("String"   ._isBlank());
         assertTrue( nullString ._isBlank());
         assertTrue( emptyString._isBlank());
@@ -232,7 +232,7 @@ public class NullableJTest {
     }
     
     @Test
-    public void testTrimToNull() {
+    public void test_trimToNull() {
         assertEquals("String", "\t String "._trimToNull());
         assertNull(nullString ._trimToNull());
         assertNull(emptyString._trimToNull());
@@ -240,7 +240,7 @@ public class NullableJTest {
     }
     
     @Test
-    public void testTrimToEmpty() {
+    public void test_trimToEmpty() {
         assertFalse("String", "\t String "._trimToNull()._isEmpty());
         assertTrue(nullString ._trimToNull()._isEmpty());
         assertTrue(emptyString._trimToNull()._isEmpty());
@@ -248,52 +248,52 @@ public class NullableJTest {
     }
     
     @Test
-    public void testContains() {
+    public void test_contains() {
         assertTrue( "String"  ._contains("ring"));
         assertFalse(nullString._contains("ring"));
     }
     
     @Test
-    public void testNotContains() {
+    public void test_notContains() {
         assertTrue("String"  ._notContains("round"));
         assertTrue(nullString._notContains("round"));
     }
     
     @Test
-    public void testMatches() {
+    public void test_matches() {
         assertTrue("String"   ._matches("[Sa]tring"));
         assertFalse(nullString._matches("[Sa]tring"));
     }
     
     @Test
-    public void testNotMatches() {
+    public void test_notMatches() {
         assertTrue("String"  ._notMatches("[Ii]nteger"));
         assertTrue(nullString._notMatches("[Ii]nteger"));
     }
     
     @Test
-    public void testWhenContains() {
+    public void test_whenContains() {
         assertEquals("",    "AB"          ._whenContains(",").map(String::toLowerCase).orElse(""));
         assertEquals("a,b", "A,B"         ._whenContains(",").map(String::toLowerCase).orElse(""));
         assertEquals("",    ((String)null)._whenContains(",").map(String::toLowerCase).orElse(""));
     }
     
     @Test
-    public void testWhenNotContains() {
+    public void test_whenNotContains() {
         assertEquals("ab", "AB"          ._whenNotContains(",").map(String::toLowerCase).orElse(""));
         assertEquals("",   "A,B"         ._whenNotContains(",").map(String::toLowerCase).orElse(""));
         assertEquals("",   ((String)null)._whenNotContains(",").map(String::toLowerCase).orElse(""));
     }
     
     @Test
-    public void testWhenMatches() {
+    public void test_whenMatches() {
         assertEquals(42, "42"      ._whenMatches("^[0-9]+$").map(Integer::parseInt).orElse(-1).intValue());
         assertEquals(-1, "Blue"    ._whenMatches("^[0-9]+$").map(Integer::parseInt).orElse(-1).intValue());
         assertEquals(-1, nullString._whenMatches("^[0-9]+$").map(Integer::parseInt).orElse(-1).intValue());
     }
     
     @Test
-    public void testWhenNotMatches() {
+    public void test_whenNotMatches() {
         // This variable is needed as Lombok ExtensionMethods has some problem when compile with Oracle JDK.
         val toNotNumber = (Function<String, String>)(s->"NotNumber");
         assertEquals("Number",    "42"      ._whenNotMatches("^[0-9]+$").map(toNotNumber).orElse("Number"));
@@ -305,7 +305,7 @@ public class NullableJTest {
     //== Array and Collection ==
     
     @Test
-    public void testStreamArray() {
+    public void test_stream$__array() {
         String[] array1 = new String[] { "One", "Two" };
         assertEquals("OneTwo", array1._stream$().collect(joining()));
         
@@ -314,7 +314,7 @@ public class NullableJTest {
     }
     
     @Test
-    public void testStreamList() {
+    public void test_stream$__list() {
         List<String> list1 = asList("One", "Two");
         assertEquals("OneTwo", list1._stream$().collect(joining()));
         
@@ -323,35 +323,7 @@ public class NullableJTest {
     }
     
     @Test
-    public void testToListArray() {
-        String[] array1 = new String[] { "One", "Two" };
-        assertEquals(2, array1._toList().size());
-        
-        String[] array2 = null;
-        assertEquals(0, array2._toList().size());
-    }
-    
-    @Test
-    public void testToListList() {
-        List<String> list1 = asList("One", "Two");
-        assertEquals(2, list1._toList().size());
-        assertFalse(list1 == list1._toList());
-        
-        List<String> list2 = null;
-        assertEquals(0, list2._toList().size());
-    }
-    
-    @Test
-    public void testToListStream() {
-        List<String> stream1 = asList("One", "Two");
-        assertEquals(2, stream1._stream$()._toList().size());
-        
-        Stream<String> stream2 = null;
-        assertEquals(0, stream2._toList().size());
-    }
-    
-    @Test
-    public void testOnlyNonNullArray() {
+    public void test_butOnlyNonNull__array() {
         String[] array1 = new String[] {"One", null, "Two"};
         assertEquals(2, array1._butOnlyNonNull$()._toList().size());
         
@@ -360,7 +332,7 @@ public class NullableJTest {
     }
     
     @Test
-    public void testOnlyNonNullList() {
+    public void test_butOnlyNonNull__list() {
         List<String> list1 = asList("One", null, "Two");
         assertEquals(2, list1._butOnlyNonNull$()._toList().size());
         
@@ -369,7 +341,7 @@ public class NullableJTest {
     }
     
     @Test
-    public void testOnlyNonNullStream() {
+    public void test_butOnlyNonNull__stream() {
         Stream<String> stream1 = asList("One", null, "Two").stream();
         assertEquals(2, stream1._butOnlyNonNull$()._toList().size());
         
@@ -386,7 +358,35 @@ public class NullableJTest {
     }
     
     @Test
-    public void testGetSupplier() {
+    public void test_toList__array() {
+        String[] array1 = new String[] { "One", "Two" };
+        assertEquals(2, array1._toList().size());
+        
+        String[] array2 = null;
+        assertEquals(0, array2._toList().size());
+    }
+    
+    @Test
+    public void test_toList__list() {
+        List<String> list1 = asList("One", "Two");
+        assertEquals(2, list1._toList().size());
+        assertFalse(list1 == list1._toList());
+        
+        List<String> list2 = null;
+        assertEquals(0, list2._toList().size());
+    }
+    
+    @Test
+    public void test_toList__steam() {
+        List<String> stream1 = asList("One", "Two");
+        assertEquals(2, stream1._stream$()._toList().size());
+        
+        Stream<String> stream2 = null;
+        assertEquals(0, stream2._toList().size());
+    }
+    
+    @Test
+    public void test_get__supplier() {
         Supplier<String> oneSupplier  = ()->"One";
         Supplier<String> nullSupplier = null;
         assertEquals("One", oneSupplier ._get());
@@ -394,7 +394,7 @@ public class NullableJTest {
     }
     
     @Test
-    public void testGetFunction() {
+    public void test_get__function() {
         Function<String, String> oneFunction  = key->"One:"+key;
         Function<String, String> nullFunction = null;
         assertEquals("One:1", oneFunction ._get("1"));
@@ -402,7 +402,7 @@ public class NullableJTest {
     }
     
     @Test
-    public void testApplyFunction() {
+    public void test_apply__function() {
         Function<String, String> oneFunction  = key->"One:"+key;
         Function<String, String> nullFunction = null;
         assertEquals("One:1", oneFunction ._apply("1"));
@@ -410,7 +410,7 @@ public class NullableJTest {
     }
     
     @Test
-    public void testGetArray() {
+    public void test_get__Array() {
         String[] array1 = new String[] { "One", "Two" };
         assertEquals("One", array1._get(0));
         assertEquals("Two", array1._get(1));
@@ -425,7 +425,7 @@ public class NullableJTest {
     }
     
     @Test
-    public void testGetList() {
+    public void test_get__list() {
         List<String> list1 = asList("One", "Two");
         assertEquals("One", list1._get(0));
         assertEquals("Two", list1._get(1));
@@ -440,7 +440,7 @@ public class NullableJTest {
     }
     
     @Test
-    public void testGetMap() {
+    public void test_get__map() {
         Map<String, String> map1 = Collections.singletonMap("1", "One");
         assertEquals("One", map1._get("1"));
         assertEquals(null,  map1._get("2"));
@@ -453,7 +453,7 @@ public class NullableJTest {
     }
     
     @Test
-    public void testGetOrArray() {
+    public void test_get__or__array() {
         String[] array1 = new String[] { "One", "Two" };
         assertEquals("One",  array1._get(0, "none"));
         assertEquals("Two",  array1._get(1, "none"));
@@ -467,7 +467,7 @@ public class NullableJTest {
         assertEquals("none", array2._get(-1, "none"));
     }
     @Test
-    public void testGetOrList() {
+    public void test_get__or__list() {
         List<String> list1 = asList("One", "Two");
         assertEquals("One",  list1._get(0, "none"));
         assertEquals("Two",  list1._get(1, "none"));
@@ -482,7 +482,7 @@ public class NullableJTest {
     }
     
     @Test
-    public void testGetOrMap() {
+    public void test_get__or__map() {
         Map<String, String> map1 = Collections.singletonMap("1", "One");
         assertEquals("One",  map1._get("1", "Else"));
         assertEquals("Else", map1._get("2", "Else"));
@@ -495,7 +495,7 @@ public class NullableJTest {
     }
     
     @Test
-    public void testGetOrSupplierArray() {
+    public void test_get__orSupplier__array() {
         String[] array1 = new String[] { "One", "Two" };
         Supplier<String> returnNone = ()->"none";
         assertEquals("One",  array1._get(0, returnNone));
@@ -510,7 +510,7 @@ public class NullableJTest {
         assertEquals("none", array2._get(-1, returnNone));
     }
     @Test
-    public void testGetOrSupplierList() {
+    public void test_get__orSupplier__list() {
         List<String> list1 = asList("One", "Two");
         Supplier<String> returnNone = ()->"none";
         assertEquals("One",  list1._get(0, returnNone));
@@ -526,7 +526,7 @@ public class NullableJTest {
     }
     
     @Test
-    public void testGetOrSupplierMap() {
+    public void test_get__orSupplier__map() {
         Map<String, String> map1 = Collections.singletonMap("1", "One");
         Supplier<String> orElse = ()->"Else";
         assertEquals("One",  map1._get("1",  orElse));
@@ -540,7 +540,7 @@ public class NullableJTest {
     }
     
     @Test
-    public void testGetOrFunctionArray() {
+    public void test_get__orFunction__array() {
         String[] array1 = new String[] { "One", "Two" };
         Function<Integer, String> returnNone = index->("none: " + index);
         assertEquals("One",  array1._get(0, returnNone));
@@ -555,7 +555,7 @@ public class NullableJTest {
         assertEquals("none: -1", array2._get(-1, returnNone));
     }
     @Test
-    public void testGetOrFunctionList() {
+    public void test_get__orFunction__list() {
         List<String> list1 = asList("One", "Two");
         Function<Integer, String> returnNone = index->("none: " + index);
         assertEquals("One",  list1._get(0, returnNone));
@@ -571,7 +571,7 @@ public class NullableJTest {
     }
     
     @Test
-    public void testGetOrFunctionalMap() {
+    public void test_get__orFunction__map() {
         Map<String, String> map1 = Collections.singletonMap("1", "One");
         Function<String,String> orElse = key->"Else-"+key;
         assertEquals("One",      map1._get("1",  orElse));
@@ -585,7 +585,7 @@ public class NullableJTest {
     }
     
     @Test
-    public void testGetFirstArray() {
+    public void test_first__array() {
         String[] array1 = new String[] { "One", "Two" };
         assertEquals("One", array1._first());
         
@@ -594,7 +594,7 @@ public class NullableJTest {
     }
     
     @Test
-    public void testGetFirstList() {
+    public void test_first__list() {
         List<String> list1 = asList("One", "Two");
         assertEquals("One", list1._first());
         
@@ -603,7 +603,7 @@ public class NullableJTest {
     }
     
     @Test
-    public void testGetLastArray() {
+    public void tes_last__array() {
         String[] array1 = new String[] { "One", "Two" };
         assertEquals("Two", array1._last());
         
@@ -612,7 +612,7 @@ public class NullableJTest {
     }
     
     @Test
-    public void testGetLastList() {
+    public void test_last__LastList() {
         List<String> list1 = asList("One", "Two");
         assertEquals("Two", list1._last());
         
@@ -621,7 +621,7 @@ public class NullableJTest {
     }
     
     @Test
-    public void testHasAllWithArray() {
+    public void test_hasAllWith__array() {
         val length3 = (Predicate<String>)s->s.length() == 3;
         
         String[] array1 = new String[] { "One", "Two" };
@@ -635,7 +635,7 @@ public class NullableJTest {
     }
     
     @Test
-    public void testHasAllWithList() {
+    public void test_hasAllWith__list() {
         val length3 = (Predicate<String>)s->s.length() == 3;
         
         List<String> list1 = asList("One", "Two");
@@ -649,7 +649,7 @@ public class NullableJTest {
     }
     
     @Test
-    public void testHasSomeWithArray() {
+    public void test_hasSomeWith__array() {
         val length5 = (Predicate<String>)s->s.length() == 5;
         
         String[] array1 = new String[] { "One", "Two" };
@@ -663,7 +663,7 @@ public class NullableJTest {
     }
     
     @Test
-    public void testHasSomeWithList() {
+    public void test_hasSomeWith__list() {
         val length5 = (Predicate<String>)s->s.length() == 5;
         
         List<String> list1 = asList("One", "Two");
@@ -677,7 +677,7 @@ public class NullableJTest {
     }
     
     @Test
-    public void testButOnlyWithArray() {
+    public void test_butOnlyWith__array() {
         val length5 = (Predicate<String>)s->s.length() == 5;
         
         String[] array1 = new String[] { "One", "Two" };
@@ -691,7 +691,7 @@ public class NullableJTest {
     }
     
     @Test
-    public void testButOnlyWithList() {
+    public void test_butOnlyWith__list() {
         val length5 = (Predicate<String>)s->s.length() == 5;
         
         List<String> list1 = asList("One", "Two");
@@ -703,18 +703,19 @@ public class NullableJTest {
         String[] listNull = null;
         assertNull(listNull._butOnlyWith(length5));
     }
-
-    @Getter
-    static class Person {
-        String name;
-        List<Person> children = new ArrayList<>();
-        Person(String name) {
-            this.name = name;
-        }
-    }
     
     @Test
     public void testflatMap$() {
+        
+        @Getter
+        class Person {
+            String name;
+            List<Person> children = new ArrayList<>();
+            Person(String name) {
+                this.name = name;
+            }
+        }
+        
         Person p    = new Person("p");
         Person p1   = new Person("p1");
         Person p11  = new Person("p11");
