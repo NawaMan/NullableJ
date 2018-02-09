@@ -61,6 +61,17 @@ See below on how to setup a [Gradle](#using-nullablej-in-gradle-project) or [Mav
 The best and most up-to-date way to see all the methods and how to use them is to see [the unit tests](https://github.com/NawaMan/NullableJ/blob/master/src/test/java/nawaman/nullable/NullableJTest.java).
 It is easy to read, promise!
 
+In general, NullableJ is composed of two things: `NullableJ` and `NullObjects`.
+
+### `NullableJ`
+`NullableJ` is a utility class containing utility methods.
+These methods are designed to be used with Lombok's ExtensionMethod.
+They can be used as normal static methods but the naming is done with the intention that they will be used with Lombok's ExtensionMethod.
+
+### `NullObjects`
+`NullObjects` will try to find the best candidate value to use as null object for a given class.
+
+
 ## Using NullableJ in Gradle project
 
 Add the maven repository ...
