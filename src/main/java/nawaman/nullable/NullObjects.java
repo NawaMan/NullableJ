@@ -18,6 +18,7 @@ import static java.util.Arrays.stream;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -45,6 +46,7 @@ import lombok.val;
  * 
  * @author NawaMan -- nawa@nawaman.net
  */
+@SuppressWarnings("rawtypes")
 public class NullObjects implements IFindNullObject {
     
     
@@ -64,10 +66,8 @@ public class NullObjects implements IFindNullObject {
     /** The ready to use instance of NullObjects.  */
     public static final NullObjects instance = new NullObjects();
     
-    @SuppressWarnings("rawtypes")
     private static final Map<Class, Supplier> knownNullObjects;
     static {
-        @SuppressWarnings("rawtypes")
         Map<Class, Supplier> map = new ConcurrentHashMap<>();
         map.put(byte.class,    ()->0);
         map.put(Byte.class,    ()->Byte.valueOf((byte) 0));
@@ -92,6 +92,8 @@ public class NullObjects implements IFindNullObject {
         map.put(Character.class, ()->Boolean.FALSE);
         
         map.put(Runnable.class, ()->((Runnable)()->{}));
+        map.put(Supplier.class, ()->((Supplier)()->null));
+        map.put(Function.class, ()->((Function)input->null));
         
         map.put(Collection.class, ()->Collections.EMPTY_LIST);
         map.put(List.class,       ()->Collections.EMPTY_LIST);
@@ -101,10 +103,8 @@ public class NullObjects implements IFindNullObject {
         knownNullObjects = Collections.unmodifiableMap(map);
     }
     
-    @SuppressWarnings("rawtypes")
     private static final Set<Class> knownNewNullObjects;
     static {
-        @SuppressWarnings("rawtypes")
         Set<Class> set = new HashSet<>();
         set.add(ArrayList.class);
         set.add(HashSet.class);
@@ -116,6 +116,8 @@ public class NullObjects implements IFindNullObject {
         set.add(ConcurrentHashMap.class);
         knownNewNullObjects = Collections.unmodifiableSet(set);
     }
+    
+    private static final Map<Class, Constructor> constructors = new ConcurrentHashMap<>();
     
     /**
      * Find the null object of the given class.
@@ -140,27 +142,66 @@ public class NullObjects implements IFindNullObject {
         if (newKnowNullObject != null)
             return (T)newKnowNullObject;
         
-        val valueFromAnnotatedField = getValueFromAnnotatedField(clzz);
+        val newArrayObject = newArrayNullObject(clzz);
+        if (newArrayObject != null)
+            return (T)newArrayObject;
+        
+        val valueFromAnnotatedField = getValueFromAnnotatedField(clzz, NULL_OBJET_ANNOTTION_NAME);
         if (valueFromAnnotatedField != null)
             return valueFromAnnotatedField;
         
-        val valueFromAnnotatedMethod = getValueFromAnnotatedMethod(clzz);
+        val valueFromAnnotatedMethod = getValueFromAnnotatedMethod(clzz, NULL_OBJET_ANNOTTION_NAME);
         if (valueFromAnnotatedMethod != null)
             return valueFromAnnotatedMethod;
         
-       val valueFromNamedField = getValueFromNamedField(clzz);
-        if (valueFromNamedField != null)
-            return valueFromNamedField;
+       val valueFromNamedField1 = getValueFromNamedField(clzz, NULL_OBJECT_FIELD_NAME1);
+        if (valueFromNamedField1 != null)
+            return valueFromNamedField1;
         
-        val valueFromNamedMethod = getValueFromNamedMethod(clzz);
+        val valueFromNamedField2 = getValueFromNamedField(clzz, NULL_OBJECT_FIELD_NAME2);
+         if (valueFromNamedField2 != null)
+             return valueFromNamedField2;
+        
+        val valueFromNamedMethod = getValueFromNamedMethod(clzz, NULL_OBJECT_METHOD_NAME);
         if (valueFromNamedMethod != null)
             return valueFromNamedMethod;
+        
+        val valueFromDefaultConstructor = getValueFromDefaultConstructor(clzz);
+        if (valueFromDefaultConstructor != null)
+            return valueFromDefaultConstructor;
         
         return null;
     }
     
     @SuppressWarnings("unchecked")
-    private <T> T newKnowNullObject(Class<T> clzz) {
+    protected final <T> T getValueFromDefaultConstructor(Class<T> clzz) {
+        
+        Constructor<T> constructor = null;
+        try {
+            if (constructors.containsKey(clzz)) {
+                constructor = (Constructor<T>)constructors.get(clzz);
+            } else {
+                constructors.put(clzz, null);
+                constructor = clzz.getConstructor();
+            }
+        } catch (Exception e) {
+        }
+        
+        if (constructor == null)
+            return null;
+        
+        try {
+            val value = constructor.newInstance();
+            constructors.put(clzz, constructor);
+            return value;
+        } catch (SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    @SuppressWarnings("unchecked")
+    protected final <T> T newKnowNullObject(Class<T> clzz) {
         if (knownNewNullObjects.contains(clzz))
             try {
                 return (T)clzz.newInstance();
@@ -180,21 +221,16 @@ public class NullObjects implements IFindNullObject {
         return null;
     }
     
-    private <T> T getValueFromNamedField(Class<T> clzz) {
-        val valueFromNamedField = getPublicStaticFinalCompatibleField(clzz, field->{
-            if (!NULL_OBJECT_FIELD_NAME1.equals(field.getName())
-             && !NULL_OBJECT_FIELD_NAME2.equals(field.getName()))
-                return null;
-            
-            return getValueFromField(clzz, field);
-        });
-        return valueFromNamedField;
+    private Object newArrayNullObject(Class clazz) {
+        if (!clazz.isArray())
+            return null;
+        return Array.newInstance(clazz.getComponentType(), 0);
     }
     
-    private <T> T getValueFromAnnotatedField(Class<T> clzz) {
+    protected final <T> T getValueFromAnnotatedField(Class<T> clzz, String annotationName) {
         val valueFromAnnotatedField = getPublicStaticFinalCompatibleField(clzz, field->{
             Annotation[] annotations = field.getAnnotations();
-            boolean hasAnnotation = checkAnnotationForName(annotations, NULL_OBJET_ANNOTTION_NAME);
+            boolean hasAnnotation = checkAnnotationForName(annotations, annotationName);
             if (!hasAnnotation)
                 return null;
             
@@ -203,7 +239,17 @@ public class NullObjects implements IFindNullObject {
         return valueFromAnnotatedField;
     }
     
-    private boolean checkAnnotationForName(Annotation[] annotations, String annotationName) {
+    protected final <T> T getValueFromNamedField(Class<T> clzz, String fieldName) {
+        val valueFromNamedField = getPublicStaticFinalCompatibleField(clzz, field->{
+            if (!fieldName.equals(field.getName()))
+                return null;
+            
+            return getValueFromField(clzz, field);
+        });
+        return valueFromNamedField;
+    }
+    
+    protected final boolean checkAnnotationForName(Annotation[] annotations, String annotationName) {
         boolean hasAnnotation = stream(annotations)
                 .filter(a-> a.annotationType().getSimpleName().equals(annotationName))
                 .findAny()
@@ -227,7 +273,7 @@ public class NullObjects implements IFindNullObject {
     }
     
     @SuppressWarnings("unchecked")
-    private <T> Object getValueFromField(Class<T> clzz, Field field) {
+    protected final <T> Object getValueFromField(Class<T> clzz, Field field) {
         try { return (T)field.get(clzz); }
         catch (IllegalArgumentException | IllegalAccessException e) {
             return null;
@@ -241,6 +287,8 @@ public class NullObjects implements IFindNullObject {
             val modifiers = method.getModifiers();
             if (isPublicStaticFinalCompatible(clzz, type, modifiers))
                 continue;
+            if (clzz.getTypeParameters().length != 0)
+                continue;
             
             val value = supplier.apply(method);
             if (value != null)
@@ -249,10 +297,10 @@ public class NullObjects implements IFindNullObject {
         return null;
     }
     
-    private <T> T getValueFromAnnotatedMethod(Class<T> clzz) {
+    protected final <T> T getValueFromAnnotatedMethod(Class<T> clzz, String annotationName) {
         val valueFromAnnotatedMethod = getPublicStaticFinalCompatibleMethod(clzz, method->{
             Annotation[] annotations = method.getAnnotations();
-            boolean hasAnnotation = checkAnnotationForName(annotations, NULL_OBJET_ANNOTTION_NAME);
+            boolean hasAnnotation = checkAnnotationForName(annotations, annotationName);
             if (!hasAnnotation)
                 return null;
             
@@ -261,9 +309,9 @@ public class NullObjects implements IFindNullObject {
         return valueFromAnnotatedMethod;
     }
     
-    private <T> T getValueFromNamedMethod(Class<T> clzz) {
+    protected final <T> T getValueFromNamedMethod(Class<T> clzz, String methodName) {
         val valueFromAnnotatedMethod = getPublicStaticFinalCompatibleMethod(clzz, method->{
-            if (!NULL_OBJECT_METHOD_NAME.equals(method.getName()))
+            if (!methodName.equals(method.getName()))
                 return null;
             
             return getValueFromMethod(clzz, method);
@@ -280,7 +328,7 @@ public class NullObjects implements IFindNullObject {
         }
     }
     
-    private <T> boolean isPublicStaticFinalCompatible(Class<T> clzz, final java.lang.Class<?> type,
+    protected final <T> boolean isPublicStaticFinalCompatible(Class<T> clzz, final java.lang.Class<?> type,
             final int modifiers) {
         boolean isPublicStaticFinalCompatible
             =  !Modifier.isStatic(modifiers)
