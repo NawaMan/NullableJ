@@ -40,14 +40,12 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import lombok.val;
-import lombok.experimental.ExtensionMethod;
 
 /**
  * Default implementation of {@link IFindNullObject}.
  * 
  * @author NawaMan -- nawa@nawaman.net
  */
-@ExtensionMethod({ NullableJ.class })
 @SuppressWarnings("rawtypes")
 public class NullObjects implements IFindNullObject {
     
@@ -189,7 +187,7 @@ public class NullObjects implements IFindNullObject {
         } catch (Exception e) {
         }
         
-        if (constructor._isNull())
+        if (constructor == null)
             return null;
         
         try {
@@ -224,6 +222,8 @@ public class NullObjects implements IFindNullObject {
     }
     
     private Object newArrayNullObject(Class clazz) {
+        if (!clazz.isArray())
+            return null;
         return Array.newInstance(clazz.getComponentType(), 0);
     }
     
