@@ -16,12 +16,19 @@ package nawaman.nullable;
 
 import java.util.function.Function;
 
+import nawaman.nullable._internal.Default;
+
 /**
  * Classes implementing this interface knows how to fins null objects given the class.
  * 
  * @author NawaMan -- nawa@nawaman.net
  */
 public interface IFindNullObject {
+    
+    /** The default value */
+    @Default
+    @NullObject
+    public static final IFindNullObject instance = NullObjects.instance;
     
     /**
      * Find the null object given the class.
