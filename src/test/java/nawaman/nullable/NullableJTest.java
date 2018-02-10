@@ -16,6 +16,7 @@
 package nawaman.nullable;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.singletonMap;
 import static java.util.stream.Collectors.joining;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -50,6 +51,11 @@ public class NullableJTest {
     private final String nullString = (String)null;
     private final String emptyString = "";
     private final String blankString = " \t\n";
+    private final String[] nullArray = (String[])null;
+    private final List<String>       nullList = (List<String>)null;
+    private final Map<String,String> nullMap  = (Map<String,String>)null;
+    
+    private final Function<Object, Boolean> toFalse = s->false;
     
     private static Predicate<String> contains(String needle) {
         return heystack-> { 
@@ -320,6 +326,78 @@ public class NullableJTest {
         
         String[] list2 = null;
         assertEquals("", list2._stream$().collect(joining()));
+    }
+    
+    @Test
+    public void test_length__string() {
+        assertEquals(6, "String".  _length());
+        assertEquals(0, nullString._length());
+    }
+    
+    @Test
+    public void test_length__array() {
+        assertEquals(2, new String[] { "One", "Two" }._length());
+        assertEquals(0, nullArray.                    _length());
+    }
+    
+    @Test
+    public void test_size__list() {
+        assertEquals(2, asList("One", "Two")._size());
+        assertEquals(0, nullList.            _size());
+    }
+    
+    @Test
+    public void test_size__map() {
+        assertEquals(1, singletonMap("One", "Two")._size());
+        assertEquals(0, nullMap.                   _size());
+    }
+    
+    @Test
+    public void test_isEmpty__string() {
+        assertFalse("String". _isEmpty());
+        assertTrue(nullString._isEmpty());
+    }
+    
+    @Test
+    public void test_isEmpty__array() {
+        assertFalse(new String[] { "One", "Two" }._isEmpty());
+        assertTrue(nullArray.                     _isEmpty());
+    }
+    
+    @Test
+    public void test_isEmpty__list() {
+        assertFalse(asList("One", "Two")._isEmpty());
+        assertTrue(nullList.             _isEmpty());
+    }
+    
+    @Test
+    public void test_isEmpty__map() {
+        assertFalse(singletonMap("One", "Two")._isEmpty());
+        assertTrue(nullMap.                    _isEmpty());
+    }
+    
+    @Test
+    public void test_whenNotEmpty__string() {
+        assertFalse("String". _whenNotEmpty().map(toFalse).orElse(true));
+        assertTrue(nullString._whenNotEmpty().map(toFalse).orElse(true));
+    }
+    
+    @Test
+    public void test_whenNotEmpty__array() {
+        assertFalse(new String[] { "One", "Two" }._whenNotEmpty().map(toFalse).orElse(true));
+        assertTrue(nullArray.                     _whenNotEmpty().map(toFalse).orElse(true));
+    }
+    
+    @Test
+    public void test_whenNotEmpty__list() {
+        assertFalse(asList("One", "Two")._whenNotEmpty().map(toFalse).orElse(true));
+        assertTrue(nullList.             _whenNotEmpty().map(toFalse).orElse(true));
+    }
+    
+    @Test
+    public void test_whenNotEmpty__map() {
+        assertFalse(singletonMap("One", "Two")._whenNotEmpty().map(toFalse).orElse(true));
+        assertTrue(nullMap.                    _whenNotEmpty().map(toFalse).orElse(true));
     }
     
     @Test
@@ -621,87 +699,87 @@ public class NullableJTest {
     }
     
     @Test
-    public void test_hasAllWith__array() {
+    public void test_hasAllThat__array() {
         val length3 = (Predicate<String>)s->s.length() == 3;
         
         String[] array1 = new String[] { "One", "Two" };
-        assertTrue(array1._hasAllWith(length3));
+        assertTrue(array1._hasAllThat(length3));
         
         String[] array2 = new String[] { "One", "Two", "Three" };
-        assertFalse(array2._hasAllWith(length3));
+        assertFalse(array2._hasAllThat(length3));
         
         String[] arrayNull = null;
-        assertFalse(arrayNull._hasAllWith(length3));
+        assertFalse(arrayNull._hasAllThat(length3));
     }
     
     @Test
-    public void test_hasAllWith__list() {
+    public void test_hasAllThat__list() {
         val length3 = (Predicate<String>)s->s.length() == 3;
         
         List<String> list1 = asList("One", "Two");
-        assertTrue(list1._hasAllWith(length3));
+        assertTrue(list1._hasAllThat(length3));
         
         List<String> list2 = asList("One", "Two", "Three");
-        assertFalse(list2._hasAllWith(length3));
+        assertFalse(list2._hasAllThat(length3));
         
         String[] listNull = null;
-        assertFalse(listNull._hasAllWith(length3));
+        assertFalse(listNull._hasAllThat(length3));
     }
     
     @Test
-    public void test_hasSomeWith__array() {
+    public void test_hasSomeThat__array() {
         val length5 = (Predicate<String>)s->s.length() == 5;
         
         String[] array1 = new String[] { "One", "Two" };
-        assertFalse(array1._hasSomeWith(length5));
+        assertFalse(array1._hasSomeThat(length5));
         
         String[] array2 = new String[] { "One", "Two", "Three" };
-        assertTrue(array2._hasSomeWith(length5));
+        assertTrue(array2._hasSomeThat(length5));
         
         String[] arrayNull = null;
-        assertFalse(arrayNull._hasSomeWith(length5));
+        assertFalse(arrayNull._hasSomeThat(length5));
     }
     
     @Test
-    public void test_hasSomeWith__list() {
+    public void test_hasSomeThat__list() {
         val length5 = (Predicate<String>)s->s.length() == 5;
         
         List<String> list1 = asList("One", "Two");
-        assertFalse(list1._hasSomeWith(length5));
+        assertFalse(list1._hasSomeThat(length5));
         
         List<String> list2 = asList("One", "Two", "Three");
-        assertTrue(list2._hasSomeWith(length5));
+        assertTrue(list2._hasSomeThat(length5));
         
         String[] listNull = null;
-        assertFalse(listNull._hasSomeWith(length5));
+        assertFalse(listNull._hasSomeThat(length5));
     }
     
     @Test
-    public void test_butOnlyWith__array() {
+    public void test_butOnlyThat__array() {
         val length5 = (Predicate<String>)s->s.length() == 5;
         
         String[] array1 = new String[] { "One", "Two" };
-        assertEquals(0, array1._butOnlyWith(length5).length);
+        assertEquals(0, array1._butOnlyThat(length5).length);
         
         String[] array2 = new String[] { "One", "Two", "Three" };
-        assertEquals(1, array2._butOnlyWith(length5).length);
+        assertEquals(1, array2._butOnlyThat(length5).length);
         
         String[] arrayNull = null;
-        assertNull(arrayNull._butOnlyWith(length5));
+        assertNull(arrayNull._butOnlyThat(length5));
     }
     
     @Test
-    public void test_butOnlyWith__list() {
+    public void test_butOnlyThat__list() {
         val length5 = (Predicate<String>)s->s.length() == 5;
         
         List<String> list1 = asList("One", "Two");
-        assertEquals(0, list1._butOnlyWith(length5).size());
+        assertEquals(0, list1._butOnlyThat(length5).size());
         
         List<String> list2 = asList("One", "Two", "Three");
-        assertEquals(1, list2._butOnlyWith(length5).size());
+        assertEquals(1, list2._butOnlyThat(length5).size());
         
         String[] listNull = null;
-        assertNull(listNull._butOnlyWith(length5));
+        assertNull(listNull._butOnlyThat(length5));
     }
     
     @Test

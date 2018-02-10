@@ -66,6 +66,7 @@ public class NullableJ {
     public static boolean _isNotNull(Object theGivenObject) {
         return (theGivenObject != null);
     }
+    
     /**
      * Returns {@code true} if theGivenObject equals to the expected value. 
      * 
@@ -88,6 +89,28 @@ public class NullableJ {
     public static boolean _notEqualsTo(Object theGivenObject, Object theExpectedValue) {
         val equalsTo = Objects.equals(theGivenObject, theExpectedValue);
         return !equalsTo;
+    }
+    
+    /**
+     * Returns the toString of the give value or null if the given value is null. 
+     * 
+     * @param  theGivenObject   the given object.
+     * @return the toString of the given object.
+     **/
+    public static String _toString(Object theGivenObject) {
+        val toString = (theGivenObject != null) ? theGivenObject.toString() : null;
+        return toString;
+    }
+    
+    /**
+     * Returns the toString of the give array or null if the given value is null. 
+     * 
+     * @param  theGivenArray   the given array.
+     * @return the toString of the given object.
+     **/
+    public static <OBJECT> String _toString(OBJECT[] theGivenArray) {
+        val toString = (theGivenArray != null) ? Arrays.toString((Object[])theGivenArray) : null;
+        return toString;
     }
     
     /**
@@ -640,6 +663,170 @@ public class NullableJ {
             return Stream.empty();
         return list.stream();
     }
+    
+    /**
+     * Returns the length of the given string.
+     * 
+     * @param string  the string.
+     * @return  the lenght of the string.
+     * 
+     * @param <OBJECT> the type of the data in the list.
+     */
+    public static <OBJECT> int _length(String string) {
+        if (string == null)
+            return 0;
+        return string.length();
+    }
+    
+    /**
+     * Returns the length of the given array.
+     * 
+     * @param array  the array.
+     * @return  the length of the array.
+     * 
+     * @param <OBJECT> the type of the data in the list.
+     */
+    public static <OBJECT> int _length(OBJECT[] array) {
+        if (array == null)
+            return 0;
+        return array.length;
+    }
+    
+    /**
+     * Returns the size of the given list.
+     * 
+     * @param list  the list.
+     * @return  the size of the list.
+     * 
+     * @param <OBJECT> the type of the data in the list.
+     */
+    public static <OBJECT> int _size(List<OBJECT> list) {
+        if (list == null)
+            return 0;
+        return list.size();
+    }
+    
+    /**
+     * Returns the size of the given map.
+     * 
+     * @param map  the map.
+     * @return  the size of the map.
+     * 
+     * @param <KEY>   the type of the key of the function.
+     * @param <VALUE> the type of the value of the function.
+     */
+    public static <KEY, VALUE> int _size(Map<KEY, VALUE> map) {
+        if (map == null)
+            return 0;
+        return map.size();
+    }
+    
+    /**
+     * Returns the given array is empty.
+     * 
+     * @param array  the array.
+     * @return  {@code true}  if the array is empty.
+     * 
+     * @param <OBJECT> the type of the data in the array.
+     */
+    public static <OBJECT> boolean _isEmpty(OBJECT[] array) {
+        if (array == null)
+            return true;
+        return array.length == 0;
+    }
+    
+    /**
+     * Returns the given list is empty.
+     * 
+     * @param list  the list.
+     * @return  {@code true}  if the list is empty.
+     * 
+     * @param <OBJECT> the type of the data in the list.
+     */
+    public static <OBJECT> boolean _isEmpty(List<OBJECT> list) {
+        if (list == null)
+            return true;
+        return list.isEmpty();
+    }
+    
+    /**
+     * Returns the given map is empty.
+     * 
+     * @param map  the map.
+     * @return  {@code true}  if the map is empty.
+     * 
+     * @param <KEY>   the type of the key of the function.
+     * @param <VALUE> the type of the value of the function.
+     */
+    public static <KEY, VALUE> boolean _isEmpty(Map<KEY, VALUE> map) {
+        if (map == null)
+            return true;
+        return map.isEmpty();
+    }
+    
+    /**
+     * Returns Optional.empty() the given CharSequence is null or empty..
+     * 
+     * @param charSequence  the CharSequence such as an array.
+     * @return  Optional value if the charSequence.
+     */
+    public static <CHARSEQUENCE extends CharSequence> Optional<CHARSEQUENCE> _whenNotEmpty(CHARSEQUENCE charSequence) {
+        if (charSequence == null)
+            return Optional.empty();
+        if (charSequence.length() == 0)
+            return Optional.empty();
+        return Optional.of(charSequence);
+    }
+    
+    /**
+     * Returns Optional.empty if the given array is null or empty. Otherwise, return the Optional of the array.
+     * 
+     * @param array  the array.
+     * @return  Optional value if the array.
+     * 
+     * @param <OBJECT> the type of the data in the array.
+     */
+    public static <OBJECT> Optional<OBJECT[]> _whenNotEmpty(OBJECT[] array) {
+        if (array == null)
+            return Optional.empty();
+        if (array.length == 0)
+            return Optional.empty();
+        return Optional.of(array);
+    }
+    
+    /**
+     * Returns Optional.empty if the given list is null or empty. Otherwise, return the Optional of the list.
+     * 
+     * @param list  the list.
+     * @return  Optional value if the list.
+     * 
+     * @param <OBJECT> the type of the data in the list.
+     */
+    public static <OBJECT> Optional<List<OBJECT>> _whenNotEmpty(List<OBJECT> list) {
+        if (list == null)
+            return Optional.empty();
+        if (list.isEmpty())
+            return Optional.empty();
+        return Optional.of(list);
+    }
+    
+    /**
+     * Returns Optional.empty if the given map is null or empty. Otherwise, return the Optional of the map.
+     * 
+     * @param map  the map.
+     * @return  Optional value if the map.
+     * 
+     * @param <KEY>   the type of the key of the function.
+     * @param <VALUE> the type of the value of the function.
+     */
+    public static <KEY, VALUE> Optional<Map<KEY, VALUE>> _whenNotEmpty(Map<KEY, VALUE> map) {
+        if (map == null)
+            return Optional.empty();
+        if (map.isEmpty())
+            return Optional.empty();
+        return Optional.of(map);
+    }
+    
     /**
      * Returns the stream of from the given list but does not contains null value.
      * 
@@ -1125,7 +1312,7 @@ public class NullableJ {
      * 
      * @param <OBJECT> the type of the data in the array.
      */
-    public static <OBJECT> boolean _hasAllWith(OBJECT[] array, Predicate<OBJECT> condition) {
+    public static <OBJECT> boolean _hasAllThat(OBJECT[] array, Predicate<OBJECT> condition) {
         if (array == null)
             return false;
         if (array.length == 0)
@@ -1141,7 +1328,7 @@ public class NullableJ {
      * 
      * @param <OBJECT> the type of the data in the list.
      */
-    public static <OBJECT> boolean _hasAllWith(List<OBJECT> list, Predicate<OBJECT> condition) {
+    public static <OBJECT> boolean _hasAllThat(List<OBJECT> list, Predicate<OBJECT> condition) {
         if (list == null)
             return false;
         if (list.isEmpty())
@@ -1158,7 +1345,7 @@ public class NullableJ {
      * 
      * @param <OBJECT> the type of the data in the array.
      */
-    public static <OBJECT> boolean _hasSomeWith(OBJECT[] array, Predicate<OBJECT> condition) {
+    public static <OBJECT> boolean _hasSomeThat(OBJECT[] array, Predicate<OBJECT> condition) {
         if (array == null)
             return false;
         if (array.length == 0)
@@ -1174,7 +1361,7 @@ public class NullableJ {
      * 
      * @param <OBJECT> the type of the data in the list.
      */
-    public static <OBJECT> boolean _hasSomeWith(List<OBJECT> list, Predicate<OBJECT> condition) {
+    public static <OBJECT> boolean _hasSomeThat(List<OBJECT> list, Predicate<OBJECT> condition) {
         if (list == null)
             return false;
         if (list.isEmpty())
@@ -1191,7 +1378,7 @@ public class NullableJ {
      * 
      * @param <OBJECT> the type of the data in the array.
      */
-    public static <OBJECT> Stream<OBJECT> _butOnlyWith$(OBJECT[] array, Predicate<OBJECT> condition) {
+    public static <OBJECT> Stream<OBJECT> _butOnlyThat$(OBJECT[] array, Predicate<OBJECT> condition) {
         if (array == null)
             return Stream.empty();
         return stream(array).filter(condition);
@@ -1205,7 +1392,7 @@ public class NullableJ {
      * 
      * @param <OBJECT> the type of the data in the list.
      */
-    public static <OBJECT> Stream<OBJECT> _butOnlyWith$(List<OBJECT> list, Predicate<OBJECT> condition) {
+    public static <OBJECT> Stream<OBJECT> _butOnlyThat$(List<OBJECT> list, Predicate<OBJECT> condition) {
         if (list == null)
             return Stream.empty();
         return list.stream().filter(condition);
@@ -1221,10 +1408,10 @@ public class NullableJ {
      * @param <OBJECT> the type of the data in the array.
      */
     @SuppressWarnings("unchecked")
-    public static <OBJECT> OBJECT[] _butOnlyWith(OBJECT[] array, Predicate<OBJECT> condition) {
+    public static <OBJECT> OBJECT[] _butOnlyThat(OBJECT[] array, Predicate<OBJECT> condition) {
         if (array == null)
             return null;
-        val list = _butOnlyWith$(array, condition).collect(toList());
+        val list = _butOnlyThat$(array, condition).collect(toList());
         val newArray = (OBJECT[])newInstance(array.getClass().getComponentType(), list.size());
         return list.toArray(newArray);
     }
@@ -1238,10 +1425,10 @@ public class NullableJ {
      * 
      * @param <OBJECT> the type of the data in the list.
      */
-    public static <OBJECT> List<OBJECT> _butOnlyWith(List<OBJECT> list, Predicate<OBJECT> condition) {
+    public static <OBJECT> List<OBJECT> _butOnlyThat(List<OBJECT> list, Predicate<OBJECT> condition) {
         if (list == null)
             return null;
-        return _butOnlyWith$(list, condition).collect(toList());
+        return _butOnlyThat$(list, condition).collect(toList());
     }
     
     /**
