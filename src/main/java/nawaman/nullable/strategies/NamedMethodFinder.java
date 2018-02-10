@@ -14,6 +14,8 @@
 //  ========================================================================
 package nawaman.nullable.strategies;
 
+import static nawaman.utils.reflection.UReflection.invokeStaticMethodOrNull;
+
 import lombok.NonNull;
 import lombok.val;
 import nawaman.nullable.IFindNullObject;
@@ -55,7 +57,7 @@ public class NamedMethodFinder extends AbstractFromClassElementFinder implements
             if (!methodName.equals(method.getName()))
                 return null;
             
-            return getValueFromMethod(clzz, method);
+            return invokeStaticMethodOrNull(clzz, method);
         });
         return valueFromAnnotatedMethod;
     }

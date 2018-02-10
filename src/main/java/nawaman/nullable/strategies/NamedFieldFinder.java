@@ -14,6 +14,8 @@
 //  ========================================================================
 package nawaman.nullable.strategies;
 
+import static nawaman.utils.reflection.UReflection.getValueFromStaticFieldOrNull;
+
 import lombok.NonNull;
 import lombok.val;
 import nawaman.nullable.IFindNullObject;
@@ -55,7 +57,7 @@ public class NamedFieldFinder extends AbstractFromClassElementFinder implements 
             if (!fieldName.equals(field.getName()))
                 return null;
             
-            return getValueFromField(clzz, field);
+            return getValueFromStaticFieldOrNull(clzz, field);
         });
         return valueFromNamedField;
     }

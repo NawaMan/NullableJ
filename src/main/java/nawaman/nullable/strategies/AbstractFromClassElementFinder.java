@@ -14,13 +14,10 @@
 //  ========================================================================
 package nawaman.nullable.strategies;
 
-import static java.util.Arrays.stream;
+import static nawaman.utils.reflection.UReflection.isPublicStaticFinalAndCompatible;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.function.Function;
 
 import lombok.val;
@@ -35,22 +32,12 @@ import nawaman.nullable.NullableJ;
 @ExtensionMethod({ NullableJ.class })
 public class AbstractFromClassElementFinder {
     
-    protected static final <T> boolean isPublicStaticFinalCompatible(Class<T> clzz, final java.lang.Class<?> type,
-            final int modifiers) {
-        boolean isPublicStaticFinalCompatible
-            =  !Modifier.isStatic(modifiers)
-            || !Modifier.isPublic(modifiers)
-            || !Modifier.isFinal(modifiers)
-            || !clzz.isAssignableFrom(type);
-        return isPublicStaticFinalCompatible;
-    }
-    
     @SuppressWarnings("unchecked")
     protected static <T> T getPublicStaticFinalCompatibleField(Class<T> clzz, Function<Field, Object> supplier) {
         for (val field : clzz.getDeclaredFields()) {
             val type      = field.getType();
             val modifiers = field.getModifiers();
-            if (isPublicStaticFinalCompatible(clzz, type, modifiers))
+            if (isPublicStaticFinalAndCompatible(clzz, type, modifiers))
                 continue;
             
             val value = supplier.apply(field);
@@ -60,37 +47,12 @@ public class AbstractFromClassElementFinder {
         return null;
     }
     
-    protected static final boolean checkAnnotationForName(Annotation[] annotations, String annotationName) {
-        boolean hasAnnotation = stream(annotations)
-                .filter(a-> a.annotationType().getSimpleName().equals(annotationName))
-                .findAny()
-                .isPresent();
-        return hasAnnotation;
-    }
-    
-    @SuppressWarnings("unchecked")
-    protected static final <T> Object getValueFromField(Class<T> clzz, Field field) {
-        try { return (T)field.get(clzz); }
-        catch (IllegalArgumentException | IllegalAccessException e) {
-            return null;
-        }
-    }
-    
-    @SuppressWarnings("unchecked")
-    protected static final <T> Object getValueFromMethod(Class<T> clzz, Method method) {
-        try {
-            return (T)method.invoke(clzz);
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-            return null;
-        }
-    }
-    
     @SuppressWarnings("unchecked")
     protected static final <T> T getPublicStaticFinalCompatibleMethod(Class<T> clzz, Function<Method, Object> supplier) {
         for (val method : clzz.getDeclaredMethods()) {
             val type      = method.getReturnType();
             val modifiers = method.getModifiers();
-            if (isPublicStaticFinalCompatible(clzz, type, modifiers))
+            if (isPublicStaticFinalAndCompatible(clzz, type, modifiers))
                 continue;
             if (!clzz.getTypeParameters()._isEmpty())
                 continue;

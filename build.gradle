@@ -13,10 +13,15 @@ targetCompatibility = theSourceCompatibility
 repositories {
     mavenLocal()
     mavenCentral()
+    maven {
+        url 'https://raw.githubusercontent.com/nawmaman/nawaman-maven-repository/master/'
+    }
 }
 
 dependencies {
     compile 'org.projectlombok:lombok:1.16.16'
+    
+    compile group: 'nawaman-utils', name: 'nawaman-utils-reflection', version: '0.1.1'
     
     testCompile 'junit:junit:4.12'
 }

@@ -14,6 +14,9 @@
 //  ========================================================================
 package nawaman.nullable.strategies;
 
+import static nawaman.utils.reflection.UReflection.getValueFromStaticFieldOrNull;
+import static nawaman.utils.reflection.UReflection.hasAnnotationWithName;
+
 import java.lang.annotation.Annotation;
 
 import lombok.NonNull;
@@ -55,11 +58,11 @@ public class AnnotatedFieldFinder extends AbstractFromClassElementFinder impleme
     public static final <OBJECT> OBJECT findNullObjectFromAnnotatedField(Class<OBJECT> clzz, String annotationName) {
         val valueFromAnnotatedField = getPublicStaticFinalCompatibleField(clzz, field->{
             Annotation[] annotations = field.getAnnotations();
-            boolean hasAnnotation = checkAnnotationForName(annotations, annotationName);
+            boolean hasAnnotation = hasAnnotationWithName(annotations, annotationName);
             if (!hasAnnotation)
                 return null;
             
-            return getValueFromField(clzz, field);
+            return getValueFromStaticFieldOrNull(clzz, field);
         });
         return valueFromAnnotatedField;
     }
