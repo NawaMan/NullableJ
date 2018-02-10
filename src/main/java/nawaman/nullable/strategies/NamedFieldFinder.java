@@ -30,10 +30,10 @@ public class NamedFieldFinder extends AbstractFromClassElementFinder implements 
     /**
      * Construct the finder that looks for a compatible field with the given name.
      * 
-     * @param annotationName 
+     * @param fieldName  the field name. 
      */
-    public NamedFieldFinder(@NonNull String annotationName) {
-        this.fieldName = annotationName;
+    public NamedFieldFinder(@NonNull String fieldName) {
+        this.fieldName = fieldName;
     }
     
     @Override
@@ -47,8 +47,10 @@ public class NamedFieldFinder extends AbstractFromClassElementFinder implements 
      * @param clzz       the class.
      * @param fieldName  the name of the field.
      * @return  the null-object value.
+     * 
+     * @param  <OBJECT>  the type of data.
      */
-    public static final <T> T findNullObjectFromNamedField(Class<T> clzz, String fieldName) {
+    public static final <OBJECT> OBJECT findNullObjectFromNamedField(Class<OBJECT> clzz, String fieldName) {
         val valueFromNamedField = getPublicStaticFinalCompatibleField(clzz, field->{
             if (!fieldName.equals(field.getName()))
                 return null;

@@ -49,6 +49,8 @@ public class AnnotatedFieldFinder extends AbstractFromClassElementFinder impleme
      * @param clzz            the class.
      * @param annotationName  the name of the annotation.
      * @return  the null-object value.
+     * 
+     * @param  <OBJECT>  the type of data.
      */
     public static final <OBJECT> OBJECT findNullObjectFromAnnotatedField(Class<OBJECT> clzz, String annotationName) {
         val valueFromAnnotatedField = getPublicStaticFinalCompatibleField(clzz, field->{

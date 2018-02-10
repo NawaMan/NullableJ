@@ -42,6 +42,8 @@ public class DefaultConstructorFinder extends AbstractFromClassElementFinder imp
      * 
      * @param clzz  the class.
      * @return  the null-object value.
+     * 
+     * @param  <OBJECT>  the type of data.
      */
     @SuppressWarnings("unchecked")
     public static final <OBJECT> OBJECT findNullObjectFromDefaultConstructor(Class<OBJECT> clzz) {

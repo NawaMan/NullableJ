@@ -32,7 +32,7 @@ public class AnnotatedMethodFinder extends AbstractFromClassElementFinder implem
     /**
      * Construct the finder that looks for method with the given name.
      * 
-     * @param annotationName 
+     * @param annotationName the name of the annotation.
      */
     public AnnotatedMethodFinder(@NonNull String annotationName) {
         this.annotationName = annotationName;
@@ -49,6 +49,8 @@ public class AnnotatedMethodFinder extends AbstractFromClassElementFinder implem
      * @param clzz            the class.
      * @param annotationName  the name of the annotation.
      * @return  the null-object value.
+     * 
+     * @param  <OBJECT>  the type of data.
      */
     public static final <OBJECT> OBJECT findNullObjectFromAnnotatedMethod(Class<OBJECT> clzz, String annotationName) {
         val valueFromAnnotatedMethod = getPublicStaticFinalCompatibleMethod(clzz, method->{

@@ -36,6 +36,8 @@ public interface IFindNullObject {
      * Return this object as a function.
      * 
      * @return the function.
+     * 
+     * @param  <OBJECT>  the type of data.
      */
     public default <OBJECT> Function< Class<OBJECT>, OBJECT> asFunction() {
         return (Function< Class<OBJECT>, OBJECT>)this::findNullObjectOf;

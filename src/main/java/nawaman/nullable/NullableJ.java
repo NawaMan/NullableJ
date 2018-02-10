@@ -107,6 +107,8 @@ public class NullableJ {
      * 
      * @param  theGivenArray   the given array.
      * @return the toString of the given object.
+     * 
+     * @param <OBJECT>  the data type of the element in the array.
      **/
     public static <OBJECT> String _toString(OBJECT[] theGivenArray) {
         val toString = (theGivenArray != null) ? Arrays.toString((Object[])theGivenArray) : null;
@@ -769,6 +771,8 @@ public class NullableJ {
      * 
      * @param charSequence  the CharSequence such as an array.
      * @return  Optional value if the charSequence.
+     * 
+     * @param <CHARSEQUENCE>  the CharSequence type.
      */
     public static <CHARSEQUENCE extends CharSequence> Optional<CHARSEQUENCE> _whenNotEmpty(CHARSEQUENCE charSequence) {
         if (charSequence == null)
