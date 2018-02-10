@@ -12,33 +12,10 @@
 //
 //  You may elect to redistribute this code under either of these licenses.
 //  ========================================================================
-package nawaman.nullable;
-
-import java.util.function.Function;
 
 /**
- * Classes implementing this interface knows how to fins null objects given the class.
+ * This package contains different strategies of finding null-objects.
  * 
  * @author NawaMan -- nawa@nawaman.net
  */
-public interface IFindNullObject {
-    
-    /**
-     * Find the null object given the class.
-     * 
-     * @param clzz  the class.
-     * @return  the null object.
-     * @param <OBJECT>  the type of the object.
-     */
-    public <OBJECT> OBJECT findNullObjectOf(Class<OBJECT> clzz);
-    
-    /**
-     * Return this object as a function.
-     * 
-     * @return the function.
-     */
-    public default <OBJECT> Function< Class<OBJECT>, OBJECT> asFunction() {
-        return (Function< Class<OBJECT>, OBJECT>)this::findNullObjectOf;
-    }
-    
-}
+package nawaman.nullable.strategies;
