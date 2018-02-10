@@ -63,4 +63,5 @@ public class AnnotatedMethodFinder extends AbstractFromClassElementFinder implem
         });
         return valueFromAnnotatedMethod;
     }
+    
 }

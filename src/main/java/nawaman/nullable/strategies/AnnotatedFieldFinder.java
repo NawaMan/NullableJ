@@ -63,4 +63,5 @@ public class AnnotatedFieldFinder extends AbstractFromClassElementFinder impleme
         });
         return valueFromAnnotatedField;
     }
+    
 }

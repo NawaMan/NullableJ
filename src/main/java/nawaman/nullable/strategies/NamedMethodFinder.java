@@ -59,4 +59,5 @@ public class NamedMethodFinder extends AbstractFromClassElementFinder implements
         });
         return valueFromAnnotatedMethod;
     }
+    
 }

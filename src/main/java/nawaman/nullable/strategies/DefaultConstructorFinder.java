@@ -70,4 +70,5 @@ public class DefaultConstructorFinder extends AbstractFromClassElementFinder imp
         }
         return null;
     }
+    
 }

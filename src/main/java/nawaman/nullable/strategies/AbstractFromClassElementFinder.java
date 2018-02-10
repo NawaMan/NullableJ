@@ -24,12 +24,15 @@ import java.lang.reflect.Modifier;
 import java.util.function.Function;
 
 import lombok.val;
+import lombok.experimental.ExtensionMethod;
+import nawaman.nullable.NullableJ;
 
 /**
  * This abstract class contains many useful methods for finders that look into field and methods.
  * 
  * @author NawaMan -- nawa@nawaman.net
  */
+@ExtensionMethod({ NullableJ.class })
 public class AbstractFromClassElementFinder {
     
     protected static final <T> boolean isPublicStaticFinalCompatible(Class<T> clzz, final java.lang.Class<?> type,
@@ -51,7 +54,7 @@ public class AbstractFromClassElementFinder {
                 continue;
             
             val value = supplier.apply(field);
-            if (value != null)
+            if (value._isNotNull())
                 return (T)value;
         }
         return null;
@@ -89,11 +92,11 @@ public class AbstractFromClassElementFinder {
             val modifiers = method.getModifiers();
             if (isPublicStaticFinalCompatible(clzz, type, modifiers))
                 continue;
-            if (clzz.getTypeParameters().length != 0)
+            if (!clzz.getTypeParameters()._isEmpty())
                 continue;
             
             val value = supplier.apply(method);
-            if (value != null)
+            if (value._isNotNull())
                 return (T)value;
         }
         return null;

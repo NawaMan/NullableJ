@@ -59,4 +59,5 @@ public class NamedFieldFinder extends AbstractFromClassElementFinder implements 
         });
         return valueFromNamedField;
     }
+    
 }
