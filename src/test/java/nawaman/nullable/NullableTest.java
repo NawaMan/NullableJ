@@ -1,7 +1,10 @@
 package nawaman.nullable;
 
+import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.assertEquals;
 
+import java.util.Iterator;
 import java.util.function.Supplier;
 
 import org.junit.Test;
@@ -92,6 +95,87 @@ public class NullableTest {
         Nullable<CharSequence> blah2 = Nullable.empty();
         Nullable<CharSequence> or2 = blah2.or(()->Nullable.of("TWO"));
         assertEquals("TWO", or2.get());
+    }
+    
+    // TODO - Proxy
+    
+    public static interface Nullables<TYPE> extends Nullable<TYPE> {
+        
+        public PassiveIterator<TYPE> iterator();
+        
+        public TYPE get();
+        
+        public boolean next();
+        
+    }
+    
+    public static class PassiveIterator<T> implements Iterator<T> {
+        private Iterator<T> iterator;
+        private T current = null;
+        
+        public PassiveIterator(Iterator<T> iterator) {
+            this.iterator = iterator;
+            this.hasNext();
+        }
+        
+        @Override
+        public boolean hasNext() {
+            boolean hasNext = iterator.hasNext();
+            if (hasNext) next();
+            else current = null;
+            return hasNext;
+        }
+        @Override
+        public T next() {
+            return (current = iterator.next());
+        }
+        public T current() {
+            return current;
+        }
+    }
+    
+    @FunctionalInterface
+    public static interface NullablePersons extends NullablePerson, Nullables<Person> {
+        
+        @SuppressWarnings("unchecked")
+        public static NullablePersons from(Iterable<Person> persons) {
+            @SuppressWarnings("rawtypes")
+            val iterator = new PassiveIterator(persons.iterator());
+            return (NullablePersons)()->iterator;
+        }
+        
+        public PassiveIterator<Person> iterator();
+        
+        public default Person get() {
+            return iterator().current();
+        }
+        
+        public default boolean next() {
+            return iterator().hasNext();
+        }
+        
+    }
+    
+    @Test
+    public void testIterator() { 
+       val persons = asList("Jack", "Jim", null, "John").stream().map(PersonImpl::new).map(Person.class::cast).collect(toList());
+       val nullable = NullablePersons.from(persons);
+       
+       assertEquals("Jack", nullable.getName());
+       assertEquals(4, nullable.map(Person::getName).map(String::length).orElse(0).intValue());
+       nullable.next();
+       
+       assertEquals("Jim", nullable.getName());
+       assertEquals(3, nullable.map(Person::getName).map(String::length).orElse(0).intValue());
+       nullable.next();
+       
+       assertEquals(null, nullable.getName());
+       assertEquals(0, nullable.map(Person::getName).map(String::length).orElse(0).intValue());
+       nullable.next();
+       
+       assertEquals("John", nullable.getName());
+       assertEquals(4, nullable.map(Person::getName).map(String::length).orElse(0).intValue());
+       nullable.next();
     }
     
 }
