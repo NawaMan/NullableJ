@@ -157,14 +157,25 @@ public class NullableJ {
     /**
      * Returns the null object.
      * 
-     * @param  theOptionalObject  the optional object.
+     * @param  theNullableObject  the optional object.
      * @param  theObjectClass     the class of the given data.
      * @param  <OBJECT>           the data type of the given object.
      * @return theGivenObject if not null or value from the elseSupplier if null.
      **/
-    public static <OBJECT> Optional<OBJECT> _orElseNullObject(Optional<OBJECT> theOptionalObject, Class<OBJECT> theObjectClass) {
-        val result = theOptionalObject.isPresent() ? theOptionalObject : Optional.ofNullable(NullObjects.nullObjectOf(theObjectClass));
+    public static <OBJECT> Nullable<OBJECT> _orElseNullObject(Nullable<OBJECT> theNullableObject, Class<OBJECT> theObjectClass) {
+        val result = theNullableObject.isPresent() ? theNullableObject : Nullable.of(NullObjects.nullObjectOf(theObjectClass));
         return result;
+    }
+    
+    /**
+     * Extension method to create optional of theGivenObject. 
+     * 
+     * @param  theGivenObject  the given object.
+     * @param  <OBJECT>        the data type of the given object.
+     * @return the optional value of the theGivenObject.
+     **/
+    public static <OBJECT> Nullable<OBJECT> _toNullable(OBJECT theGivenObject) {
+        return Nullable.of(theGivenObject);
     }
     
     /**
@@ -185,8 +196,8 @@ public class NullableJ {
      * @param  <OBJECT>        the data type of the given object.
      * @return the optional value of the theGivenObject.
      **/
-    public static <OBJECT> Optional<OBJECT> _whenNotNull(OBJECT theGivenObject) {
-        return Optional.ofNullable(theGivenObject);
+    public static <OBJECT> Nullable<OBJECT> _whenNotNull(OBJECT theGivenObject) {
+        return Nullable.of(theGivenObject);
     }
     
     /**
@@ -203,22 +214,22 @@ public class NullableJ {
     }
     
     /**
-     * Return the Optional of the given object if the test yields {@code true} or else return {@code Optional.empty}.
+     * Return the Nullable of the given object if the test yields {@code true} or else return {@code Nullable.empty}.
      * 
      * @param  theGivenObject  the given object.
      * @param  theTest         the test.
      * @param  <OBJECT>        the data type of the given object.
-     * @return  the Optional of the original object or {@code Optional.empty}.
+     * @return  the Nullable of the original object or {@code Nullable.empty}.
      */
-    public static <OBJECT> Optional<OBJECT> _when(OBJECT theGivenObject, Predicate<OBJECT> theTest) {
+    public static <OBJECT> Nullable<OBJECT> _when(OBJECT theGivenObject, Predicate<OBJECT> theTest) {
         if (theGivenObject == null)
-            return Optional.empty();
+            return Nullable.empty();
         
         val conditionResult = theTest.test(theGivenObject);
         if (!conditionResult)
-            return Optional.empty();
+            return Nullable.empty();
         
-        return Optional.of(theGivenObject);
+        return Nullable.of(theGivenObject);
     }
     
     /**
@@ -543,15 +554,15 @@ public class NullableJ {
      * 
      * @param theGivenString  the given string.
      * @param theNeedle       the needle.
-     * @return  the Optional of the original string if it contains the value otherwise return {@code Optional.empty()}.
+     * @return  the Nullable of the original string if it contains the value otherwise return {@code Nullable.empty()}.
      */
-    public static Optional<String> _whenContains(String theGivenString, CharSequence theNeedle) {
+    public static Nullable<String> _whenContains(String theGivenString, CharSequence theNeedle) {
         if (theGivenString == null)
-            return Optional.empty();
+            return Nullable.empty();
         
         val isContains = theGivenString.contains(theNeedle);
         val theResult  = isContains ? theGivenString : null;
-        return Optional.ofNullable(theResult);
+        return Nullable.of(theResult);
     }
     
     /**
@@ -559,15 +570,15 @@ public class NullableJ {
      * 
      * @param theGivenString  the given string.
      * @param theNeedle       the needle.
-     * @return  the Optional of the original string if it DOES NOT contain the needle otherwise return {@code null}.
+     * @return  the Nullable of the original string if it DOES NOT contain the needle otherwise return {@code null}.
      */
-    public static Optional<String> _whenNotContains(String theGivenString, CharSequence theNeedle) {
+    public static Nullable<String> _whenNotContains(String theGivenString, CharSequence theNeedle) {
         if (theGivenString == null)
-            return Optional.empty();
+            return Nullable.empty();
         
         val isContains = theGivenString.contains(theNeedle);
         val theResult  = isContains ? null : theGivenString;
-        return Optional.ofNullable(theResult);
+        return Nullable.of(theResult);
     }
     
     /**
@@ -575,15 +586,15 @@ public class NullableJ {
      * 
      * @param theGivenString  the given string.
      * @param theRegex        the regular expression.
-     * @return  the Optional of the original string if it matches the needle otherwise return {@code Optional.empty()}.
+     * @return  the Nullable of the original string if it matches the needle otherwise return {@code Nullable.empty()}.
      */
-    public static Optional<String> _whenMatches(String theGivenString, String theRegex) {
+    public static Nullable<String> _whenMatches(String theGivenString, String theRegex) {
         if (theGivenString == null)
-            return Optional.empty();
+            return Nullable.empty();
         
         val isMatches = theGivenString.matches(theRegex);
         val theResult  = isMatches ? theGivenString : null;
-        return Optional.ofNullable(theResult);
+        return Nullable.of(theResult);
     }
     
     /**
@@ -591,15 +602,15 @@ public class NullableJ {
      * 
      * @param theGivenString  the given string.
      * @param theRegex        the regular expression.
-     * @return  the Optional of the original string if it DOES NOT contain the needle otherwise return {@code Optional.empty()}.
+     * @return  the Nullable of the original string if it DOES NOT contain the needle otherwise return {@code Nullable.empty()}.
      */
-    public static Optional<String> _whenNotMatches(String theGivenString, String theRegex) {
+    public static Nullable<String> _whenNotMatches(String theGivenString, String theRegex) {
         if (theGivenString == null)
-            return Optional.empty();
+            return Nullable.empty();
         
         val isMatches = theGivenString.matches(theRegex);
         val theResult  = isMatches ? null : theGivenString;
-        return Optional.ofNullable(theResult);
+        return Nullable.of(theResult);
     }
     
     /**
@@ -607,15 +618,15 @@ public class NullableJ {
      * 
      * @param theGivenString  the given string.
      * @param theRegex        the regular expression.
-     * @return  the Optional of the original string if it matches the needle otherwise return {@code Optional.empty()}.
+     * @return  the Nullable of the original string if it matches the needle otherwise return {@code Nullable.empty()}.
      */
-    public static Optional<String> _whenMatches(String theGivenString, Pattern theRegex) {
+    public static Nullable<String> _whenMatches(String theGivenString, Pattern theRegex) {
         if (theGivenString == null)
-            return Optional.empty();
+            return Nullable.empty();
         
         val isMatches = theRegex.matcher(theGivenString).find();
         val theResult  = isMatches ? theGivenString : null;
-        return Optional.ofNullable(theResult);
+        return Nullable.of(theResult);
     }
     
     /**
@@ -623,15 +634,15 @@ public class NullableJ {
      * 
      * @param theGivenString  the given string.
      * @param theRegex        the regular expression.
-     * @return  the Optional of the original string if it DOES NOT contain the needle otherwise return {@code Optional.empty()}.
+     * @return  the Nullable of the original string if it DOES NOT contain the needle otherwise return {@code Nullable.empty()}.
      */
-    public static Optional<String> _whenNotMatches(String theGivenString, Pattern theRegex) {
+    public static Nullable<String> _whenNotMatches(String theGivenString, Pattern theRegex) {
         if (theGivenString == null)
-            return Optional.empty();
+            return Nullable.empty();
         
         val isMatches = theRegex.matcher(theGivenString).find();
         val theResult  = isMatches ? null : theGivenString;
-        return Optional.ofNullable(theResult);
+        return Nullable.of(theResult);
     }
     
     //== Array and Collection ==
@@ -767,68 +778,68 @@ public class NullableJ {
     }
     
     /**
-     * Returns Optional.empty() the given CharSequence is null or empty..
+     * Returns Nullable.empty() the given CharSequence is null or empty..
      * 
      * @param charSequence  the CharSequence such as an array.
-     * @return  Optional value if the charSequence.
+     * @return  Nullable value if the charSequence.
      * 
      * @param <CHARSEQUENCE>  the CharSequence type.
      */
-    public static <CHARSEQUENCE extends CharSequence> Optional<CHARSEQUENCE> _whenNotEmpty(CHARSEQUENCE charSequence) {
+    public static <CHARSEQUENCE extends CharSequence> Nullable<CHARSEQUENCE> _whenNotEmpty(CHARSEQUENCE charSequence) {
         if (charSequence == null)
-            return Optional.empty();
+            return Nullable.empty();
         if (charSequence.length() == 0)
-            return Optional.empty();
-        return Optional.of(charSequence);
+            return Nullable.empty();
+        return Nullable.of(charSequence);
     }
     
     /**
-     * Returns Optional.empty if the given array is null or empty. Otherwise, return the Optional of the array.
+     * Returns Nullable.empty if the given array is null or empty. Otherwise, return the Nullable of the array.
      * 
      * @param array  the array.
-     * @return  Optional value if the array.
+     * @return  Nullable value if the array.
      * 
      * @param <OBJECT> the type of the data in the array.
      */
-    public static <OBJECT> Optional<OBJECT[]> _whenNotEmpty(OBJECT[] array) {
+    public static <OBJECT> Nullable<OBJECT[]> _whenNotEmpty(OBJECT[] array) {
         if (array == null)
-            return Optional.empty();
+            return Nullable.empty();
         if (array.length == 0)
-            return Optional.empty();
-        return Optional.of(array);
+            return Nullable.empty();
+        return Nullable.of(array);
     }
     
     /**
-     * Returns Optional.empty if the given list is null or empty. Otherwise, return the Optional of the list.
+     * Returns Nullable.empty if the given list is null or empty. Otherwise, return the Nullable of the list.
      * 
      * @param list  the list.
-     * @return  Optional value if the list.
+     * @return  Nullable value if the list.
      * 
      * @param <OBJECT> the type of the data in the list.
      */
-    public static <OBJECT> Optional<List<OBJECT>> _whenNotEmpty(List<OBJECT> list) {
+    public static <OBJECT> Nullable<List<OBJECT>> _whenNotEmpty(List<OBJECT> list) {
         if (list == null)
-            return Optional.empty();
+            return Nullable.empty();
         if (list.isEmpty())
-            return Optional.empty();
-        return Optional.of(list);
+            return Nullable.empty();
+        return Nullable.of(list);
     }
     
     /**
-     * Returns Optional.empty if the given map is null or empty. Otherwise, return the Optional of the map.
+     * Returns Nullable.empty if the given map is null or empty. Otherwise, return the Nullable of the map.
      * 
      * @param map  the map.
-     * @return  Optional value if the map.
+     * @return  Nullable value if the map.
      * 
      * @param <KEY>   the type of the key of the function.
      * @param <VALUE> the type of the value of the function.
      */
-    public static <KEY, VALUE> Optional<Map<KEY, VALUE>> _whenNotEmpty(Map<KEY, VALUE> map) {
+    public static <KEY, VALUE> Nullable<Map<KEY, VALUE>> _whenNotEmpty(Map<KEY, VALUE> map) {
         if (map == null)
-            return Optional.empty();
+            return Nullable.empty();
         if (map.isEmpty())
-            return Optional.empty();
-        return Optional.of(map);
+            return Nullable.empty();
+        return Nullable.of(map);
     }
     
     /**

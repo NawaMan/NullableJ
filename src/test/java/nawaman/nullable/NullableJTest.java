@@ -126,8 +126,8 @@ public class NullableJTest {
     
     @Test
     public void test_orElseNullObject() {
-        assertEquals("String", Optional.of("String")          ._orElseNullObject(String.class).orElse(null));
-        assertEquals("",       Optional.ofNullable(nullString)._orElseNullObject(String.class).orElse(null));
+        assertEquals("String", Nullable.of("String")  ._orElseNullObject(String.class).orElse(null));
+        assertEquals("",       Nullable.of(nullString)._orElseNullObject(String.class).orElse(null));
     }
     
     @Test
@@ -142,11 +142,11 @@ public class NullableJTest {
     
     @Test
     public void test_whenNotNull() {
-        assertTrue("String"._whenNotNull() instanceof Optional);
+        assertTrue("String"._whenNotNull() instanceof Nullable);
         assertTrue("String"._whenNotNull().isPresent());
         assertEquals("String", "String"._whenNotNull().get());
         
-        assertTrue(nullString._whenNotNull() instanceof Optional);
+        assertTrue(nullString._whenNotNull() instanceof Nullable);
         assertFalse(nullString._whenNotNull().isPresent());
     }
     
