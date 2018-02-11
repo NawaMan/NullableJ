@@ -2,6 +2,8 @@ package nawaman.nullable;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.function.Supplier;
+
 import org.junit.Test;
 
 import lombok.val;
@@ -28,12 +30,12 @@ public class NullableTest {
     }
     
     @FunctionalInterface
-    public static interface NullablePerson extends Person, Nullable<Person>{
+    public static interface NullablePerson extends Person, Nullable<Person> {
         
         public static NullablePerson of(Person person) {
             return ()->person;
         }
-        public static NullablePerson from(Nullable<? extends Person> nullablePerson) {
+        public static NullablePerson from(Supplier<? extends Person> nullablePerson) {
             return ()->nullablePerson.get();
         }
         
@@ -69,6 +71,16 @@ public class NullableTest {
         val            nullablePerson = Nullable.of(new PersonImpl("Jack"));
         NullablePerson nullable       = NullablePerson.from(nullablePerson);
         assertEquals("Jack", nullable.getName());
+        
+        val supplier = (Supplier<Person>)()->new PersonImpl("John");
+        val nullable2 = Nullable.from(supplier);
+        assertEquals("John", nullable2.map(Person::getName).get());
+        
+        val nullable3 = NullablePerson.from(supplier);
+        assertEquals("John", nullable3.getName());
+        
+        val nullable4 = NullablePerson.from(nullable2);
+        assertEquals("John", nullable4.getName());
     }
     
     @Test

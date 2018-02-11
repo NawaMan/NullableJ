@@ -27,7 +27,7 @@ import lombok.val;
  * @author NawaMan -- nawa@nawaman.net
  */
 @FunctionalInterface
-public interface Nullable<TYPE> {
+public interface Nullable<TYPE> extends Supplier<TYPE> {
     
     @SuppressWarnings({ "rawtypes", "javadoc" })
     public static final Nullable EMPTY = (Nullable)()->null;
@@ -40,6 +40,16 @@ public interface Nullable<TYPE> {
      */
     public static <OBJECT> Nullable<OBJECT> of(OBJECT theGivenValue) {
         return (Nullable<OBJECT>)()->theGivenValue;
+    }
+    
+    /**
+     * Returns the Nullable value from the value of the given supplier.
+     * 
+     * @param theSupplier  the supplier of the value.
+     * @return  the Nullable of the value.
+     */
+    public static <OBJECT> Nullable<OBJECT> from(Supplier<? extends OBJECT> theSupplier) {
+        return ()->theSupplier.get();
     }
     
     /**
