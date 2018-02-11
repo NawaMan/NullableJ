@@ -1,9 +1,11 @@
 package nawaman.nullable;
 
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import lombok.val;
 
@@ -107,6 +109,18 @@ public interface Nullable<TYPE> {
     }
     
     /**
+     * Returns the value if it is not null or the value from the fallbackSupplier otherwise
+     * 
+     * @param fallbackSupplier  the fallbackSupplier.
+     * @return  the value or the fallback value.
+     */
+    @SuppressWarnings("unchecked")
+    public default Nullable<TYPE> or(Supplier<? extends Nullable<? extends TYPE>> fallbackSupplier) {
+        val value = get();
+        return (value != null) ? this : (Nullable<TYPE>) fallbackSupplier.get();
+    }
+    
+    /**
      * Returns this Nullable object if the value is null or fail the condition test otherwise return empty Nullable.
      * 
      * @param theCondition 
@@ -179,6 +193,22 @@ public interface Nullable<TYPE> {
     }
     
     /**
+     * If the value is not null, pass it to the consumer otherwise run elseRunnable.
+     * 
+     * @param theConsumer   the consumer.
+     * @param elseRunnable  runnable in case the value is null.
+     * @return  the value.
+     */
+    public default TYPE ifPresent(Consumer<? super TYPE> theConsumer, Runnable elseRunnable) {
+        val value = get();
+        if (value != null)
+            theConsumer.accept(value);
+        
+        elseRunnable.run();
+        return value;
+    }
+    
+    /**
      * If the value is not null, run the action.
      * 
      * @param theAction  the action.
@@ -190,6 +220,41 @@ public interface Nullable<TYPE> {
             theAction.run();
         
         return value;
+    }
+    
+    /**
+     * If the value is not null, run the action otherwise run elseRunnable.
+     * 
+     * @param theAction  the action.
+     * @param elseRunnable  runnable in case the value is null.
+     * @return  the value.
+     */
+    public default TYPE ifPresent(Runnable theAction, Runnable elseRunnable) {
+        val value = get();
+        if (value != null)
+            theAction.run();
+        
+        elseRunnable.run();
+        return value;
+    }
+    
+    /**
+     * Returns this Nullable as an Optional.
+     * 
+     * @return the Optional value.
+     */
+    public default Optional<TYPE> toOptional() {
+        return Optional.ofNullable(this.get());
+    }
+    
+    /**
+     * Returns the stream containing the value or empty stream if the value is null.
+     * 
+     * @return the stream.
+     */
+    public default Stream<TYPE> stream() {
+        val value = get();
+        return (value != null) ? Stream.of(value) : Stream.empty();
     }
     
 }
