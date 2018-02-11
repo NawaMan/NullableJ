@@ -29,6 +29,9 @@ import lombok.val;
 @FunctionalInterface
 public interface Nullable<TYPE> {
     
+    @SuppressWarnings({ "rawtypes", "javadoc" })
+    public static final Nullable EMPTY = (Nullable)()->null;
+    
     /**
      * Returns the Nullable value of the given value.
      * 
@@ -44,8 +47,9 @@ public interface Nullable<TYPE> {
      * 
      * @return  the Nullable of the no value.
      */
+    @SuppressWarnings("unchecked")
     public static <OBJECT> Nullable<OBJECT> empty() {
-        return (Nullable<OBJECT>)()->null;
+        return (Nullable<OBJECT>)EMPTY;
     }
     
     

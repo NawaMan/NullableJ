@@ -33,6 +33,9 @@ public class NullableTest {
         public static NullablePerson of(Person person) {
             return ()->person;
         }
+        public static NullablePerson from(Nullable<? extends Person> nullablePerson) {
+            return ()->nullablePerson.get();
+        }
         
         public default String getName() {
             return this.map(Person::getName).orElse(null);
@@ -59,6 +62,13 @@ public class NullableTest {
         
         assertEquals("John", person1.getName());
         assertEquals(null,   person2.getName());
+    }
+    
+    @Test
+    public void testCast() {
+        val            nullablePerson = Nullable.of(new PersonImpl("Jack"));
+        NullablePerson nullable       = NullablePerson.from(nullablePerson);
+        assertEquals("Jack", nullable.getName());
     }
     
     @Test
