@@ -93,6 +93,20 @@ public interface Nullable<TYPE> {
     }
     
     /**
+     * Returns the value if it is not null or throw the exception from the exceptionSupplier
+     * 
+     * @return  the value.
+     * @throws NullPointerException when the value is null.
+     */
+    public default TYPE orElseThrow() throws NullPointerException {
+        val value = get();
+        if (value == null)
+            throw new NullPointerException();
+        
+        return get();
+    }
+    
+    /**
      * Returns this Nullable object if the value is null or fail the condition test otherwise return empty Nullable.
      * 
      * @param theCondition 
