@@ -1,5 +1,8 @@
 package nawaman.nullable;
 
+import static nawaman.nullable._internal.ReflectionUtil.createNullableInvocationHandler;
+
+import java.lang.reflect.Proxy;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -32,6 +35,8 @@ public interface Nullable<TYPE> extends Supplier<TYPE> {
     @SuppressWarnings({ "rawtypes", "javadoc" })
     public static final Nullable EMPTY = (Nullable)()->null;
     
+    //== Factory method ===============================================================================================
+    
     /**
      * Returns the Nullable value of the given value.
      * 
@@ -53,6 +58,92 @@ public interface Nullable<TYPE> extends Supplier<TYPE> {
     }
     
     /**
+     * Create a nullable data object.
+     * 
+     * A Nullable data object is an object that is the mix of the data and Nullable.
+     * It contains both the method from the data interface as well as Nullable.
+     * 
+     * Exapmle: the data interface might look like this.
+     * <pre>
+     * public interface Data {
+     *     public Value getValue();
+     *     public void setValue(Value value);
+     * }
+     * </pre>
+     * Then, the nullable object might look like this:
+     * <pre>
+     * public interface NullableData extends Data, Nullable<Data> {
+     * }
+     * </pre>
+     * And this method can be used to create an instance of NullableData like this.
+     * <pre>
+     * NullableData nullableData = Nullable.createNullableObject(()->myValue, Data.class, NullableData.class);
+     * System.out.println(nullableData.getValue());
+     * System.out.println(nullableData.map(Data::getValue()).orElse(Value.NO_VALUE));
+     * </pre>
+     * 
+     * @param valueSupplier        the supplier for the value.
+     * @param dataObjectClass      the data object class.
+     * @param nullableObjectClass  the combine data and nullable class.
+     * @return  the nullable data object.
+     * 
+     * @param <T>  the data type.
+     * @param <N>  the Nullable data type.
+     */
+    public static <T, N extends Nullable<T>> N createNullableObject(
+            Supplier<T> valueSupplier, 
+            Class<T> dataObjectClass, 
+            Class<N> nullableObjectClass) {
+        val interfaces  = new Class<?>[] { nullableObjectClass };
+        val classLoader = dataObjectClass.getClassLoader();
+        val handler     = createNullableInvocationHandler(valueSupplier);
+        val rawProxy    = Proxy.newProxyInstance(classLoader, interfaces, handler);
+        val proxy       = nullableObjectClass.cast(rawProxy);
+        return proxy;
+    }
+    
+    /**
+     * Create a nullable data object.
+     * 
+     * This method is similar to {@link Nullable#createNullableObject(Supplier, Class, Class)}
+     *   but the value given as object which this method will convert to supplier.
+     * 
+     * @param value                the value.
+     * @param dataObjectClass      the data object class.
+     * @param nullableObjectClass  the combine data and nullable class.
+     * @return  the nullable data object.
+     * 
+     * @param <T>  the data type.
+     * @param <N>  the Nullable data type.
+     */
+    public static <T, N extends Nullable<T>> N createNullableObject(
+            T value, 
+            Class<T> dataObjectClass, 
+            Class<N> nullableObjectClass) {
+        return createNullableObject(value, dataObjectClass, nullableObjectClass);
+    }
+    
+    /**
+     * Create a Nullable Data object without the combined class.
+     * 
+     * @param valueSupplier
+     * @param dataObjectClass
+     * @return the nullable data object.
+     * 
+     * @param <T>  the data type.
+     */
+    public static <T> Nullable<T> createNullableObject(Supplier<? extends T> valueSupplier, Class<T> dataObjectClass) {
+        val interfaces  = new Class<?>[] { dataObjectClass, Nullable.class };
+        val classLoader = dataObjectClass.getClassLoader();
+        val handler     = createNullableInvocationHandler(valueSupplier);
+        val rawProxy    = Proxy.newProxyInstance(classLoader, interfaces, handler);
+        
+        @SuppressWarnings("unchecked")
+        val proxy = (Nullable<T>)rawProxy;
+        return proxy;
+    }
+    
+    /**
      * Return Nullable which has no value.
      * 
      * @return  the Nullable of the no value.
@@ -62,6 +153,7 @@ public interface Nullable<TYPE> extends Supplier<TYPE> {
         return (Nullable<OBJECT>)EMPTY;
     }
     
+    //== Functional method ============================================================================================
     
     /**
      * Returns the value.
@@ -70,6 +162,7 @@ public interface Nullable<TYPE> extends Supplier<TYPE> {
      */
     public TYPE get();
     
+    //== Default methods ==============================================================================================
     
     /**
      * Returns the value if it is not null or the fallbackValue otherwise

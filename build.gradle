@@ -21,7 +21,7 @@ repositories {
 dependencies {
     compile 'org.projectlombok:lombok:1.16.16'
     
-    compile group: 'nawaman-utils', name: 'nawaman-utils-reflection', version: '0.1.1'
+    compile group: 'nawaman-utils', name: 'nawaman-utils-reflection', version: '0.1.2'
     
     testCompile 'junit:junit:4.12'
 }

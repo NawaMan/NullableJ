@@ -1,14 +1,17 @@
 package nawaman.nullable;
 
-import static java.util.Arrays.asList;
-import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.assertEquals;
 
-import java.util.Iterator;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 import org.junit.Test;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.val;
 
 @SuppressWarnings("javadoc")
@@ -19,17 +22,16 @@ public class NullableTest {
         public String getName();
         public void setName(String name);
         
+        public default void printlnName(PrintStream out) {
+            out.println("Person: " + this.getName());
+        }
+        
     }
     
+    @Data
+    @AllArgsConstructor
     public static class PersonImpl implements Person {
         private String name;
-        public PersonImpl(String name) {
-            this.name = name;
-        }
-        public String getName() { return name; }
-        public void setName(String name) {
-            this.name = name;
-        }
     }
     
     @FunctionalInterface
@@ -84,6 +86,11 @@ public class NullableTest {
         
         val nullable4 = NullablePerson.from(nullable2);
         assertEquals("John", nullable4.getName());
+        
+        assertEquals("Jack", Optional.of(new PersonImpl("Jack")).map(Nullable::of).get().map(Person::getName).get());
+        
+        val nullable5 = (Nullable<Person>)((Supplier<Person>)()->new PersonImpl("James"))::get;
+        assertEquals("James", nullable5.map(Person::getName).get());
     }
     
     @Test
@@ -97,85 +104,56 @@ public class NullableTest {
         assertEquals("TWO", or2.get());
     }
     
-    // TODO - Proxy
+    //== Proxy related testing ========================================================================================
     
-    public static interface Nullables<TYPE> extends Nullable<TYPE> {
-        
-        public PassiveIterator<TYPE> iterator();
-        
-        public TYPE get();
-        
-        public boolean next();
-        
-    }
-    
-    public static class PassiveIterator<T> implements Iterator<T> {
-        private Iterator<T> iterator;
-        private T current = null;
-        
-        public PassiveIterator(Iterator<T> iterator) {
-            this.iterator = iterator;
-            this.hasNext();
-        }
-        
-        @Override
-        public boolean hasNext() {
-            boolean hasNext = iterator.hasNext();
-            if (hasNext) next();
-            else current = null;
-            return hasNext;
-        }
-        @Override
-        public T next() {
-            return (current = iterator.next());
-        }
-        public T current() {
-            return current;
-        }
-    }
-    
-    @FunctionalInterface
-    public static interface NullablePersons extends NullablePerson, Nullables<Person> {
-        
-        @SuppressWarnings("unchecked")
-        public static NullablePersons from(Iterable<Person> persons) {
-            @SuppressWarnings("rawtypes")
-            val iterator = new PassiveIterator(persons.iterator());
-            return (NullablePersons)()->iterator;
-        }
-        
-        public PassiveIterator<Person> iterator();
-        
-        public default Person get() {
-            return iterator().current();
-        }
-        
-        public default boolean next() {
-            return iterator().hasNext();
-        }
-        
+    public static interface AnotherNullablePerson extends Person, Nullable<Person> {
     }
     
     @Test
-    public void testIterator() { 
-       val persons = asList("Jack", "Jim", null, "John").stream().map(PersonImpl::new).map(Person.class::cast).collect(toList());
-       val nullable = NullablePersons.from(persons);
-       
-       assertEquals("Jack", nullable.getName());
-       assertEquals(4, nullable.map(Person::getName).map(String::length).orElse(0).intValue());
-       nullable.next();
-       
-       assertEquals("Jim", nullable.getName());
-       assertEquals(3, nullable.map(Person::getName).map(String::length).orElse(0).intValue());
-       nullable.next();
-       
-       assertEquals(null, nullable.getName());
-       assertEquals(0, nullable.map(Person::getName).map(String::length).orElse(0).intValue());
-       nullable.next();
-       
-       assertEquals("John", nullable.getName());
-       assertEquals(4, nullable.map(Person::getName).map(String::length).orElse(0).intValue());
-       nullable.next();
+    public void testProxy() {
+        val orgPerson = new PersonImpl("John");
+        
+        val person = Nullable.createNullableObject(()->orgPerson, Person.class, AnotherNullablePerson.class);
+        
+        assertEquals("John", person.getName());
+        person.setName("Jack");
+        assertEquals("Jack", person.getName());
+        person.setName("Jim");
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+             PrintStream           out  = new PrintStream(baos)) {
+            person.printlnName(out);
+            assertEquals("Person: Jim", baos.toString().trim());
+        } catch (IOException e) {
+        }
+        assertEquals(3, person.map(Person::getName).map(String::length).get().intValue());
+    }
+    
+    public static interface BuildInNullablePerson extends Nullable<BuildInNullablePerson> {
+        
+        public String getName();
+        public void setName(String name);
+        
+    }
+    
+    @Data
+    @AllArgsConstructor
+    public static class BuildInPersonImpl implements BuildInNullablePerson {
+        private String name;
+        public BuildInNullablePerson get() {
+            return this;
+        }
+    }
+    
+    @Test
+    public void testProxy_buildin() {
+        val orgPerson = new BuildInPersonImpl("John");
+        val person    = Nullable.createNullableObject(()->orgPerson, BuildInNullablePerson.class);
+        
+        assertEquals("John", person.get().getName());
+        person.get().setName("Jack");
+        assertEquals("Jack", person.get().getName());
+        person.get().setName("Jim");
+        assertEquals("Jim", person.map(BuildInNullablePerson::getName).get());
     }
     
 }
