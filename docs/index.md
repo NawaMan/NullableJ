@@ -61,13 +61,13 @@ See below on how to setup a [Gradle](https://github.com/NawaMan/NullableJ#using-
 The best and most up-to-date way to see all the methods and how to use them is to see [the unit tests](https://github.com/NawaMan/NullableJ/blob/master/src/test/java/nawaman/nullable/NullableJTest.java).
 It is easy to read, promise!
 
-In general, NullableJ is composed of two things: `NullableJ` and `NullObjects`.
+In general, NullableJ is composed of two things: `NullableJ` and `NullValues`.
 
 ### `NullableJ`
 `NullableJ` is a utility class containing utility methods.
 These methods are designed to be used with Lombok's ExtensionMethod.
 They can be used as normal static methods but the naming is done with the intention that they will be used with Lombok's ExtensionMethod.
 
-### `NullObjects`
-`NullObjects` will try to find the best candidate value to use as null object for a given class.
-Find more information [here](https://nawaman.github.io/NullableJ/NullObjects).
+### `NullValues`
+`NullValues` will try to find the best candidate value to use as null calue for a given class.
+Find more information [here](https://nawaman.github.io/NullableJ/NullValues).

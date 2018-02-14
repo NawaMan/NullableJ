@@ -20,12 +20,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * This annotation can be used to mark a field/method that the field/method should be used as a null object.
+ * This annotation can be used to mark a field/method that the field/method should be used as a null value.
  * 
  * @author NawaMan -- nawa@nawaman.net
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.FIELD, ElementType.METHOD })
-public @interface NullObject {
+public @interface NullValue {
     
 }

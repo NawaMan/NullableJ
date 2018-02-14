@@ -19,25 +19,25 @@ import java.util.function.Function;
 import nawaman.nullable._internal.Default;
 
 /**
- * Classes implementing this interface knows how to fins null objects given the class.
+ * Classes implementing this interface knows how to fins null values given the class.
  * 
  * @author NawaMan -- nawa@nawaman.net
  */
-public interface IFindNullObject {
+public interface IFindNullValue {
     
     /** The default value */
     @Default
-    @NullObject
-    public static final IFindNullObject instance = NullObjects.instance;
+    @NullValue
+    public static final IFindNullValue instance = NullValues.instance;
     
     /**
-     * Find the null object given the class.
+     * Find the null value given the class.
      * 
      * @param clzz  the class.
-     * @return  the null object.
+     * @return  the null value.
      * @param <OBJECT>  the type of the object.
      */
-    public <OBJECT> OBJECT findNullObjectOf(Class<OBJECT> clzz);
+    public <OBJECT> OBJECT findNullValueOf(Class<OBJECT> clzz);
     
     /**
      * Return this object as a function.
@@ -47,7 +47,7 @@ public interface IFindNullObject {
      * @param  <OBJECT>  the type of data.
      */
     public default <OBJECT> Function< Class<OBJECT>, OBJECT> asFunction() {
-        return (Function< Class<OBJECT>, OBJECT>)this::findNullObjectOf;
+        return (Function< Class<OBJECT>, OBJECT>)this::findNullValueOf;
     }
     
 }

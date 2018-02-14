@@ -18,14 +18,14 @@ import static nawaman.utils.reflection.UReflection.invokeStaticMethodOrNull;
 
 import lombok.NonNull;
 import lombok.val;
-import nawaman.nullable.IFindNullObject;
+import nawaman.nullable.IFindNullValue;
 
 /**
  * This finder finds by looking for compatible method with a specific name.
  * 
  * @author NawaMan -- nawa@nawaman.net
  */
-public class NamedMethodFinder extends AbstractFromClassElementFinder implements IFindNullObject {
+public class NamedMethodFinder extends AbstractFromClassElementFinder implements IFindNullValue {
     
     private String methodName;
     
@@ -39,20 +39,20 @@ public class NamedMethodFinder extends AbstractFromClassElementFinder implements
     }
     
     @Override
-    public <OBJECT> OBJECT findNullObjectOf(Class<OBJECT> clzz) {
-        return findNullObjectFromAnnotatedMethod(clzz, methodName);
+    public <OBJECT> OBJECT findNullValueOf(Class<OBJECT> clzz) {
+        return findNullValueFromAnnotatedMethod(clzz, methodName);
     }
     
     /**
-     * Find null object by looking for named method of the given class.
+     * Find null value by looking for named method of the given class.
      * 
      * @param clzz        the class.
      * @param methodName  the name of the annotation.
-     * @return  the null-object value.
+     * @return  the null value.
      * 
      * @param  <OBJECT>  the type of data.
      */
-    public static final <OBJECT> OBJECT findNullObjectFromAnnotatedMethod(Class<OBJECT> clzz, String methodName) {
+    public static final <OBJECT> OBJECT findNullValueFromAnnotatedMethod(Class<OBJECT> clzz, String methodName) {
         val valueFromAnnotatedMethod = getPublicStaticFinalCompatibleMethod(clzz, method->{
             if (!methodName.equals(method.getName()))
                 return null;

@@ -18,14 +18,14 @@ import static nawaman.utils.reflection.UReflection.getValueFromStaticFieldOrNull
 
 import lombok.NonNull;
 import lombok.val;
-import nawaman.nullable.IFindNullObject;
+import nawaman.nullable.IFindNullValue;
 
 /**
  * This finder finds by looking for compatible field with annotation.
  * 
  * @author NawaMan -- nawa@nawaman.net
  */
-public class NamedFieldFinder extends AbstractFromClassElementFinder implements IFindNullObject {
+public class NamedFieldFinder extends AbstractFromClassElementFinder implements IFindNullValue {
     
     private String fieldName;
     
@@ -39,20 +39,20 @@ public class NamedFieldFinder extends AbstractFromClassElementFinder implements 
     }
     
     @Override
-    public <OBJECT> OBJECT findNullObjectOf(Class<OBJECT> clzz) {
-        return findNullObjectFromNamedField(clzz, fieldName);
+    public <OBJECT> OBJECT findNullValueOf(Class<OBJECT> clzz) {
+        return findNullValueFromNamedField(clzz, fieldName);
     }
     
     /**
-     * Find null object by looking for a field with specific name of the given class.
+     * Find null value by looking for a field with specific name of the given class.
      * 
      * @param clzz       the class.
      * @param fieldName  the name of the field.
-     * @return  the null-object value.
+     * @return  the null value.
      * 
      * @param  <OBJECT>  the type of data.
      */
-    public static final <OBJECT> OBJECT findNullObjectFromNamedField(Class<OBJECT> clzz, String fieldName) {
+    public static final <OBJECT> OBJECT findNullValueFromNamedField(Class<OBJECT> clzz, String fieldName) {
         val valueFromNamedField = getPublicStaticFinalCompatibleField(clzz, field->{
             if (!fieldName.equals(field.getName()))
                 return null;

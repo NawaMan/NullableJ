@@ -142,28 +142,28 @@ public class NullableJ {
     }
     
     /**
-     * Returns the null object.
+     * Returns the null value.
      * 
      * @param  theGivenObject  the given object.
      * @param  theObjectClass  the class of the given data.
      * @param  <OBJECT>        the data type of the given object.
      * @return theGivenObject if not null or value from the elseSupplier if null.
      **/
-    public static <OBJECT> OBJECT _orNullObject(OBJECT theGivenObject, Class<OBJECT> theObjectClass) {
-        val result = (theGivenObject == null) ? NullObjects.nullObjectOf(theObjectClass) : theGivenObject;
+    public static <OBJECT> OBJECT _orNullValue(OBJECT theGivenObject, Class<OBJECT> theObjectClass) {
+        val result = (theGivenObject == null) ? NullValues.nullValueOf(theObjectClass) : theGivenObject;
         return result;
     }
     
     /**
-     * Returns the null object.
+     * Returns the null value.
      * 
      * @param  theNullableObject  the optional object.
      * @param  theObjectClass     the class of the given data.
      * @param  <OBJECT>           the data type of the given object.
      * @return theGivenObject if not null or value from the elseSupplier if null.
      **/
-    public static <OBJECT> Nullable<OBJECT> _orElseNullObject(Nullable<OBJECT> theNullableObject, Class<OBJECT> theObjectClass) {
-        val result = theNullableObject.isPresent() ? theNullableObject : Nullable.of(NullObjects.nullObjectOf(theObjectClass));
+    public static <OBJECT> Nullable<OBJECT> _orElseNullValue(Nullable<OBJECT> theNullableObject, Class<OBJECT> theObjectClass) {
+        val result = theNullableObject.isPresent() ? theNullableObject : Nullable.of(NullValues.nullValueOf(theObjectClass));
         return result;
     }
     

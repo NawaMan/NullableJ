@@ -21,14 +21,14 @@ import java.lang.annotation.Annotation;
 
 import lombok.NonNull;
 import lombok.val;
-import nawaman.nullable.IFindNullObject;
+import nawaman.nullable.IFindNullValue;
 
 /**
  * This finder finds by looking for compatible field with annotation.
  * 
  * @author NawaMan -- nawa@nawaman.net
  */
-public class AnnotatedFieldFinder extends AbstractFromClassElementFinder implements IFindNullObject {
+public class AnnotatedFieldFinder extends AbstractFromClassElementFinder implements IFindNullValue {
     
     private String annotationName;
     
@@ -42,20 +42,20 @@ public class AnnotatedFieldFinder extends AbstractFromClassElementFinder impleme
     }
     
     @Override
-    public <OBJECT> OBJECT findNullObjectOf(Class<OBJECT> clzz) {
-        return findNullObjectFromAnnotatedField(clzz, annotationName);
+    public <OBJECT> OBJECT findNullValueOf(Class<OBJECT> clzz) {
+        return findNullValueFromAnnotatedField(clzz, annotationName);
     }
     
     /**
-     * Find null object by looking for annotated field of the given class.
+     * Find null value by looking for annotated field of the given class.
      * 
      * @param clzz            the class.
      * @param annotationName  the name of the annotation.
-     * @return  the null-object value.
+     * @return  the null value.
      * 
      * @param  <OBJECT>  the type of data.
      */
-    public static final <OBJECT> OBJECT findNullObjectFromAnnotatedField(Class<OBJECT> clzz, String annotationName) {
+    public static final <OBJECT> OBJECT findNullValueFromAnnotatedField(Class<OBJECT> clzz, String annotationName) {
         val valueFromAnnotatedField = getPublicStaticFinalCompatibleField(clzz, field->{
             Annotation[] annotations = field.getAnnotations();
             boolean hasAnnotation = hasAnnotationWithName(annotations, annotationName);

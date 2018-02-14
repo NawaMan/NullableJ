@@ -119,15 +119,15 @@ public class NullableJTest {
     }
     
     @Test
-    public void test_orNullObject() {
-        assertEquals("String", "String"  ._orNullObject(String.class));
-        assertEquals("",       nullString._orNullObject(String.class));
+    public void test_orNullValue() {
+        assertEquals("String", "String"  ._orNullValue(String.class));
+        assertEquals("",       nullString._orNullValue(String.class));
     }
     
     @Test
-    public void test_orElseNullObject() {
-        assertEquals("String", Nullable.of("String")  ._orElseNullObject(String.class).orElse(null));
-        assertEquals("",       Nullable.of(nullString)._orElseNullObject(String.class).orElse(null));
+    public void test_orElseNullValue() {
+        assertEquals("String", Nullable.of("String")  ._orElseNullValue(String.class).orElse(null));
+        assertEquals("",       Nullable.of(nullString)._orElseNullValue(String.class).orElse(null));
     }
     
     @Test

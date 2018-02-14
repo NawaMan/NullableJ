@@ -14,8 +14,9 @@
 //  ========================================================================
 package nawaman.nullable.strategies;
 
+import static java.util.Collections.unmodifiableSet;
+
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -25,17 +26,17 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 
-import nawaman.nullable.IFindNullObject;
+import nawaman.nullable.IFindNullValue;
 
 /**
- * This finder finds from a list of known null objects.
+ * This finder finds from a list of known null values.
  * 
  * @author NawaMan -- nawa@nawaman.net
  */
 @SuppressWarnings("rawtypes")
-public class KnownNewNullObjectsFinder implements IFindNullObject {
+public class KnownNewNullValuesFinder implements IFindNullValue {
     
-    private static final Set<Class> knownNewNullObjects;
+    private static final Set<Class> knownNewNullValues;
     static {
         Set<Class> set = new HashSet<>();
         set.add(ArrayList.class);
@@ -46,15 +47,15 @@ public class KnownNewNullObjectsFinder implements IFindNullObject {
         set.add(TreeMap.class);
         set.add(LinkedHashMap.class);
         set.add(ConcurrentHashMap.class);
-        knownNewNullObjects = Collections.unmodifiableSet(set);
+        knownNewNullValues = unmodifiableSet(set);
     }
     
     protected final DefaultConstructorFinder  defaultConstructorFinder  = new DefaultConstructorFinder();
     
     @Override
-    public <OBJECT> OBJECT findNullObjectOf(Class<OBJECT> clzz) {
-        if (knownNewNullObjects.contains(clzz))
-            return defaultConstructorFinder.findNullObjectOf(clzz);
+    public <OBJECT> OBJECT findNullValueOf(Class<OBJECT> clzz) {
+        if (knownNewNullValues.contains(clzz))
+            return defaultConstructorFinder.findNullValueOf(clzz);
         
         return null;
     }

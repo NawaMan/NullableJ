@@ -20,33 +20,33 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import lombok.val;
-import nawaman.nullable.IFindNullObject;
+import nawaman.nullable.IFindNullValue;
 
 /**
  * This finder finds by looking for compatible method with annotation.
  * 
  * @author NawaMan -- nawa@nawaman.net
  */
-public class DefaultConstructorFinder extends AbstractFromClassElementFinder implements IFindNullObject {
+public class DefaultConstructorFinder extends AbstractFromClassElementFinder implements IFindNullValue {
     
     @SuppressWarnings("rawtypes")
     private static final Map<Class, Constructor> constructors = new ConcurrentHashMap<>();
     
     @Override
-    public <OBJECT> OBJECT findNullObjectOf(Class<OBJECT> clzz) {
-        return findNullObjectFromDefaultConstructor(clzz);
+    public <OBJECT> OBJECT findNullValueOf(Class<OBJECT> clzz) {
+        return findNullValueFromDefaultConstructor(clzz);
     }
     
     /**
-     * Find null object by looking for its default constructor.
+     * Find null value by looking for its default constructor.
      * 
      * @param clzz  the class.
-     * @return  the null-object value.
+     * @return  the null value.
      * 
      * @param  <OBJECT>  the type of data.
      */
     @SuppressWarnings("unchecked")
-    public static final <OBJECT> OBJECT findNullObjectFromDefaultConstructor(Class<OBJECT> clzz) {
+    public static final <OBJECT> OBJECT findNullValueFromDefaultConstructor(Class<OBJECT> clzz) {
         Constructor<OBJECT> constructor = null;
         try {
             if (constructors.containsKey(clzz)) {

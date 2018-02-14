@@ -28,19 +28,19 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import lombok.val;
-import nawaman.nullable.IFindNullObject;
+import nawaman.nullable.IFindNullValue;
 
 /**
- * This finder finds from a list of known null objects.
+ * This finder finds from a list of known null values.
  * 
  * @author NawaMan -- nawa@nawaman.net
  */
 @SuppressWarnings("rawtypes")
-public class KnownNullObjectsFinder implements IFindNullObject {
+public class KnownNullValuesFinder implements IFindNullValue {
 
-    private static final Map<Class, Object> knownNullObjects = new ConcurrentHashMap<>();
+    private static final Map<Class, Object> knownNullValues = new ConcurrentHashMap<>();
     static {
-        Map<Class, Object> map = knownNullObjects;
+        Map<Class, Object> map = knownNullValues;
         map.put(byte.class,    0);
         map.put(Byte.class,    Byte.valueOf((byte) 0));
         map.put(short.class,   0);
@@ -75,8 +75,8 @@ public class KnownNullObjectsFinder implements IFindNullObject {
     
     @SuppressWarnings("unchecked")
     @Override
-    public <OBJECT> OBJECT findNullObjectOf(Class<OBJECT> clzz) {
-        val nullFromKnown = (OBJECT)knownNullObjects.get(clzz);
+    public <OBJECT> OBJECT findNullValueOf(Class<OBJECT> clzz) {
+        val nullFromKnown = (OBJECT)knownNullValues.get(clzz);
         if (nullFromKnown != null)
             return nullFromKnown;
         
@@ -84,14 +84,14 @@ public class KnownNullObjectsFinder implements IFindNullObject {
             val enums = clzz.getEnumConstants();
             if (enums.length != 0) {
                 val value = (OBJECT)enums[0];
-                knownNullObjects.put(clzz, value);
+                knownNullValues.put(clzz, value);
                 return value;
             }
         }
         if (clzz.isArray()) {
             val componentType = clzz.getComponentType();
             val value         = (OBJECT)Array.newInstance(componentType, 0);
-            knownNullObjects.put(clzz, value);
+            knownNullValues.put(clzz, value);
             return value;
         }
         
