@@ -113,7 +113,7 @@ public class NullableTest {
     public void testProxy() {
         val orgPerson = new PersonImpl("John");
         
-        val person = Nullable.createNullableObject(()->orgPerson, Person.class, AnotherNullablePerson.class);
+        val person = Nullable.from(()->orgPerson, Person.class, AnotherNullablePerson.class);
         
         assertEquals("John", person.getName());
         person.setName("Jack");
@@ -147,7 +147,7 @@ public class NullableTest {
     @Test
     public void testProxy_buildin() {
         val orgPerson = new BuildInPersonImpl("John");
-        val person    = Nullable.createNullableObject(()->orgPerson, BuildInNullablePerson.class);
+        val person    = Nullable.from(()->orgPerson, BuildInNullablePerson.class);
         
         assertEquals("John", person.get().getName());
         person.get().setName("Jack");

@@ -48,6 +48,40 @@ public interface Nullable<TYPE> extends Supplier<TYPE> {
     }
     
     /**
+     * Create a nullable data object.
+     * 
+     * This method is similar to {@link Nullable#from(Supplier, Class, Class)}
+     *   but the value given as object which this method will convert to supplier.
+     * 
+     * @param value                the value.
+     * @param dataObjectClass      the data object class.
+     * @param nullableObjectClass  the combine data and nullable class.
+     * @return  the nullable data object.
+     * 
+     * @param <T>  the data type.
+     * @param <N>  the Nullable data type.
+     */
+    public static <T, N extends Nullable<T>> N of(
+            T value, 
+            Class<T> dataObjectClass, 
+            Class<N> nullableObjectClass) {
+        return from(()->value, dataObjectClass, nullableObjectClass);
+    }
+    
+    /**
+     * Create a Nullable Data object without the combined class.
+     * 
+     * @param value
+     * @param dataObjectClass
+     * @return the nullable data object.
+     * 
+     * @param <T>  the data type.
+     */
+    public static <T> Nullable<T> of(T value, Class<T> dataObjectClass) {
+        return from(()->value, dataObjectClass);
+    }
+    
+    /**
      * Returns the Nullable value from the value of the given supplier.
      * 
      * @param theSupplier  the supplier of the value.
@@ -90,7 +124,7 @@ public interface Nullable<TYPE> extends Supplier<TYPE> {
      * @param <T>  the data type.
      * @param <N>  the Nullable data type.
      */
-    public static <T, N extends Nullable<T>> N createNullableObject(
+    public static <T, N extends Nullable<T>> N from(
             Supplier<T> valueSupplier, 
             Class<T> dataObjectClass, 
             Class<N> nullableObjectClass) {
@@ -103,27 +137,6 @@ public interface Nullable<TYPE> extends Supplier<TYPE> {
     }
     
     /**
-     * Create a nullable data object.
-     * 
-     * This method is similar to {@link Nullable#createNullableObject(Supplier, Class, Class)}
-     *   but the value given as object which this method will convert to supplier.
-     * 
-     * @param value                the value.
-     * @param dataObjectClass      the data object class.
-     * @param nullableObjectClass  the combine data and nullable class.
-     * @return  the nullable data object.
-     * 
-     * @param <T>  the data type.
-     * @param <N>  the Nullable data type.
-     */
-    public static <T, N extends Nullable<T>> N createNullableOf(
-            T value, 
-            Class<T> dataObjectClass, 
-            Class<N> nullableObjectClass) {
-        return createNullableObject(()->value, dataObjectClass, nullableObjectClass);
-    }
-    
-    /**
      * Create a Nullable Data object without the combined class.
      * 
      * @param valueSupplier
@@ -132,7 +145,7 @@ public interface Nullable<TYPE> extends Supplier<TYPE> {
      * 
      * @param <T>  the data type.
      */
-    public static <T> Nullable<T> createNullableObject(Supplier<? extends T> valueSupplier, Class<T> dataObjectClass) {
+    public static <T> Nullable<T> from(Supplier<? extends T> valueSupplier, Class<T> dataObjectClass) {
         val interfaces  = new Class<?>[] { dataObjectClass, Nullable.class };
         val classLoader = dataObjectClass.getClassLoader();
         val handler     = createNullableInvocationHandler(valueSupplier);
