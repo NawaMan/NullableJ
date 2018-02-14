@@ -116,11 +116,11 @@ public interface Nullable<TYPE> extends Supplier<TYPE> {
      * @param <T>  the data type.
      * @param <N>  the Nullable data type.
      */
-    public static <T, N extends Nullable<T>> N createNullableObject(
+    public static <T, N extends Nullable<T>> N createNullableOf(
             T value, 
             Class<T> dataObjectClass, 
             Class<N> nullableObjectClass) {
-        return createNullableObject(value, dataObjectClass, nullableObjectClass);
+        return createNullableObject(()->value, dataObjectClass, nullableObjectClass);
     }
     
     /**
