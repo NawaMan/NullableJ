@@ -16,6 +16,7 @@
 package nawaman.nullable;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -105,6 +106,17 @@ public class NullValuesTest {
     public void testNamedMethod() {
         Person4 nullPerson4 = nullValues.findNullValueOf(Person4.class);
         assertEquals(nullPerson4, nullValueOfPerson4);
+    }
+    
+    public static interface IPerson {
+        public String name();
+        public void setName(String name);
+    }
+    
+    @Test
+    public void testDataInteface() {
+        IPerson nullIPerson = nullValues.findNullValueOf(IPerson.class);
+        assertNotNull(nullIPerson);
     }
     
 }

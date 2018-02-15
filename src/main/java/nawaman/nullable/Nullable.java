@@ -128,6 +128,9 @@ public interface Nullable<TYPE> extends Supplier<TYPE> {
             Supplier<T> valueSupplier, 
             Class<T> dataObjectClass, 
             Class<N> nullableObjectClass) {
+        if (!dataObjectClass.isInterface())
+            throw new IllegalArgumentException("The data class must be an interface: " + dataObjectClass);
+        
         val interfaces  = new Class<?>[] { nullableObjectClass };
         val classLoader = dataObjectClass.getClassLoader();
         val handler     = createNullableInvocationHandler(valueSupplier);
@@ -139,13 +142,16 @@ public interface Nullable<TYPE> extends Supplier<TYPE> {
     /**
      * Create a Nullable Data object without the combined class.
      * 
-     * @param valueSupplier
-     * @param dataObjectClass
+     * @param valueSupplier    the value supplier.
+     * @param dataObjectClass  the data object class.
      * @return the nullable data object.
      * 
      * @param <T>  the data type.
      */
     public static <T> Nullable<T> from(Supplier<? extends T> valueSupplier, Class<T> dataObjectClass) {
+        if (!dataObjectClass.isInterface())
+            throw new IllegalArgumentException("The data class must be an interface: " + dataObjectClass);
+        
         val interfaces  = new Class<?>[] { dataObjectClass, Nullable.class };
         val classLoader = dataObjectClass.getClassLoader();
         val handler     = createNullableInvocationHandler(valueSupplier);

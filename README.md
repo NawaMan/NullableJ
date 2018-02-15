@@ -72,6 +72,10 @@ They can be used as normal static methods but the naming is done with the intent
 `NullValues` will try to find the best candidate value to use as null value for a given class.
 Find more information [here](https://github.com/NawaMan/NullableJ/blob/master/NullValues.md).
 
+### `Nullable`
+`Nullable` is an implementation of Optional but it is extensible.
+It also allow you to create a nullable object of interface data.
+
 
 ## Using NullableJ in Gradle project
 
