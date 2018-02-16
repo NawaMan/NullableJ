@@ -314,6 +314,7 @@ public class NullableJTest {
     public void test_stream$__array() {
         String[] array1 = new String[] { "One", "Two" };
         assertEquals("OneTwo", array1._stream$().collect(joining()));
+        assertEquals("33", array1._stream$().map(String::length).map(String::valueOf).collect(joining()));
         
         String[] array2 = null;
         assertEquals("", array2._stream$().collect(joining()));
@@ -530,92 +531,6 @@ public class NullableJTest {
         assertEquals(null,  map2._get(null));
     }
     
-    @Test
-    public void test_get__or__array() {
-        String[] array1 = new String[] { "One", "Two" };
-        assertEquals("One",  array1._get(0, "none"));
-        assertEquals("Two",  array1._get(1, "none"));
-        assertEquals("none", array1._get(2, "none"));
-        assertEquals("none", array1._get(-1, "none"));
-        
-        String[] array2 = null;
-        assertEquals("none", array2._get(0, "none"));
-        assertEquals("none", array2._get(1, "none"));
-        assertEquals("none", array2._get(2, "none"));
-        assertEquals("none", array2._get(-1, "none"));
-    }
-    @Test
-    public void test_get__or__list() {
-        List<String> list1 = asList("One", "Two");
-        assertEquals("One",  list1._get(0, "none"));
-        assertEquals("Two",  list1._get(1, "none"));
-        assertEquals("none", list1._get(2, "none"));
-        assertEquals("none", list1._get(-1, "none"));
-        
-        List<String> list2 = null;
-        assertEquals("none", list2._get(0, "none"));
-        assertEquals("none", list2._get(1, "none"));
-        assertEquals("none", list2._get(2, "none"));
-        assertEquals("none", list2._get(-1, "none"));
-    }
-    
-    @Test
-    public void test_get__or__map() {
-        Map<String, String> map1 = Collections.singletonMap("1", "One");
-        assertEquals("One",  map1._get("1", "Else"));
-        assertEquals("Else", map1._get("2", "Else"));
-        assertEquals("Else", map1._get(null, "Else"));
-        
-        Map<String, String> map2 = null;
-        assertEquals("Else", map2._get("1", "Else"));
-        assertEquals("Else", map2._get("2", "Else"));
-        assertEquals("Else", map2._get(null, "Else"));
-    }
-    
-    @Test
-    public void test_get__orSupplier__array() {
-        String[] array1 = new String[] { "One", "Two" };
-        Supplier<String> returnNone = ()->"none";
-        assertEquals("One",  array1._get(0, returnNone));
-        assertEquals("Two",  array1._get(1, returnNone));
-        assertEquals("none", array1._get(2, returnNone));
-        assertEquals("none", array1._get(-1, returnNone));
-        
-        String[] array2 = null;
-        assertEquals("none", array2._get(0, returnNone));
-        assertEquals("none", array2._get(1, returnNone));
-        assertEquals("none", array2._get(2, returnNone));
-        assertEquals("none", array2._get(-1, returnNone));
-    }
-    @Test
-    public void test_get__orSupplier__list() {
-        List<String> list1 = asList("One", "Two");
-        Supplier<String> returnNone = ()->"none";
-        assertEquals("One",  list1._get(0, returnNone));
-        assertEquals("Two",  list1._get(1, returnNone));
-        assertEquals("none", list1._get(2, returnNone));
-        assertEquals("none", list1._get(-1, returnNone));
-        
-        List<String> list2 = null;
-        assertEquals("none", list2._get(0, returnNone));
-        assertEquals("none", list2._get(1, returnNone));
-        assertEquals("none", list2._get(2, returnNone));
-        assertEquals("none", list2._get(-1, returnNone));
-    }
-    
-    @Test
-    public void test_get__orSupplier__map() {
-        Map<String, String> map1 = Collections.singletonMap("1", "One");
-        Supplier<String> orElse = ()->"Else";
-        assertEquals("One",  map1._get("1",  orElse));
-        assertEquals("Else", map1._get("2",  orElse));
-        assertEquals("Else", map1._get(null, orElse));
-        
-        Map<String, String> map2 = null;
-        assertEquals("Else", map2._get("1",  orElse));
-        assertEquals("Else", map2._get("2",  orElse));
-        assertEquals("Else", map2._get(null, orElse));
-    }
     
     @Test
     public void test_get__orFunction__array() {
@@ -632,6 +547,7 @@ public class NullableJTest {
         assertEquals("none: 2", array2._get(2, returnNone));
         assertEquals("none: -1", array2._get(-1, returnNone));
     }
+    
     @Test
     public void test_get__orFunction__list() {
         List<String> list1 = asList("One", "Two");
