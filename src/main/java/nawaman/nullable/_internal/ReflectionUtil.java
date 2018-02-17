@@ -36,8 +36,10 @@ public class ReflectionUtil {
             throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         @SuppressWarnings("rawtypes")
         val value = ((Nullable)proxy).get();
-        if (value == null)
-            return null;
+        if (value == null) {
+            Class<?> returnType = method.getReturnType();
+            return returnType.cast(Nullable.of(null, returnType));
+        }
         
         return method.invoke(value, args);
     }

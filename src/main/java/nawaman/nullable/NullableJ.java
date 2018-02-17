@@ -17,7 +17,9 @@ package nawaman.nullable;
 
 import static java.lang.reflect.Array.newInstance;
 import static java.util.Arrays.stream;
+import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Stream.empty;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -475,21 +477,6 @@ public class NullableJ {
     }
     
     /**
-     * Check if the given string contains the needle.
-     * 
-     * @param theGivenString  the given string.
-     * @param theNeedle       the needle.
-     * @return  if the given string DOES NOT contain the needle or {@code true} if it is null.
-     */
-    public static boolean _notContains(String theGivenString, CharSequence theNeedle) {
-        if (theGivenString == null)
-            return true;
-        
-        val theResult = !theGivenString.contains(theNeedle);
-        return theResult;
-    }
-    
-    /**
      * Check if the given string matches the regular expression.
      * 
      * @param theGivenString  the given string.
@@ -664,17 +651,17 @@ public class NullableJ {
     }
     
     /**
-     * Returns the stream of the given object.
+     * Returns the stream of the given collection.
      * 
-     * @param list  the list.
+     * @param collection  the collection.
      * @return  the stream.
      * 
      * @param <OBJECT> the type of the data in the list.
      */
-    public static <OBJECT> Stream<OBJECT> _stream$(List<OBJECT> list) {
-        if (list == null)
+    public static <OBJECT> Stream<OBJECT> _stream$(Collection<OBJECT> collection) {
+        if (collection == null)
             return Stream.empty();
-        return list.stream();
+        return collection.stream();
     }
     
     /**
@@ -706,17 +693,17 @@ public class NullableJ {
     }
     
     /**
-     * Returns the size of the given list.
+     * Returns the size of the given collection.
      * 
-     * @param list  the list.
+     * @param collection  the collection.
      * @return  the size of the list.
      * 
      * @param <OBJECT> the type of the data in the list.
      */
-    public static <OBJECT> int _size(List<OBJECT> list) {
-        if (list == null)
+    public static <OBJECT> int _size(Collection<OBJECT> collection) {
+        if (collection == null)
             return 0;
-        return list.size();
+        return collection.size();
     }
     
     /**
@@ -749,17 +736,17 @@ public class NullableJ {
     }
     
     /**
-     * Returns the given list is empty.
+     * Returns the given collection is empty.
      * 
-     * @param list  the list.
+     * @param collection  the collection.
      * @return  {@code true}  if the list is empty.
      * 
      * @param <OBJECT> the type of the data in the list.
      */
-    public static <OBJECT> boolean _isEmpty(List<OBJECT> list) {
-        if (list == null)
+    public static <OBJECT> boolean _isEmpty(Collection<OBJECT> collection) {
+        if (collection == null)
             return true;
-        return list.isEmpty();
+        return collection.isEmpty();
     }
     
     /**
@@ -775,6 +762,82 @@ public class NullableJ {
         if (map == null)
             return true;
         return map.isEmpty();
+    }
+    
+    /**
+     * Check if the given array contains the needle.
+     * 
+     * @param theGivenArray  the given array.
+     * @param theNeedle      the needle.
+     * @return  if the given string contains the needle or {@code false} if it is null.
+     */
+    public static <OBJECT> boolean _contains(OBJECT[] theGivenArray, OBJECT theNeedle) {
+        if (theGivenArray == null)
+            return false;
+        
+        try {
+            val theResult = _stream$(theGivenArray).filter(each->Objects.equals(each, theNeedle)).findAny().isPresent();
+            return theResult;
+        } catch (NullPointerException e) {
+            return false;
+        }
+    }
+    
+    /**
+     * Check if the given collection contains the needle.
+     * 
+     * @param theGivenList  the given list.
+     * @param theNeedle     the needle.
+     * @return  if the given list contains the needle or {@code false} if it is null.
+     */
+    public static <OBJECT> boolean _contains(Collection<OBJECT> theGivenList, OBJECT theNeedle) {
+        if (theGivenList == null)
+            return false;
+        
+        try {
+            val theResult = theGivenList.contains(theNeedle);
+            return theResult;
+        } catch (NullPointerException e) {
+            return false;
+        }
+    }
+    
+    /**
+     * Check if the given map contains the key.
+     * 
+     * @param theGivenMap  the given map.
+     * @param theKey       the key.
+     * @return  if the given map contains the key or {@code false} otherwise.
+     */
+    public static <KEY, VALUE> boolean _containsKey(Map<KEY, VALUE> theGivenMap, KEY theKey) {
+        if (theGivenMap == null)
+            return false;
+        
+        try {
+            val theResult = theGivenMap.containsKey(theKey);
+            return theResult;
+        } catch (NullPointerException e) {
+            return false;
+        }
+    }
+    
+    /**
+     * Check if the given map contains the key.
+     * 
+     * @param theGivenMap  the given map.
+     * @param theValue     the value.
+     * @return  if the given map contains the value or {@code false} otherwise.
+     */
+    public static <KEY, VALUE> boolean _containsValue(Map<KEY, VALUE> theGivenMap, VALUE theValue) {
+        if (theGivenMap == null)
+            return false;
+        
+        try {
+            val theResult = theGivenMap.containsValue(theValue);
+            return theResult;
+        } catch (NullPointerException e) {
+            return false;
+        }
     }
     
     /**
@@ -810,19 +873,19 @@ public class NullableJ {
     }
     
     /**
-     * Returns Nullable.empty if the given list is null or empty. Otherwise, return the Nullable of the list.
+     * Returns Nullable.empty if the given collection is null or empty. Otherwise, return the Nullable of the list.
      * 
-     * @param list  the list.
+     * @param collection  the collection.
      * @return  Nullable value if the list.
      * 
      * @param <OBJECT> the type of the data in the list.
      */
-    public static <OBJECT> Nullable<List<OBJECT>> _whenNotEmpty(List<OBJECT> list) {
-        if (list == null)
+    public static <OBJECT, COLLECTION extends Collection<OBJECT>> Nullable<COLLECTION> _whenNotEmpty(COLLECTION collection) {
+        if (collection == null)
             return Nullable.empty();
-        if (list.isEmpty())
+        if (collection.isEmpty())
             return Nullable.empty();
-        return Nullable.of(list);
+        return Nullable.of(collection);
     }
     
     /**
@@ -859,17 +922,17 @@ public class NullableJ {
     }
     
     /**
-     * Returns the stream of from the given list but does not contains null value.
+     * Returns the stream of from the given collection but does not contains null value.
      * 
-     * @param list  the list.
+     * @param collection  the collection.
      * @return  the stream.
      * 
      * @param <OBJECT> the type of the data in the list.
      */
-    public static <OBJECT> Stream<OBJECT> _butOnlyNonNull$(List<OBJECT> list) {
-        if (list == null)
+    public static <OBJECT, COLLECTION extends Collection<OBJECT>> Stream<OBJECT> _butOnlyNonNull$(COLLECTION collection) {
+        if (collection == null)
             return Stream.empty();
-        return list.stream().filter(Objects::nonNull);
+        return collection.stream().filter(Objects::nonNull);
     }
     
     /**
@@ -896,24 +959,24 @@ public class NullableJ {
      */
     public static <OBJECT> List<OBJECT> _toList(OBJECT[] array) {
         if (array == null)
-            return Collections.emptyList();
+            return emptyList();
         if (array.length == 0)
-            return Collections.emptyList();
+            return emptyList();
         return stream(array).collect(Collectors.toList());
     }
     
     /**
      * Returns the list of the given list (a copy using stream().collect(toList())).
      * 
-     * @param list  the list.
+     * @param collection  the collection.
      * @return  the list.
      * 
      * @param <OBJECT> the type of the data in the list.
      */
-    public static <OBJECT> List<OBJECT> _toList(List<OBJECT> list) {
-        if (list == null)
+    public static <OBJECT, COLLECTION extends Collection<OBJECT>> List<OBJECT> _toList(COLLECTION collection) {
+        if (collection == null)
             return Collections.emptyList();
-        return list.stream().collect(Collectors.toList());
+        return collection.stream().collect(Collectors.toList());
     }
     
     /**
@@ -1259,16 +1322,16 @@ public class NullableJ {
     /**
      * Check if at lease one element in the the given list pass all the check by the condition.
      * 
-     * @param list       the list.
+     * @param collection the collection.
      * @param condition  the condition.
      * @return  the element with only the matching elements.
      * 
      * @param <OBJECT> the type of the data in the list.
      */
-    public static <OBJECT> Stream<OBJECT> _butOnlyThat$(List<OBJECT> list, Predicate<OBJECT> condition) {
-        if (list == null)
-            return Stream.empty();
-        return list.stream().filter(condition);
+    public static <OBJECT, COLLECION extends Collection<OBJECT>> Stream<OBJECT> _butOnlyThat$(COLLECION collection, Predicate<OBJECT> condition) {
+        if (collection == null)
+            return empty();
+        return collection.stream().filter(condition);
     }
     
     /**
@@ -1290,18 +1353,18 @@ public class NullableJ {
     }
     
     /**
-     * Check if at lease one element in the the given list pass all the check by the condition.
+     * Check if at lease one element in the the given collection pass all the check by the condition.
      * 
-     * @param list       the list.
+     * @param collection the collection.
      * @param condition  the condition.
      * @return  the element with only the matching elements or null if the given element is null.
      * 
      * @param <OBJECT> the type of the data in the list.
      */
-    public static <OBJECT> List<OBJECT> _butOnlyThat(List<OBJECT> list, Predicate<OBJECT> condition) {
-        if (list == null)
+    public static <OBJECT, COLLECION extends Collection<OBJECT>> List<OBJECT> _butOnlyThat(COLLECION collection, Predicate<OBJECT> condition) {
+        if (collection == null)
             return null;
-        return _butOnlyThat$(list, condition).collect(toList());
+        return _butOnlyThat$(collection, condition).collect(toList());
     }
     
     /**

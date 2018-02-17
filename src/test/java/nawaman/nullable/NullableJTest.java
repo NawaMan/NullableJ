@@ -260,12 +260,6 @@ public class NullableJTest {
     }
     
     @Test
-    public void test_notContains() {
-        assertTrue("String"  ._notContains("round"));
-        assertTrue(nullString._notContains("round"));
-    }
-    
-    @Test
     public void test_matches() {
         assertTrue("String"   ._matches("[Sa]tring"));
         assertFalse(nullString._matches("[Sa]tring"));
