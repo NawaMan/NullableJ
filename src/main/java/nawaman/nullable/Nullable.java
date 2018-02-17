@@ -15,9 +15,6 @@
 //  ========================================================================
 package nawaman.nullable;
 
-import static nawaman.nullable._internal.ReflectionUtil.createNullableInvocationHandler;
-
-import java.lang.reflect.Proxy;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -58,42 +55,12 @@ public interface Nullable<TYPE> extends Supplier<TYPE> {
      * @param theGivenValue  the given value.
      * @return  the Nullable of the given value.
      */
+    @SuppressWarnings("unchecked")
     public static <OBJECT> Nullable<OBJECT> of(OBJECT theGivenValue) {
-        return (Nullable<OBJECT>)()->theGivenValue;
-    }
-    
-    /**
-     * Create a nullable data object.
-     * 
-     * This method is similar to {@link Nullable#from(Supplier, Class, Class)}
-     *   but the value given as object which this method will convert to supplier.
-     * 
-     * @param value                the value.
-     * @param dataObjectClass      the data object class.
-     * @param nullableObjectClass  the combine data and nullable class.
-     * @return  the nullable data object.
-     * 
-     * @param <T>  the data type.
-     * @param <N>  the Nullable data type.
-     */
-    public static <T, N extends Nullable<T>> N of(
-            T value, 
-            Class<T> dataObjectClass, 
-            Class<N> nullableObjectClass) {
-        return from(()->value, dataObjectClass, nullableObjectClass);
-    }
-    
-    /**
-     * Create a Nullable Data object without the combined class.
-     * 
-     * @param value
-     * @param dataObjectClass
-     * @return the nullable data object.
-     * 
-     * @param <T>  the data type.
-     */
-    public static <T> Nullable<T> of(T value, Class<T> dataObjectClass) {
-        return from(()->value, dataObjectClass);
+        if (theGivenValue == null)
+            return (Nullable<OBJECT>)EMPTY;
+        
+        return new NullableImpl<OBJECT>(theGivenValue);
     }
     
     /**
@@ -104,77 +71,6 @@ public interface Nullable<TYPE> extends Supplier<TYPE> {
      */
     public static <OBJECT> Nullable<OBJECT> from(Supplier<? extends OBJECT> theSupplier) {
         return ()->theSupplier.get();
-    }
-    
-    /**
-     * Create a nullable data object.
-     * 
-     * A Nullable data object is an object that is the mix of the data and Nullable.
-     * It contains both the method from the data interface as well as Nullable.
-     * 
-     * Exapmle: the data interface might look like this.
-     * <pre>
-     * public interface Data {
-     *     public Value getValue();
-     *     public void setValue(Value value);
-     * }
-     * </pre>
-     * Then, the nullable object might look like this:
-     * <pre>
-     * public interface NullableData extends Data, Nullable<Data> {
-     * }
-     * </pre>
-     * And this method can be used to create an instance of NullableData like this.
-     * <pre>
-     * NullableData nullableData = Nullable.createNullableObject(()->myValue, Data.class, NullableData.class);
-     * System.out.println(nullableData.getValue());
-     * System.out.println(nullableData.map(Data::getValue()).orElse(Value.NO_VALUE));
-     * </pre>
-     * 
-     * @param valueSupplier        the supplier for the value.
-     * @param dataObjectClass      the data object class.
-     * @param nullableObjectClass  the combine data and nullable class.
-     * @return  the nullable data object.
-     * 
-     * @param <T>  the data type.
-     * @param <N>  the Nullable data type.
-     */
-    public static <T, N extends Nullable<T>> N from(
-            Supplier<T> valueSupplier, 
-            Class<T> dataObjectClass, 
-            Class<N> nullableObjectClass) {
-        if (!dataObjectClass.isInterface())
-            throw new IllegalArgumentException("The data class must be an interface: " + dataObjectClass);
-        
-        val interfaces  = new Class<?>[] { nullableObjectClass };
-        val classLoader = dataObjectClass.getClassLoader();
-        val handler     = createNullableInvocationHandler(valueSupplier);
-        val rawProxy    = Proxy.newProxyInstance(classLoader, interfaces, handler);
-        val proxy       = nullableObjectClass.cast(rawProxy);
-        return proxy;
-    }
-    
-    /**
-     * Create a Nullable Data object without the combined class.
-     * 
-     * @param valueSupplier    the value supplier.
-     * @param dataObjectClass  the data object class.
-     * @return the nullable data object.
-     * 
-     * @param <T>  the data type.
-     */
-    public static <T> Nullable<T> from(Supplier<? extends T> valueSupplier, Class<T> dataObjectClass) {
-        if (!dataObjectClass.isInterface())
-            throw new IllegalArgumentException("The data class must be an interface: " + dataObjectClass);
-        
-        val interfaces  = new Class<?>[] { dataObjectClass, Nullable.class };
-        val classLoader = dataObjectClass.getClassLoader();
-        val handler     = createNullableInvocationHandler(valueSupplier);
-        val rawProxy    = Proxy.newProxyInstance(classLoader, interfaces, handler);
-        
-        @SuppressWarnings("unchecked")
-        val proxy = (Nullable<T>)rawProxy;
-        return proxy;
     }
     
     /**

@@ -23,6 +23,7 @@ import java.util.function.Supplier;
 
 import lombok.val;
 import nawaman.nullable.Nullable;
+import nawaman.nullable.NullableObject;
 
 /**
  * For internal use only, I will turn around if I were you.
@@ -38,7 +39,7 @@ public class ReflectionUtil {
         val value = ((Nullable)proxy).get();
         if (value == null) {
             Class<?> returnType = method.getReturnType();
-            return returnType.cast(Nullable.of(null, returnType));
+            return returnType.cast(NullableObject.of(null, returnType));
         }
         
         return method.invoke(value, args);
