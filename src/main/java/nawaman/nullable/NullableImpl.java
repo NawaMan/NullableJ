@@ -15,6 +15,8 @@
 //  ========================================================================
 package nawaman.nullable;
 
+import java.util.Optional;
+
 /**
  * An implementation of Nullable that store the value as value (as opposed to supplier).
  * 
@@ -56,14 +58,16 @@ public class NullableImpl<TYPE> implements Nullable<TYPE> {
             return true;
         if (obj == null)
             return false;
-        if (getClass() != obj.getClass())
+        if ((obj.getClass() == Nullable.class) || (obj.getClass() == Optional.class))
             return false;
-        @SuppressWarnings("rawtypes")
-        NullableImpl other = (NullableImpl) obj;
+        @SuppressWarnings({ "rawtypes", "unchecked" })
+        Object otherValue = (Nullable.class.isAssignableFrom(obj.getClass()))
+                ? ((Nullable)obj).get()
+                : ((Optional)obj).orElse(null);
         if (value == null) {
-            if (other.value != null)
+            if (otherValue != null)
                 return false;
-        } else if (!value.equals(other.value))
+        } else if (!value.equals(otherValue))
             return false;
         return true;
     }
