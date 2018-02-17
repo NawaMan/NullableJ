@@ -198,8 +198,8 @@ public class NullableJ {
      * @param  <OBJECT>        the data type of the given object.
      * @return the optional value of the theGivenObject.
      **/
-    public static <OBJECT> Nullable<OBJECT> _whenNotNull(OBJECT theGivenObject) {
-        return Nullable.of(theGivenObject);
+    public static <OBJECT> Otherwise.WithMatchTypes<OBJECT> _whenNotNull(OBJECT theGivenObject) {
+        return new Otherwise.WithMatchTypes<OBJECT>(theGivenObject);
     }
     
     /**
@@ -223,15 +223,15 @@ public class NullableJ {
      * @param  <OBJECT>        the data type of the given object.
      * @return  the Nullable of the original object or {@code Nullable.empty}.
      */
-    public static <OBJECT> Nullable<OBJECT> _when(OBJECT theGivenObject, Predicate<OBJECT> theTest) {
+    public static <OBJECT> Otherwise.WithMatchTypes<OBJECT> _when(OBJECT theGivenObject, Predicate<OBJECT> theTest) {
         if (theGivenObject == null)
-            return Nullable.empty();
+            return new Otherwise.WithMatchTypes<OBJECT>(null);
         
         val conditionResult = theTest.test(theGivenObject);
         if (!conditionResult)
-            return Nullable.empty();
+            return new Otherwise.WithMatchTypes<OBJECT>(null, theGivenObject);
         
-        return Nullable.of(theGivenObject);
+        return new Otherwise.WithMatchTypes<OBJECT>(theGivenObject);
     }
     
     /**
@@ -243,12 +243,12 @@ public class NullableJ {
      * @param  <CLASS>         the data type of the returned object.
      * @return  the original object as the type class or null.
      */
-    public static <OBJECT, CLASS> CLASS _as(OBJECT theGivenObject, Class<CLASS> theClass) {
+    public static <OBJECT, CLASS> Otherwise<CLASS, OBJECT> _as(OBJECT theGivenObject, Class<CLASS> theClass) {
         val isInstanceOf = theClass.isInstance(theGivenObject);
         if (!isInstanceOf)
-            return null;
+            return new Otherwise<CLASS, OBJECT>(null, theGivenObject);
         
-        return theClass.cast(theGivenObject);
+        return new Otherwise<CLASS, OBJECT>(theClass.cast(theGivenObject), theGivenObject);
     }
     
     /**
@@ -543,13 +543,13 @@ public class NullableJ {
      * @param theNeedle       the needle.
      * @return  the Nullable of the original string if it contains the value otherwise return {@code Nullable.empty()}.
      */
-    public static Nullable<String> _whenContains(String theGivenString, CharSequence theNeedle) {
+    public static Otherwise.WithMatchTypes<String> _whenContains(String theGivenString, CharSequence theNeedle) {
         if (theGivenString == null)
-            return Nullable.empty();
+            return new Otherwise.WithMatchTypes<String>(null, theGivenString);
         
         val isContains = theGivenString.contains(theNeedle);
         val theResult  = isContains ? theGivenString : null;
-        return Nullable.of(theResult);
+        return new Otherwise.WithMatchTypes<String>(theResult, theGivenString);
     }
     
     /**
@@ -559,13 +559,13 @@ public class NullableJ {
      * @param theNeedle       the needle.
      * @return  the Nullable of the original string if it DOES NOT contain the needle otherwise return {@code null}.
      */
-    public static Nullable<String> _whenNotContains(String theGivenString, CharSequence theNeedle) {
+    public static Otherwise.WithMatchTypes<String> _whenNotContains(String theGivenString, CharSequence theNeedle) {
         if (theGivenString == null)
-            return Nullable.empty();
+            return new Otherwise.WithMatchTypes<String>(null, theGivenString);
         
         val isContains = theGivenString.contains(theNeedle);
         val theResult  = isContains ? null : theGivenString;
-        return Nullable.of(theResult);
+        return new Otherwise.WithMatchTypes<String>(theResult, theGivenString);
     }
     
     /**
@@ -575,13 +575,13 @@ public class NullableJ {
      * @param theRegex        the regular expression.
      * @return  the Nullable of the original string if it matches the needle otherwise return {@code Nullable.empty()}.
      */
-    public static Nullable<String> _whenMatches(String theGivenString, String theRegex) {
+    public static Otherwise.WithMatchTypes<String> _whenMatches(String theGivenString, String theRegex) {
         if (theGivenString == null)
-            return Nullable.empty();
+            return new Otherwise.WithMatchTypes<String>(null, theGivenString);
         
         val isMatches = theGivenString.matches(theRegex);
         val theResult  = isMatches ? theGivenString : null;
-        return Nullable.of(theResult);
+        return new Otherwise.WithMatchTypes<String>(theResult, theGivenString);
     }
     
     /**
@@ -591,13 +591,13 @@ public class NullableJ {
      * @param theRegex        the regular expression.
      * @return  the Nullable of the original string if it DOES NOT contain the needle otherwise return {@code Nullable.empty()}.
      */
-    public static Nullable<String> _whenNotMatches(String theGivenString, String theRegex) {
+    public static Otherwise.WithMatchTypes<String>_whenNotMatches(String theGivenString, String theRegex) {
         if (theGivenString == null)
-            return Nullable.empty();
+            return new Otherwise.WithMatchTypes<String>(null, theGivenString);
         
         val isMatches = theGivenString.matches(theRegex);
         val theResult  = isMatches ? null : theGivenString;
-        return Nullable.of(theResult);
+        return new Otherwise.WithMatchTypes<String>(theResult, theGivenString);
     }
     
     /**
@@ -607,13 +607,13 @@ public class NullableJ {
      * @param theRegex        the regular expression.
      * @return  the Nullable of the original string if it matches the needle otherwise return {@code Nullable.empty()}.
      */
-    public static Nullable<String> _whenMatches(String theGivenString, Pattern theRegex) {
+    public static Otherwise.WithMatchTypes<String> _whenMatches(String theGivenString, Pattern theRegex) {
         if (theGivenString == null)
-            return Nullable.empty();
+            return new Otherwise.WithMatchTypes<String>(null, theGivenString);
         
         val isMatches = theRegex.matcher(theGivenString).find();
         val theResult  = isMatches ? theGivenString : null;
-        return Nullable.of(theResult);
+        return new Otherwise.WithMatchTypes<String>(theResult, theGivenString);
     }
     
     /**
@@ -623,13 +623,13 @@ public class NullableJ {
      * @param theRegex        the regular expression.
      * @return  the Nullable of the original string if it DOES NOT contain the needle otherwise return {@code Nullable.empty()}.
      */
-    public static Nullable<String> _whenNotMatches(String theGivenString, Pattern theRegex) {
+    public static Otherwise.WithMatchTypes<String> _whenNotMatches(String theGivenString, Pattern theRegex) {
         if (theGivenString == null)
-            return Nullable.empty();
+            return new Otherwise.WithMatchTypes<String>(null, theGivenString);
         
         val isMatches = theRegex.matcher(theGivenString).find();
         val theResult  = isMatches ? null : theGivenString;
-        return Nullable.of(theResult);
+        return new Otherwise.WithMatchTypes<String>(theResult, theGivenString);
     }
     
     //== Array and Collection ==
@@ -848,12 +848,12 @@ public class NullableJ {
      * 
      * @param <CHARSEQUENCE>  the CharSequence type.
      */
-    public static <CHARSEQUENCE extends CharSequence> Nullable<CHARSEQUENCE> _whenNotEmpty(CHARSEQUENCE charSequence) {
+    public static <CHARSEQUENCE extends CharSequence> Otherwise.WithMatchTypes<CHARSEQUENCE> _whenNotEmpty(CHARSEQUENCE charSequence) {
         if (charSequence == null)
-            return Nullable.empty();
+            return new Otherwise.WithMatchTypes<CHARSEQUENCE>(null);
         if (charSequence.length() == 0)
-            return Nullable.empty();
-        return Nullable.of(charSequence);
+            return new Otherwise.WithMatchTypes<CHARSEQUENCE>(null, charSequence);
+        return new Otherwise.WithMatchTypes<CHARSEQUENCE>(charSequence);
     }
     
     /**
@@ -864,12 +864,12 @@ public class NullableJ {
      * 
      * @param <OBJECT> the type of the data in the array.
      */
-    public static <OBJECT> Nullable<OBJECT[]> _whenNotEmpty(OBJECT[] array) {
+    public static <OBJECT> Otherwise.WithMatchTypes<OBJECT[]> _whenNotEmpty(OBJECT[] array) {
         if (array == null)
-            return Nullable.empty();
+            return new Otherwise.WithMatchTypes<OBJECT[]>(null);
         if (array.length == 0)
-            return Nullable.empty();
-        return Nullable.of(array);
+            return new Otherwise.WithMatchTypes<OBJECT[]>(null, array);
+        return new Otherwise.WithMatchTypes<OBJECT[]>(array);
     }
     
     /**
@@ -880,12 +880,12 @@ public class NullableJ {
      * 
      * @param <OBJECT> the type of the data in the list.
      */
-    public static <OBJECT, COLLECTION extends Collection<OBJECT>> Nullable<COLLECTION> _whenNotEmpty(COLLECTION collection) {
+    public static <OBJECT, COLLECTION extends Collection<OBJECT>> Otherwise.WithMatchTypes<COLLECTION> _whenNotEmpty(COLLECTION collection) {
         if (collection == null)
-            return Nullable.empty();
+            return new Otherwise.WithMatchTypes<COLLECTION>(null);
         if (collection.isEmpty())
-            return Nullable.empty();
-        return Nullable.of(collection);
+            return new Otherwise.WithMatchTypes<COLLECTION>(null, collection);
+        return new Otherwise.WithMatchTypes<COLLECTION>(collection);
     }
     
     /**
@@ -897,12 +897,13 @@ public class NullableJ {
      * @param <KEY>   the type of the key of the function.
      * @param <VALUE> the type of the value of the function.
      */
-    public static <KEY, VALUE> Nullable<Map<KEY, VALUE>> _whenNotEmpty(Map<KEY, VALUE> map) {
+    public static <KEY, VALUE, MAP extends Map<KEY, VALUE>> Otherwise.WithMatchTypes<MAP> _whenNotEmpty(MAP map) {
         if (map == null)
-            return Nullable.empty();
+            return new Otherwise.WithMatchTypes<MAP>(null);
         if (map.isEmpty())
-            return Nullable.empty();
-        return Nullable.of(map);
+            return new Otherwise.WithMatchTypes<MAP>(null, map);
+        
+        return new Otherwise.WithMatchTypes<MAP>(map);
     }
     
     /**

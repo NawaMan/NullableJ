@@ -148,6 +148,8 @@ public class NullableJTest {
         
         assertTrue(nullString._whenNotNull() instanceof Nullable);
         assertFalse(nullString._whenNotNull().isPresent());
+        
+        assertEquals("STRING", "String"._whenNotNull().map(String::toUpperCase).get());
     }
     
     private static Consumer<String> saveStringTo(AtomicReference<String> ref) {
@@ -171,13 +173,38 @@ public class NullableJTest {
         assertEquals("Another string",      "The original string"._when(contains("another" )).orElse("Another string"));
         assertEquals("Another string",      nullString           ._when(contains("original")).orElse("Another string"));
         assertEquals("Another string",      nullString           ._when(contains("another" )).orElse("Another string"));
+        
+        assertEquals("String", "String"._when(contains("ring")).get());
+        assertEquals("String", "String"._when(contains("ring")).otherwise());
+        assertEquals(null,     "String"._when(contains("round")).get());
+        assertEquals("String", "String"._when(contains("round")).otherwise());
+        assertEquals(null,     nullString._when(contains("ring")).get());
+        assertEquals(null,     nullString._when(contains("ring")).otherwise());
+        assertEquals(null,     nullString._when(contains("round")).get());
+        assertEquals(null,     nullString._when(contains("round")).otherwise());
+        
+        // Maintain match type.
+        assertEquals("STRING", "String"._when(contains("ring")).mapValue(String::toUpperCase).get());
+        assertEquals("STRING", "String"._when(contains("ring")).mapValue(String::toUpperCase).otherwise());
+        assertEquals(null,     "String"._when(contains("round")).mapValue(String::toUpperCase).get());
+        assertEquals("String", "String"._when(contains("round")).mapValue(String::toUpperCase).otherwise());
+        
+        assertEquals(IntOf(6),  "String"._when(contains("ring")).map(String::length).get());
+        assertEquals(IntOf(6),  "String"._when(contains("ring")).map(String::length).orElse(-1));
+        assertEquals(null,      "String"._when(contains("round")).map(String::length).get());
+        assertEquals(IntOf(-1), "String"._when(contains("round")).map(String::length).orElse(-1));
+        assertEquals(null,      null._when(contains("ring")).map(String::length).get());
+        assertEquals(IntOf(-1), null._when(contains("ring")).map(String::length).orElse(-1));
+        assertEquals(null,      null._when(contains("round")).map(String::length).get());
+        assertEquals(IntOf(-1), null._when(contains("round")).map(String::length).orElse(-1));
     }
     
     @Test
     public void test_as() {
-        assertEquals(IntOf(1234), IntOf(1234)._as(Integer.class));
-        assertEquals(null,        IntOf(1234)._as(Double.class));
-        assertEquals(0.0,         IntOf(1234)._as(Double.class)._or(0.0), 0.0);
+        assertEquals(IntOf(1234), IntOf(1234)._as(Integer.class).get());
+        assertEquals(null,        IntOf(1234)._as(Double.class).get());
+        assertEquals(0.0,         IntOf(1234)._as(Double.class).orElse(0.0), 0.0);
+        assertEquals(1234.0,      IntOf(1234)._as(Double.class).otherwise(i->i*1.0), 0.0);
     }
     
     @Test
