@@ -54,6 +54,8 @@ public interface Nullable<TYPE> extends Supplier<TYPE> {
      * 
      * @param theGivenValue  the given value.
      * @return  the Nullable of the given value.
+     * 
+     * @param <OBJECT>  the data type.
      */
     @SuppressWarnings("unchecked")
     public static <OBJECT> Nullable<OBJECT> of(OBJECT theGivenValue) {
@@ -68,6 +70,8 @@ public interface Nullable<TYPE> extends Supplier<TYPE> {
      * 
      * @param theSupplier  the supplier of the value.
      * @return  the Nullable of the value.
+     * 
+     * @param <OBJECT>  the data type.
      */
     public static <OBJECT> Nullable<OBJECT> from(Supplier<? extends OBJECT> theSupplier) {
         return ()->theSupplier.get();
@@ -77,6 +81,8 @@ public interface Nullable<TYPE> extends Supplier<TYPE> {
      * Return Nullable which has no value.
      * 
      * @return  the Nullable of the no value.
+     * 
+     * @param <OBJECT>  the data type.
      */
     @SuppressWarnings("unchecked")
     public static <OBJECT> Nullable<OBJECT> empty() {
@@ -121,6 +127,7 @@ public interface Nullable<TYPE> extends Supplier<TYPE> {
      * 
      * @param exceptionSupplier  the exception supplier.
      * @return  the value.
+     * @param <THROWABLE> the exception to be thrown if the value is null.
      * @throws THROWABLE  if the value is null.
      */
     public default <THROWABLE extends Throwable> TYPE orElseThrow(Supplier<? extends THROWABLE> exceptionSupplier) throws THROWABLE {
@@ -180,6 +187,7 @@ public interface Nullable<TYPE> extends Supplier<TYPE> {
      * 
      * @param mapper  the mapper.
      * @return  the result Nullable or empty Nullable.
+     * @param <TARGET>  the target of the mapping.
      */
     public default <TARGET> Nullable<TARGET> flatMap(Function<? super TYPE, Nullable<TARGET>> mapper) {
         val value = get();
@@ -195,6 +203,7 @@ public interface Nullable<TYPE> extends Supplier<TYPE> {
      * 
      * @param mapper  the mapper.
      * @return  the result Nullable or empty Nullable.
+     * @param <TARGET>  the target of the mapping.
      */
     public default <TARGET> Nullable<TARGET> map(Function<? super TYPE,? extends TARGET> mapper) {
         val value = get();

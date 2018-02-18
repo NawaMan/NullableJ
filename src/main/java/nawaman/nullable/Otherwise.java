@@ -166,6 +166,8 @@ public class Otherwise<VALUE, OTHERWISE> implements Nullable<VALUE> {
          * 
          * @param mapper  the mapper.
          * @return  another otherwise with the new values.
+         * 
+         * @param <TARGET>  the target type of the map.
          */
         public <TARGET> WithMatchTypes<TARGET> mapBoth(Function<? super OBJECT,? extends TARGET> mapper) {
             val value        = this.get();

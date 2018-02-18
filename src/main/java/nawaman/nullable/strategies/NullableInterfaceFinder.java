@@ -35,8 +35,10 @@ public class NullableInterfaceFinder implements IFindNullValue {
      * 
      * @param clzz  the given class.
      * @return  the nullable object of the type.
+     * 
+     * @param <OBJECT>  the data type.
      */
-    public static <OBJECT, NULLABLE extends Nullable<OBJECT>> OBJECT createNullValueForInterface(Class<OBJECT> clzz) {
+    public static <OBJECT> OBJECT createNullValueForInterface(Class<OBJECT> clzz) {
         if (!clzz.isInterface())
             return null;
         

@@ -770,6 +770,8 @@ public class NullableJ {
      * @param theGivenArray  the given array.
      * @param theNeedle      the needle.
      * @return  if the given string contains the needle or {@code false} if it is null.
+     * 
+     * @param <OBJECT>  the target of the mapping.
      */
     public static <OBJECT> boolean _contains(OBJECT[] theGivenArray, OBJECT theNeedle) {
         if (theGivenArray == null)
@@ -789,6 +791,8 @@ public class NullableJ {
      * @param theGivenList  the given list.
      * @param theNeedle     the needle.
      * @return  if the given list contains the needle or {@code false} if it is null.
+     * 
+     * @param <OBJECT>  the target of the mapping.
      */
     public static <OBJECT> boolean _contains(Collection<OBJECT> theGivenList, OBJECT theNeedle) {
         if (theGivenList == null)
@@ -808,6 +812,9 @@ public class NullableJ {
      * @param theGivenMap  the given map.
      * @param theKey       the key.
      * @return  if the given map contains the key or {@code false} otherwise.
+     * 
+     * @param <KEY>    the type of the key.
+     * @param <VALUE>  the type of the value.
      */
     public static <KEY, VALUE> boolean _containsKey(Map<KEY, VALUE> theGivenMap, KEY theKey) {
         if (theGivenMap == null)
@@ -827,6 +834,9 @@ public class NullableJ {
      * @param theGivenMap  the given map.
      * @param theValue     the value.
      * @return  if the given map contains the value or {@code false} otherwise.
+     * 
+     * @param <KEY>    the type of the key.
+     * @param <VALUE>  the type of the value.
      */
     public static <KEY, VALUE> boolean _containsValue(Map<KEY, VALUE> theGivenMap, VALUE theValue) {
         if (theGivenMap == null)
@@ -878,7 +888,8 @@ public class NullableJ {
      * @param collection  the collection.
      * @return  Nullable value if the list.
      * 
-     * @param <OBJECT> the type of the data in the list.
+     * @param <OBJECT>      the type of the data in the list.
+     * @param <COLLECTION>  the type of the collection.
      */
     public static <OBJECT, COLLECTION extends Collection<OBJECT>> Otherwise.WithMatchTypes<COLLECTION> _whenNotEmpty(COLLECTION collection) {
         if (collection == null)
@@ -896,6 +907,7 @@ public class NullableJ {
      * 
      * @param <KEY>   the type of the key of the function.
      * @param <VALUE> the type of the value of the function.
+     * @param <MAP>   the type of the map.
      */
     public static <KEY, VALUE, MAP extends Map<KEY, VALUE>> Otherwise.WithMatchTypes<MAP> _whenNotEmpty(MAP map) {
         if (map == null)
@@ -928,7 +940,8 @@ public class NullableJ {
      * @param collection  the collection.
      * @return  the stream.
      * 
-     * @param <OBJECT> the type of the data in the list.
+     * @param <OBJECT>     the type of the data in the list.
+     * @param <COLLECTION> the type of the collection.
      */
     public static <OBJECT, COLLECTION extends Collection<OBJECT>> Stream<OBJECT> _butOnlyNonNull$(COLLECTION collection) {
         if (collection == null)
@@ -972,7 +985,8 @@ public class NullableJ {
      * @param collection  the collection.
      * @return  the list.
      * 
-     * @param <OBJECT> the type of the data in the list.
+     * @param <OBJECT>     the type of the data in the list.
+     * @param <COLLECTION> the type of the collection.
      */
     public static <OBJECT, COLLECTION extends Collection<OBJECT>> List<OBJECT> _toList(COLLECTION collection) {
         if (collection == null)
@@ -1315,7 +1329,7 @@ public class NullableJ {
      * 
      * @param <OBJECT> the type of the data in the array.
      */
-    public static <OBJECT> Stream<OBJECT> _butOnlyThat$(OBJECT[] array, Predicate<OBJECT> condition) {
+    public static <OBJECT> Stream<OBJECT> _butOnly$(OBJECT[] array, Predicate<OBJECT> condition) {
         if (array == null)
             return Stream.empty();
         return stream(array).filter(condition);
@@ -1327,9 +1341,10 @@ public class NullableJ {
      * @param condition  the condition.
      * @return  the element with only the matching elements.
      * 
-     * @param <OBJECT> the type of the data in the list.
+     * @param <OBJECT>     the type of the data in the list.
+     * @param <COLLECTION> the type of the collection.
      */
-    public static <OBJECT, COLLECION extends Collection<OBJECT>> Stream<OBJECT> _butOnlyThat$(COLLECION collection, Predicate<OBJECT> condition) {
+    public static <OBJECT, COLLECTION extends Collection<OBJECT>> Stream<OBJECT> _butOnly$(COLLECTION collection, Predicate<OBJECT> condition) {
         if (collection == null)
             return empty();
         return collection.stream().filter(condition);
@@ -1348,7 +1363,7 @@ public class NullableJ {
     public static <OBJECT> OBJECT[] _butOnly(OBJECT[] array, Predicate<OBJECT> condition) {
         if (array == null)
             return null;
-        val list = _butOnlyThat$(array, condition).collect(toList());
+        val list = _butOnly$(array, condition).collect(toList());
         val newArray = (OBJECT[])newInstance(array.getClass().getComponentType(), list.size());
         return list.toArray(newArray);
     }
@@ -1360,12 +1375,13 @@ public class NullableJ {
      * @param condition  the condition.
      * @return  the element with only the matching elements or null if the given element is null.
      * 
-     * @param <OBJECT> the type of the data in the list.
+     * @param <OBJECT>     the type of the data in the list.
+     * @param <COLLECTION> the type of the collection.
      */
-    public static <OBJECT, COLLECION extends Collection<OBJECT>> List<OBJECT> _butOnly(COLLECION collection, Predicate<OBJECT> condition) {
+    public static <OBJECT, COLLECTION extends Collection<OBJECT>> List<OBJECT> _butOnly(COLLECTION collection, Predicate<OBJECT> condition) {
         if (collection == null)
             return null;
-        return _butOnlyThat$(collection, condition).collect(toList());
+        return _butOnly$(collection, condition).collect(toList());
     }
     
     /**
