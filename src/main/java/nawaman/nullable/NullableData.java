@@ -55,10 +55,16 @@ public class NullableData {
      * @param <T>  the data type.
      * @param <N>  the Nullable data type.
      */
+    @SuppressWarnings("unchecked")
     public static <T, N extends Nullable<T>> N of(
             T value, 
             Class<T> dataObjectClass, 
             Class<N> nullableObjectClass) {
+        if (value == null) {
+            return (N)NullableObjectCache.nullableObjects.computeIfAbsent(nullableObjectClass, clzz->{
+                return from(()->value, dataObjectClass, nullableObjectClass);
+            });
+        }
         return from(()->value, dataObjectClass, nullableObjectClass);
     }
     
@@ -71,7 +77,14 @@ public class NullableData {
      * 
      * @param <T>  the data type.
      */
+    @SuppressWarnings("unchecked")
     public static <T> T of(T value, Class<T> dataObjectClass) {
+        if (value == null) {
+            return (T)NullableObjectCache.nullableObjects.computeIfAbsent(dataObjectClass, clzz->{
+                return from(()->value, dataObjectClass);
+            });
+        }
+        
         return from(()->value, dataObjectClass);
     }
     
@@ -116,14 +129,12 @@ public class NullableData {
         if (!dataObjectClass.isInterface())
             throw new IllegalArgumentException("The data class must be an interface: " + dataObjectClass);
         
-        return (N)NullableObjectCache.nullableObjects.computeIfAbsent(nullableObjectClass, clzz->{
-            val interfaces  = new Class<?>[] { nullableObjectClass };
-            val classLoader = dataObjectClass.getClassLoader();
-            val handler     = createNullableInvocationHandler(valueSupplier, (Class<T>)nullableObjectClass);
-            val rawProxy    = Proxy.newProxyInstance(classLoader, interfaces, handler);
-            val proxy       = nullableObjectClass.cast(rawProxy);
-            return proxy;
-        });
+        val interfaces  = new Class<?>[] { nullableObjectClass };
+        val classLoader = dataObjectClass.getClassLoader();
+        val handler     = createNullableInvocationHandler(valueSupplier, (Class<T>)nullableObjectClass);
+        val rawProxy    = Proxy.newProxyInstance(classLoader, interfaces, handler);
+        val proxy       = nullableObjectClass.cast(rawProxy);
+        return proxy;
     }
     
     /**
@@ -140,14 +151,12 @@ public class NullableData {
         if (!dataObjectClass.isInterface())
             throw new IllegalArgumentException("The data class must be an interface: " + dataObjectClass);
         
-        return (T)NullableObjectCache.nullableObjects.computeIfAbsent(dataObjectClass, clzz->{
-                val interfaces  = new Class<?>[] { dataObjectClass, Nullable.class };
-                val classLoader = dataObjectClass.getClassLoader();
-                val handler     = createNullableInvocationHandler(valueSupplier, dataObjectClass);
-                val rawProxy    = Proxy.newProxyInstance(classLoader, interfaces, handler);
-                val proxy       = (T)rawProxy;
-                return proxy;
-        });
+        val interfaces  = new Class<?>[] { dataObjectClass, Nullable.class };
+        val classLoader = dataObjectClass.getClassLoader();
+        val handler     = createNullableInvocationHandler(valueSupplier, dataObjectClass);
+        val rawProxy    = Proxy.newProxyInstance(classLoader, interfaces, handler);
+        val proxy       = (T)rawProxy;
+        return proxy;
     }
     
 }
