@@ -5,7 +5,7 @@ It can find/create null value for a given type.
 This is most useful to create return object for other code that might not expect null.
 
 NullValues has default instance ready to use (`NullValues.instance`).
-It also has a static method (`nullValueOf(...)`) that basically call the default instance.
+It also has a static method (`nullValueOf(...)` or just `of(...)`) that basically call the default instance.
 
 # Finding null value
 `NullValues` has a preset sets of strategies to find null values.
@@ -19,6 +19,7 @@ Here are the strategies in the order.
 5. NamedField
 6. NamedMethod
 7. DefaultConstructor
+8. NullableInterface
 
 ## KnownNullValues
 `NullValues` maintains a list of classes its know exactly what the null value is.
@@ -124,14 +125,34 @@ public class Person {
 If the above strategies fail,
   `NullValues` will try to see if it can create a new value using default constructor.
 
+## NullableInterface
+If the class is an interface, `NullableValues` will try to create an implementation of it using Dynamic Proxy.
+All the implemented method will do nothing and will returns null value of whatever the return type is.
+This is done using `[NullableData](https://github.com/NawaMan/NullableJ/blob/master/docs/NullableData.md)`.
+
+For example, given the following class.
+```Java
+	public interface EmailService {
+		public SendEmailResponse sendEmail(Email email);
+	}
+```
+the implemented null data will be equivalent to this ...
+
+For example, given the following class.
+```Java
+	public class NullEmailService implements EmailService, Nullable<EmailService> {
+		public SendEmailResponse sendEmail(Email email) {
+			return NullValues.nullValueOf(SendEmailResponse.class);
+		}
+		public EmailService get() {
+			return this;
+		}
+	}
+```
+
 ## null
 That is right, `NullValues` fails all above, it just return null.
 
 # Conclusion
-Hope this article explains what `NullValues` does and how it does it.
-
-
-
-
-
+Hope this explains what `NullValues` does and how it does it.
 

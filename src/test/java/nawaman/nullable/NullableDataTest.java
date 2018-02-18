@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -125,5 +126,32 @@ public class NullableDataTest {
         val thing = NullableData.of(null, Thing.class);
         val thingAndMore = NullableData.of(null, ThingAndMore.class);
         Assert.assertFalse(thing.equals(thingAndMore));
+    }
+    
+    public static interface MayPresent {
+        public boolean isPresent();
+    }
+    
+    public static class MayPresentImpl implements MayPresent {
+        int count = 0;
+        public boolean isPresent() {
+            count++;
+            return true;
+        }
+    }
+    
+    @Ignore("It is wrong now... should be fixed.")
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testNameCollision() {
+        MayPresent mayPresent = NullableData.of(new MayPresentImpl(), MayPresent.class);
+        // First the count is 0.
+        assertEquals(0, ((MayPresentImpl)((Nullable<MayPresent>)mayPresent).get()).count);
+        mayPresent.isPresent();
+        // After call, the count is 1 as it should call the method of MyPresentImpl
+        assertEquals(1, ((MayPresentImpl)((Nullable<MayPresent>)mayPresent).get()).count);
+        ((Nullable<MayPresent>)mayPresent).isPresent();
+        // After call as nullable, the count should stay 1.
+        assertEquals(1, ((MayPresentImpl)((Nullable<MayPresent>)mayPresent).get()).count);
     }
 }
