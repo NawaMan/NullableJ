@@ -63,6 +63,18 @@ public class NullValues implements IFindNullValue {
         return nullObj;
     }
     
+    /**
+     * Find the null value of the given class.
+     * 
+     * @param clzz  the class.
+     * @return  the null value found. This method return null if it cannot find some.
+     * @param <OBJECT>  the type of the object.
+     */
+    public static final <OBJECT> OBJECT of(Class<OBJECT> clzz) {
+        val nullObj = instance.findNullValueOf(clzz);
+        return nullObj;
+    }
+    
     protected final KnownNullValuesFinder    knownNullFinder          = new KnownNullValuesFinder();
     protected final KnownNewNullValuesFinder KnownNewNullValuesFinder = new KnownNewNullValuesFinder();
     protected final AnnotatedFieldFinder     annotatedFieldFinder     = new AnnotatedFieldFinder(NULL_VALUE_ANNOTTION_NAME);

@@ -10,37 +10,74 @@ Java Uitility used to deal with `null`.
 * `Nullable` is a wrapper of a value that might be null. This is very similar to Optional.
 * `NullableData` is a utility to create a null data of any data interface.
 
-### `NullableJ`
+## `NullableJ`
 `NullableJ` is a collection of extension methods that are null safe.
 These methods are designed to be used with [Lombok's @ExtensionMethod](https://dzone.com/articles/lomboks-extension-methods).
 They can be used as normal static methods but the naming is done with the intention that they will be used with Lombok's ExtensionMethod.
 These are commonly used methods that are null safe.
 This include simple method like `toString()` that return null if the object is null.
-Null epecific methods like `_or(...)` to returns the given value if the object is null.
+Null specific methods like `_or(...)` to returns the given value if the object is null.
 Collection methods like `Map.get(...)` that return null, if the map is null or the key is null.
 Or even complex method like `when(...)` that allow you to discards the value if the condition is not met.
 See [`NullableJ` page](https://github.com/NawaMan/NullableJ/blob/master/docs/NullableJ.md) for more info.
 
-### `NullValues`
+For example, the code below will parse the string to an int or retur 0 if the string does not contain valid int stirng.
+```java
+	return intString._whenMatches("\\-?[0-9]+").map(Integer::parseInt).orElse(0);
+```
+
+## `NullValues`
 `NullValues` is a utility to get null value of a class.
 `NullValues` will try to find the best candidate value to use as null value for a given class.
 It deploys many strategies to obtain the value.
+```java
+	@Value
+	public class PhoneNumber {
+		@NullValue	// Specify that this value is a null value.
+		public static final PhoneNumber nullPhoneNumber = new PhoneNumber("xxx-xxx-xxxx");
+		
+		private String number;
+	}
+	
+	...
+	// NullValues figured out that the nullPhoneNumber is the null value of the type.
+	assertEquals("xxx-xxx-xxxx", NullValues.of(PhoneNumber.class).getNumber());
+```
+
 Find more information [here](https://github.com/NawaMan/NullableJ/blob/master/docs/NullValues.md).
 
-### `Nullable`
+## `Nullable`
 `Nullable` is an implementation of Optional but it is extensible.
 It also allow you to create a nullable object of interface data.
 Its benefit (as for dealing with `null`) is very similar to Optional.
 However, since it is extensible,
   more methods are added and sub typing is done to expands its utilities.
 Also, fix some of the problems of Optional.
+
+For example, the following code will return the value associated with the string key or empty string if the key is null.
+```java
+	return Nullable.of(key).map(valueMap::get).orElse("");
+```
 Find more information [here](https://github.com/NawaMan/NullableJ/blob/master/docs/Nullable.md).
 
-### `NullableData`
-`NullableData` is a utility to create nullable data of any data interface (only work for interface).
+## `NullableData`
+`NullableData` is a utility to create nullable object of any interface (only work for interface).
 The nullable data created is an hybridge object between the data interface and Nullable.
 When invoking the method of the data class, nothing is done and null values are returned.
 This nullable data will look just other instance of that interface so it can be passed along and used just like other instance.
+
+For example, the following code will return the value associated with the string key or empty string if the key is null.
+```java
+	public interface EmailService {
+		public void sendEmail(Email email);
+	}
+	...
+	
+	// NullableData implements the interface 
+	EmailService emailService = NullableData.of(emailServiceEnabled ? actualEmailService : null, EmailService.class);
+	...
+	emailService.sendEmail(email);
+```
 Find more information [here](https://github.com/NawaMan/NullableJ/blob/master/docs/NullableData.md).
 
 

@@ -15,7 +15,7 @@ import lombok.Data;
 import lombok.val;
 
 @SuppressWarnings("javadoc")
-public class NullableObjectTest {
+public class NullableDataTest {
 
     public static interface Person {
         

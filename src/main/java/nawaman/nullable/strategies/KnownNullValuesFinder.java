@@ -67,8 +67,8 @@ public class KnownNullValuesFinder implements IFindNullValue {
         
         map.put(Runnable.class,   ((Runnable)()->{}));
         map.put(Supplier.class,   ((Supplier)()->null));
-        map.put(Function.class,   ((Function)input->input));
-        map.put(BiFunction.class, ((BiFunction)(a,b)->a));
+        map.put(Function.class,   ((Function)input->null));
+        map.put(BiFunction.class, ((BiFunction)(a,b)->null));
         map.put(Consumer.class,   ((Consumer)input->{}));
         
         map.put(Collection.class, EMPTY_LIST);
