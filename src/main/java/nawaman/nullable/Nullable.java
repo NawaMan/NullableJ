@@ -167,7 +167,7 @@ public interface Nullable<TYPE> extends Supplier<TYPE> {
     /**
      * Returns this Nullable object if the value is null or fail the condition test otherwise return empty Nullable.
      * 
-     * @param theCondition 
+     * @param theCondition  the condition to be filter in.
      * @return  this object or empty Nullable.
      */
     public default Nullable<TYPE> filter(Predicate<? super TYPE> theCondition) {

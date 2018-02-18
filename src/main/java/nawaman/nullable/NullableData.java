@@ -74,21 +74,21 @@ public class NullableData {
     /**
      * Create a Nullable Data object without the combined class.
      * 
-     * @param value
-     * @param dataObjectClass
+     * @param dataValue  the data value.
+     * @param dataClass  the data class.
      * @return the nullable data object.
      * 
      * @param <T>  the data type.
      */
     @SuppressWarnings("unchecked")
-    public static <T> T of(T value, Class<T> dataObjectClass) {
-        if (value == null) {
-            return (T)NullableObjectCache.nullableObjects.computeIfAbsent(dataObjectClass, clzz->{
-                return from((Supplier<T>)nullSupplier, dataObjectClass, Nullable.empty());
+    public static <T> T of(T dataValue, Class<T> dataClass) {
+        if (dataValue == null) {
+            return (T)NullableObjectCache.nullableObjects.computeIfAbsent(dataClass, clzz->{
+                return from((Supplier<T>)nullSupplier, dataClass, Nullable.empty());
             });
         }
         
-        return from(()->value, dataObjectClass);
+        return from(()->dataValue, dataClass);
     }
     
     /**
@@ -106,12 +106,12 @@ public class NullableData {
      * </pre>
      * Then, the nullable object might look like this:
      * <pre>
-     * public interface NullableData extends Data, Nullable<Data> {
+     * public interface NullableData extends Data, Nullable&lt;Data&gt; {
      * }
      * </pre>
      * And this method can be used to create an instance of NullableData like this.
      * <pre>
-     * NullableData nullableData = Nullable.createNullableObject(()->myValue, Data.class, NullableData.class);
+     * NullableData nullableData = Nullable.createNullableObject(()-&gt;myValue, Data.class, NullableData.class);
      * System.out.println(nullableData.getValue());
      * System.out.println(nullableData.map(Data::getValue()).orElse(Value.NO_VALUE));
      * </pre>
