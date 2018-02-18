@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.PrintStream;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -35,7 +34,7 @@ public class NullableDataTest {
         private String name;
     }
     
-    public static interface AnotherNullablePerson extends Person, Nullable<Person> {
+    public static interface AnotherNullablePerson extends Person, IAsNullable<Person> {
     }
     
     @Test
@@ -54,7 +53,7 @@ public class NullableDataTest {
             assertEquals("Person: Jim", baos.toString().trim());
         } catch (IOException e) {
         }
-        assertEquals(3, person.map(Person::getName).map(String::length).get().intValue());
+        assertEquals(3, person.asNullable().map(Person::getName).map(String::length).get().intValue());
     }
     
     public static interface BuildInNullablePerson extends Nullable<BuildInNullablePerson> {
@@ -128,30 +127,4 @@ public class NullableDataTest {
         Assert.assertFalse(thing.equals(thingAndMore));
     }
     
-    public static interface MayPresent {
-        public boolean isPresent();
-    }
-    
-    public static class MayPresentImpl implements MayPresent {
-        int count = 0;
-        public boolean isPresent() {
-            count++;
-            return true;
-        }
-    }
-    
-    @Ignore("It is wrong now... should be fixed.")
-    @SuppressWarnings("unchecked")
-    @Test
-    public void testNameCollision() {
-        MayPresent mayPresent = NullableData.of(new MayPresentImpl(), MayPresent.class);
-        // First the count is 0.
-        assertEquals(0, ((MayPresentImpl)((Nullable<MayPresent>)mayPresent).get()).count);
-        mayPresent.isPresent();
-        // After call, the count is 1 as it should call the method of MyPresentImpl
-        assertEquals(1, ((MayPresentImpl)((Nullable<MayPresent>)mayPresent).get()).count);
-        ((Nullable<MayPresent>)mayPresent).isPresent();
-        // After call as nullable, the count should stay 1.
-        assertEquals(1, ((MayPresentImpl)((Nullable<MayPresent>)mayPresent).get()).count);
-    }
 }

@@ -37,6 +37,9 @@ class NullableObjectCache {
  */
 public class NullableData {
     
+    @SuppressWarnings("rawtypes")
+    private static final Supplier nullSupplier = ()->null;
+    
     private NullableData() {
         
     }
@@ -56,13 +59,13 @@ public class NullableData {
      * @param <N>  the Nullable data type.
      */
     @SuppressWarnings("unchecked")
-    public static <T, N extends Nullable<T>> N of(
+    public static <T, N extends IAsNullable<T>> N of(
             T value, 
             Class<T> dataObjectClass, 
             Class<N> nullableObjectClass) {
         if (value == null) {
             return (N)NullableObjectCache.nullableObjects.computeIfAbsent(nullableObjectClass, clzz->{
-                return from(()->value, dataObjectClass, nullableObjectClass);
+                return from((Supplier<T>)nullSupplier, dataObjectClass, nullableObjectClass, Nullable.empty());
             });
         }
         return from(()->value, dataObjectClass, nullableObjectClass);
@@ -81,7 +84,7 @@ public class NullableData {
     public static <T> T of(T value, Class<T> dataObjectClass) {
         if (value == null) {
             return (T)NullableObjectCache.nullableObjects.computeIfAbsent(dataObjectClass, clzz->{
-                return from(()->value, dataObjectClass);
+                return from((Supplier<T>)nullSupplier, dataObjectClass, Nullable.empty());
             });
         }
         
@@ -121,17 +124,25 @@ public class NullableData {
      * @param <T>  the data type.
      * @param <N>  the Nullable data type.
      */
-    @SuppressWarnings("unchecked")
-    public static <T, N extends Nullable<T>> N from(
+    public static <T, N extends IAsNullable<T>> N from(
             Supplier<T> valueSupplier, 
             Class<T> dataObjectClass, 
             Class<N> nullableObjectClass) {
+        return from(valueSupplier, dataObjectClass, nullableObjectClass, null);
+    }
+    
+    @SuppressWarnings("unchecked")
+    private static <T, N extends IAsNullable<T>> N from(
+            Supplier<T> valueSupplier, 
+            Class<T> dataObjectClass, 
+            Class<N> nullableObjectClass,
+            Nullable<T> nullable) {
         if (!dataObjectClass.isInterface())
             throw new IllegalArgumentException("The data class must be an interface: " + dataObjectClass);
         
         val interfaces  = new Class<?>[] { nullableObjectClass };
         val classLoader = dataObjectClass.getClassLoader();
-        val handler     = createNullableInvocationHandler(valueSupplier, (Class<T>)nullableObjectClass);
+        val handler     = createNullableInvocationHandler(valueSupplier, (Class<T>)nullableObjectClass, nullable);
         val rawProxy    = Proxy.newProxyInstance(classLoader, interfaces, handler);
         val proxy       = nullableObjectClass.cast(rawProxy);
         return proxy;
@@ -146,14 +157,21 @@ public class NullableData {
      * 
      * @param <T>  the data type.
      */
-    @SuppressWarnings("unchecked")
     public static <T> T from(Supplier<? extends T> valueSupplier, Class<T> dataObjectClass) {
+        return from(valueSupplier, dataObjectClass, null);
+    }
+    
+    @SuppressWarnings("unchecked")
+    private static <T> T from(
+            Supplier<? extends T> valueSupplier,
+            Class<T> dataObjectClass,
+            Nullable<T> nullable) {
         if (!dataObjectClass.isInterface())
             throw new IllegalArgumentException("The data class must be an interface: " + dataObjectClass);
         
-        val interfaces  = new Class<?>[] { dataObjectClass, Nullable.class };
+        val interfaces  = new Class<?>[] { dataObjectClass, IAsNullable.class };
         val classLoader = dataObjectClass.getClassLoader();
-        val handler     = createNullableInvocationHandler(valueSupplier, dataObjectClass);
+        val handler     = createNullableInvocationHandler(valueSupplier, dataObjectClass, nullable);
         val rawProxy    = Proxy.newProxyInstance(classLoader, interfaces, handler);
         val proxy       = (T)rawProxy;
         return proxy;

@@ -22,8 +22,10 @@ import java.lang.reflect.Method;
 import java.util.function.Supplier;
 
 import lombok.val;
+import nawaman.nullable.IAsNullable;
 import nawaman.nullable.NullValues;
 import nawaman.nullable.Nullable;
+import nawaman.nullable.NullableJ;
 
 /**
  * For internal use only, I will turn around if I were you.
@@ -36,7 +38,7 @@ public class ReflectionUtil {
     public static Object invokeNullableProxy(Object proxy, Method method, Object[] args)
             throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         @SuppressWarnings("rawtypes")
-        val value = ((Nullable)proxy).get();
+        val value = ((IAsNullable)proxy).asNullable().get();
         if (value == null) {
             Class<?> returnType = method.getReturnType();
             Object rawNullValue = NullValues.nullValueOf(returnType);
@@ -66,7 +68,11 @@ public class ReflectionUtil {
         return method.invoke(value, args);
     }
     
-    public static <T> InvocationHandler createNullableInvocationHandler(Supplier<? extends T> valueSupplier, Class<T> dataClass) {
+    public static <T> InvocationHandler createNullableInvocationHandler(
+            Supplier<? extends T> valueSupplier,
+            Class<T> dataClass,
+            Nullable<T> nullable) {
+        val theNullable = NullableJ._orGet(nullable, ()->Nullable.from(valueSupplier));
         val handler = (InvocationHandler)(proxy, method, methodArgs) -> {
             if ("get".equals(method.getName()))
                 return valueSupplier.get();
@@ -88,15 +94,16 @@ public class ReflectionUtil {
                 return !isPresent;
             }
             
-            boolean isNullableMethod = Nullable.class == method.getDeclaringClass();
-            if (!isNullableMethod)
+            if ("asNullable".equals(method.getName()) && (method.getParameterCount() == 0))
+                return theNullable;
+            
+            boolean isICanBeNullableMethod = IAsNullable.class == method.getDeclaringClass();
+            if (!isICanBeNullableMethod)
                 return invokeNullableProxy(proxy, method, methodArgs);
             
             if (method.isDefault()) {
                 return invokeDefaultMethod(proxy, method, methodArgs);
             }
-            
-            // TODO - Might have to deal with hashCode toString and equals.
             
             return null;
         };
