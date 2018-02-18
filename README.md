@@ -132,3 +132,15 @@ and the dependencies to Lombok and NullableJ.
 ```
 
 See [UseNullableJMaven](https://github.com/NawaMan/UseNullableJMaven) for more information.
+
+## Issues
+
+Please use our issues tracking object to report any issues.
+
+## Constribute
+
+Feel free to help out.
+Report problem, suggest solutions, suggest more functionality ... anything is appreciated.
+Or if this is useful to you and want to buy me a [coffee](https://www.paypal.me/NawaMan/2.00)
+ or [lunch](https://www.paypal.me/NawaMan/10.00) ... that would be great :-)
+
