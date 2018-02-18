@@ -149,7 +149,7 @@ Please use our [issues tracking page](https://github.com/NawaMan/NullableJ/issue
 ## Contribute
 
 Feel free to help out.
-Report problem, suggest solutions, suggest more functionality ... anything is appreciated (please do it in [issues tracking page](https://github.com/NawaMan/NullableJ/issues) or email me directly).
+Report problems, suggest solutions, suggest more functionality ... anything is appreciated (please do it in [issues tracking page](https://github.com/NawaMan/NullableJ/issues) or email me directly).
 
 If this is useful to you and want to buy me a [coffee](https://www.paypal.me/NawaMan/2.00)
  or [lunch](https://www.paypal.me/NawaMan/10.00) ... that would be great :-)
