@@ -19,17 +19,19 @@ This include simple method like `toString()` that return null if the object is n
 Null specific methods like `_or(...)` to returns the given value if the object is null.
 Collection methods like `Map.get(...)` that return null, if the map is null or the key is null.
 Or even complex method like `when(...)` that allow you to discards the value if the condition is not met.
-See [`NullableJ` page](https://github.com/NawaMan/NullableJ/blob/master/docs/NullableJ.md) for more info.
 
 For example, the code below will parse the string to an int or retur 0 if the string does not contain valid int stirng.
 ```java
 	return intString._whenMatches("\\-?[0-9]+").map(Integer::parseInt).orElse(0);
 ```
+See [`NullableJ` page](https://github.com/NawaMan/NullableJ/blob/master/docs/NullableJ.md) for more info.
 
 ## `NullValues`
 `NullValues` is a utility to get null value of a class.
 `NullValues` will try to find the best candidate value to use as null value for a given class.
-It deploys many strategies to obtain the value.
+It deploys many strategies to obtain the value such as from know list, single field with name or anncation and so on.
+
+The example code below show PhoneNumber class that specifies its null value using annotation.
 ```java
 	@Value
 	public class PhoneNumber {
