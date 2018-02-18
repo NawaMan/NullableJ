@@ -85,6 +85,8 @@ Find more information [here](https://github.com/NawaMan/NullableJ/blob/master/do
 
 ## Using NullableJ in Gradle project
 
+This project binary is published on [my maven repo](https://github.com/NawaMan/nawaman-maven-repository) hosted on GitHub. So to use NullableJ you will need to ...
+
 Add the maven repository ...
 
 ```Groovy
@@ -133,6 +135,13 @@ and the dependencies to Lombok and NullableJ.
 
 See [UseNullableJMaven](https://github.com/NawaMan/UseNullableJMaven) for more information.
 
+## Build
+
+This project is developed as a gradle project on Eclipse
+  so you can just clone and import it to your Eclipse.
+Although, never tried, but I think it should be easy to import into IntelliJ.
+Simply run `gradle clean build` to build the project (or use the build-in gradle wrapper).
+
 ## Issues
 
 Please use our [issues tracking page](https://github.com/NawaMan/NullableJ/issues) to report any issues.
@@ -141,6 +150,7 @@ Please use our [issues tracking page](https://github.com/NawaMan/NullableJ/issue
 
 Feel free to help out.
 Report problem, suggest solutions, suggest more functionality ... anything is appreciated (please do it in [issues tracking page](https://github.com/NawaMan/NullableJ/issues) or email me directly).
-Or if this is useful to you and want to buy me a [coffee](https://www.paypal.me/NawaMan/2.00)
+
+If this is useful to you and want to buy me a [coffee](https://www.paypal.me/NawaMan/2.00)
  or [lunch](https://www.paypal.me/NawaMan/10.00) ... that would be great :-)
 
