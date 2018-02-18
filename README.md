@@ -5,6 +5,10 @@
 Java Uitility used to deal with `null`.
 
 `NullableJ` deploy multiple techniques to deal with `null`.
+* `NullableJ` is a collection of extension methods that are null safe.
+* `NullValues` is a utility to get null value of a class (value of a type that represent null).
+* `Nullable` is a wrapper of a value that might be null. This is very similar to Optional.
+* `NullableData` is a utility to create a null data of any data interface.
 
 ### `NullableJ`
 `NullableJ` is a collection of extension methods that are null safe.
@@ -18,12 +22,26 @@ Or even complex method like `when(...)` that allow you to discards the value if 
 See [`NullableJ` page](https://github.com/NawaMan/NullableJ/blob/master/docs/NullableJ.md) for more info.
 
 ### `NullValues`
+`NullValues` is a utility to get null value of a class.
 `NullValues` will try to find the best candidate value to use as null value for a given class.
-Find more information [here](https://github.com/NawaMan/NullableJ/blob/master/NullValues.md).
+It deploys many strategies to obtain the value.
+Find more information [here](https://github.com/NawaMan/NullableJ/blob/master/docs/NullValues.md).
 
 ### `Nullable`
 `Nullable` is an implementation of Optional but it is extensible.
 It also allow you to create a nullable object of interface data.
+Its benefit (as for dealing with `null`) is very similar to Optional.
+However, since it is extensible,
+  more methods are added and sub typing is done to expands its utilities.
+Also, fix some of the problems of Optional.
+Find more information [here](https://github.com/NawaMan/NullableJ/blob/master/docs/Nullable.md).
+
+### `NullableData`
+`NullableData` is a utility to create nullable data of any data interface (only work for interface).
+The nullable data created is an hybridge object between the data interface and Nullable.
+When invoking the method of the data class, nothing is done and null values are returned.
+This nullable data will look just other instance of that interface so it can be passed along and used just like other instance.
+Find more information [here](https://github.com/NawaMan/NullableJ/blob/master/docs/NullableData.md).
 
 
 ## Using NullableJ in Gradle project

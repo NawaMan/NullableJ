@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -63,9 +65,11 @@ public class KnownNullValuesFinder implements IFindNullValue {
         map.put(boolean.class,   false);
         map.put(Character.class, Boolean.FALSE);
         
-        map.put(Runnable.class, ((Runnable)()->{}));
-        map.put(Supplier.class, ((Supplier)()->null));
-        map.put(Function.class, ((Function)input->null));
+        map.put(Runnable.class,   ((Runnable)()->{}));
+        map.put(Supplier.class,   ((Supplier)()->null));
+        map.put(Function.class,   ((Function)input->input));
+        map.put(BiFunction.class, ((BiFunction)(a,b)->a));
+        map.put(Consumer.class,   ((Consumer)input->{}));
         
         map.put(Collection.class, EMPTY_LIST);
         map.put(List.class,       EMPTY_LIST);
