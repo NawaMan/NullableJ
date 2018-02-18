@@ -137,10 +137,10 @@ See [UseNullableJMaven](https://github.com/NawaMan/UseNullableJMaven) for more i
 
 Please use our [issues tracking page](https://github.com/NawaMan/NullableJ/issues) to report any issues.
 
-## Constribute
+## Contribute
 
 Feel free to help out.
-Report problem, suggest solutions, suggest more functionality ... anything is appreciated.
+Report problem, suggest solutions, suggest more functionality ... anything is appreciated (please do it in [issues tracking page](https://github.com/NawaMan/NullableJ/issues)).
 Or if this is useful to you and want to buy me a [coffee](https://www.paypal.me/NawaMan/2.00)
  or [lunch](https://www.paypal.me/NawaMan/10.00) ... that would be great :-)
 
