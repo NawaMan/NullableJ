@@ -135,7 +135,7 @@ See [UseNullableJMaven](https://github.com/NawaMan/UseNullableJMaven) for more i
 
 ## Issues
 
-Please use our issues tracking object to report any issues.
+Please use our [issues tracking page](https://github.com/NawaMan/NullableJ/issues) to report any issues.
 
 ## Constribute
 
