@@ -63,12 +63,12 @@ For example, the following code will return the value associated with the string
 Find more information [here](https://github.com/NawaMan/NullableJ/blob/master/docs/Nullable.md).
 
 ## `NullableData`
-`NullableData` is a utility to create nullable object of any interface (only work for interface).
+`NullableData` is a utility to create nullable object of any interface (only work with interfaces).
 The nullable data created is an hybridge object between the data interface and Nullable.
 When invoking the method of the data class, nothing is done and null values are returned.
 This nullable data will look just other instance of that interface so it can be passed along and used just like other instance.
 
-For example, the following code will return the value associated with the string key or empty string if the key is null.
+For example, the following code will create a nullable of EmailService depending on whether if the service was enabled.
 ```java
 	public interface EmailService {
 		public void sendEmail(Email email);
