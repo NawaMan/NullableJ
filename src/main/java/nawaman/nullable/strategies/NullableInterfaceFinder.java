@@ -16,7 +16,7 @@ package nawaman.nullable.strategies;
 
 import nawaman.nullable.IFindNullValue;
 import nawaman.nullable.Nullable;
-import nawaman.nullable.NullableObject;
+import nawaman.nullable.NullableData;
 
 /**
  * This finder use {@link Nullable} to create the null value if possible.
@@ -40,7 +40,7 @@ public class NullableInterfaceFinder implements IFindNullValue {
         if (!clzz.isInterface())
             return null;
         
-        return (OBJECT)NullableObject.of(null, clzz);
+        return (OBJECT)NullableData.of(null, clzz);
     }
     
 }

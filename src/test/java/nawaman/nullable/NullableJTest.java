@@ -640,13 +640,13 @@ public class NullableJTest {
         val length3 = (Predicate<String>)s->s.length() == 3;
         
         String[] array1 = new String[] { "One", "Two" };
-        assertTrue(array1._hasAllThat(length3));
+        assertTrue(array1._hasAll(length3));
         
         String[] array2 = new String[] { "One", "Two", "Three" };
-        assertFalse(array2._hasAllThat(length3));
+        assertFalse(array2._hasAll(length3));
         
         String[] arrayNull = null;
-        assertFalse(arrayNull._hasAllThat(length3));
+        assertFalse(arrayNull._hasAll(length3));
     }
     
     @Test
@@ -654,13 +654,13 @@ public class NullableJTest {
         val length3 = (Predicate<String>)s->s.length() == 3;
         
         List<String> list1 = asList("One", "Two");
-        assertTrue(list1._hasAllThat(length3));
+        assertTrue(list1._hasAll(length3));
         
         List<String> list2 = asList("One", "Two", "Three");
-        assertFalse(list2._hasAllThat(length3));
+        assertFalse(list2._hasAll(length3));
         
         String[] listNull = null;
-        assertFalse(listNull._hasAllThat(length3));
+        assertFalse(listNull._hasAll(length3));
     }
     
     @Test
@@ -668,13 +668,13 @@ public class NullableJTest {
         val length5 = (Predicate<String>)s->s.length() == 5;
         
         String[] array1 = new String[] { "One", "Two" };
-        assertFalse(array1._hasSomeThat(length5));
+        assertFalse(array1._hasSome(length5));
         
         String[] array2 = new String[] { "One", "Two", "Three" };
-        assertTrue(array2._hasSomeThat(length5));
+        assertTrue(array2._hasSome(length5));
         
         String[] arrayNull = null;
-        assertFalse(arrayNull._hasSomeThat(length5));
+        assertFalse(arrayNull._hasSome(length5));
     }
     
     @Test
@@ -682,13 +682,13 @@ public class NullableJTest {
         val length5 = (Predicate<String>)s->s.length() == 5;
         
         List<String> list1 = asList("One", "Two");
-        assertFalse(list1._hasSomeThat(length5));
+        assertFalse(list1._hasSome(length5));
         
         List<String> list2 = asList("One", "Two", "Three");
-        assertTrue(list2._hasSomeThat(length5));
+        assertTrue(list2._hasSome(length5));
         
         String[] listNull = null;
-        assertFalse(listNull._hasSomeThat(length5));
+        assertFalse(listNull._hasSome(length5));
     }
     
     @Test
@@ -696,13 +696,13 @@ public class NullableJTest {
         val length5 = (Predicate<String>)s->s.length() == 5;
         
         String[] array1 = new String[] { "One", "Two" };
-        assertEquals(0, array1._butOnlyThat(length5).length);
+        assertEquals(0, array1._butOnly(length5).length);
         
         String[] array2 = new String[] { "One", "Two", "Three" };
-        assertEquals(1, array2._butOnlyThat(length5).length);
+        assertEquals(1, array2._butOnly(length5).length);
         
         String[] arrayNull = null;
-        assertNull(arrayNull._butOnlyThat(length5));
+        assertNull(arrayNull._butOnly(length5));
     }
     
     @Test
@@ -710,13 +710,13 @@ public class NullableJTest {
         val length5 = (Predicate<String>)s->s.length() == 5;
         
         List<String> list1 = asList("One", "Two");
-        assertEquals(0, list1._butOnlyThat(length5).size());
+        assertEquals(0, list1._butOnly(length5).size());
         
         List<String> list2 = asList("One", "Two", "Three");
-        assertEquals(1, list2._butOnlyThat(length5).size());
+        assertEquals(1, list2._butOnly(length5).size());
         
         String[] listNull = null;
-        assertNull(listNull._butOnlyThat(length5));
+        assertNull(listNull._butOnly(length5));
     }
     
     @Test

@@ -1,12 +1,14 @@
 package nawaman.nullable;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 
+import org.junit.Assert;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -39,7 +41,7 @@ public class NullableObjectTest {
     public void testProxy() {
         val orgPerson = new PersonImpl("John");
         
-        val person = NullableObject.from(()->orgPerson, Person.class, AnotherNullablePerson.class);
+        val person = NullableData.from(()->orgPerson, Person.class, AnotherNullablePerson.class);
         
         assertEquals("John", person.getName());
         person.setName("Jack");
@@ -73,12 +75,55 @@ public class NullableObjectTest {
     @Test
     public void testProxy_buildin() {
         val orgPerson = new BuildInPersonImpl("John");
-        val person    = NullableObject.from(()->orgPerson, BuildInNullablePerson.class);
+        val person    = NullableData.from(()->orgPerson, BuildInNullablePerson.class);
         
         assertEquals("John", person.get().getName());
         person.get().setName("Jack");
         assertEquals("Jack", person.get().getName());
         person.get().setName("Jim");
         assertEquals("Jim", person.map(BuildInNullablePerson::getName).get());
+    }
+    
+    //== Test recursive ==
+    
+    public static interface Thing {
+        
+        String name();
+        Thing anotherThing();
+        
+    }
+    
+    @Test
+    public void testRecursiveProxy_andCash() {
+        val thing = NullableData.of(null, Thing.class);
+        assertEquals(thing, thing.anotherThing());
+    }
+    
+    @Test
+    public void testObjectMethods() {
+        val thing = NullableData.of(null, Thing.class);
+        assertEquals("Thing=null", thing.toString());
+        assertEquals(Thing.class.hashCode(), thing.hashCode());
+    }
+    
+    @Test
+    public void testEqualsOfNull() {
+        val thing1 = NullableData.of(null, Thing.class);
+        val thing2 = NullableData.of(null, Thing.class);
+        assertTrue(thing1.equals(null));
+        assertTrue(thing1.equals(thing1));
+        assertTrue(thing1.equals(thing2));
+        assertTrue(thing1.equals(thing1.anotherThing()));
+    }
+    
+    public static interface ThingAndMore extends Thing {
+        String value();
+    }
+    
+    @Test
+    public void testNullOfSubClassNotEqualsToNullOfSuper() {
+        val thing = NullableData.of(null, Thing.class);
+        val thingAndMore = NullableData.of(null, ThingAndMore.class);
+        Assert.assertFalse(thing.equals(thingAndMore));
     }
 }

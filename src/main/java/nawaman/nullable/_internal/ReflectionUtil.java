@@ -39,16 +39,54 @@ public class ReflectionUtil {
         val value = ((Nullable)proxy).get();
         if (value == null) {
             Class<?> returnType = method.getReturnType();
-            return returnType.cast(NullValues.nullValueOf(returnType));
+            Object rawNullValue = NullValues.nullValueOf(returnType);
+            if (returnType.isPrimitive()) {
+                if (returnType == int.class)
+                    return ((Integer)rawNullValue).intValue();
+                if (returnType == boolean.class)
+                    return ((Boolean)rawNullValue).booleanValue();
+                if (returnType == long.class)
+                    return ((Long)rawNullValue).longValue();
+                if (returnType == double.class)
+                    return ((Double)rawNullValue).doubleValue();
+                
+                if (returnType == byte.class)
+                    return ((Byte)rawNullValue).byteValue();
+                if (returnType == short.class)
+                    return ((Short)rawNullValue).shortValue();
+                if (returnType == float.class)
+                    return ((Float)rawNullValue).floatValue();
+                if (returnType == char.class)
+                    return ((Character)rawNullValue).charValue();
+            }
+            
+            return returnType.cast(rawNullValue);
         }
         
         return method.invoke(value, args);
     }
     
-    public static <T> InvocationHandler createNullableInvocationHandler(Supplier<T> valueSupplier) {
+    public static <T> InvocationHandler createNullableInvocationHandler(Supplier<? extends T> valueSupplier, Class<T> dataClass) {
         val handler = (InvocationHandler)(proxy, method, methodArgs) -> {
             if ("get".equals(method.getName()))
                 return valueSupplier.get();
+            if ("toString".equals(method.getName()) && (method.getParameterCount() == 0))
+                return dataClass.getSimpleName() + "=null";
+            if ("hashCode".equals(method.getName()) && (method.getParameterCount() == 0))
+                return dataClass.hashCode();
+            if ("equals".equals(method.getName()) && (method.getParameterCount() == 1)) {
+                if (methodArgs[0] == null)
+                    return true;
+                if (methodArgs[0] == proxy)
+                    return true;
+                if (!(dataClass == methodArgs[0].getClass()))
+                    return false;
+                if (!Nullable.class.isAssignableFrom(methodArgs[0].getClass()))
+                    return false;
+                @SuppressWarnings("rawtypes")
+                boolean isPresent = ((Nullable)proxy).isPresent();
+                return !isPresent;
+            }
             
             boolean isNullableMethod = Nullable.class == method.getDeclaringClass();
             if (!isNullableMethod)
@@ -57,6 +95,8 @@ public class ReflectionUtil {
             if (method.isDefault()) {
                 return invokeDefaultMethod(proxy, method, methodArgs);
             }
+            
+            // TODO - Might have to deal with hashCode toString and equals.
             
             return null;
         };

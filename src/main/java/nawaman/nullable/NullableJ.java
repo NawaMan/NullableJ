@@ -1249,7 +1249,7 @@ public class NullableJ {
      * 
      * @param <OBJECT> the type of the data in the array.
      */
-    public static <OBJECT> boolean _hasAllThat(OBJECT[] array, Predicate<OBJECT> condition) {
+    public static <OBJECT> boolean _hasAll(OBJECT[] array, Predicate<OBJECT> condition) {
         if (array == null)
             return false;
         if (array.length == 0)
@@ -1265,7 +1265,7 @@ public class NullableJ {
      * 
      * @param <OBJECT> the type of the data in the list.
      */
-    public static <OBJECT> boolean _hasAllThat(List<OBJECT> list, Predicate<OBJECT> condition) {
+    public static <OBJECT> boolean _hasAll(List<OBJECT> list, Predicate<OBJECT> condition) {
         if (list == null)
             return false;
         if (list.isEmpty())
@@ -1282,7 +1282,7 @@ public class NullableJ {
      * 
      * @param <OBJECT> the type of the data in the array.
      */
-    public static <OBJECT> boolean _hasSomeThat(OBJECT[] array, Predicate<OBJECT> condition) {
+    public static <OBJECT> boolean _hasSome(OBJECT[] array, Predicate<OBJECT> condition) {
         if (array == null)
             return false;
         if (array.length == 0)
@@ -1298,7 +1298,7 @@ public class NullableJ {
      * 
      * @param <OBJECT> the type of the data in the list.
      */
-    public static <OBJECT> boolean _hasSomeThat(List<OBJECT> list, Predicate<OBJECT> condition) {
+    public static <OBJECT> boolean _hasSome(List<OBJECT> list, Predicate<OBJECT> condition) {
         if (list == null)
             return false;
         if (list.isEmpty())
@@ -1345,7 +1345,7 @@ public class NullableJ {
      * @param <OBJECT> the type of the data in the array.
      */
     @SuppressWarnings("unchecked")
-    public static <OBJECT> OBJECT[] _butOnlyThat(OBJECT[] array, Predicate<OBJECT> condition) {
+    public static <OBJECT> OBJECT[] _butOnly(OBJECT[] array, Predicate<OBJECT> condition) {
         if (array == null)
             return null;
         val list = _butOnlyThat$(array, condition).collect(toList());
@@ -1362,7 +1362,7 @@ public class NullableJ {
      * 
      * @param <OBJECT> the type of the data in the list.
      */
-    public static <OBJECT, COLLECION extends Collection<OBJECT>> List<OBJECT> _butOnlyThat(COLLECION collection, Predicate<OBJECT> condition) {
+    public static <OBJECT, COLLECION extends Collection<OBJECT>> List<OBJECT> _butOnly(COLLECION collection, Predicate<OBJECT> condition) {
         if (collection == null)
             return null;
         return _butOnlyThat$(collection, condition).collect(toList());

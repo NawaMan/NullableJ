@@ -24,23 +24,27 @@ import java.util.function.Supplier;
 
 import lombok.val;
 
+class NullableObjectCache {
+    
+    @SuppressWarnings("rawtypes")
+    static final Map<Class, Object> nullableObjects = new ConcurrentHashMap<>();
+    
+}
+
 /**
  * 
  * @author NawaMan -- nawa@nawaman.net
  */
-public class NullableObject {
-
-    @SuppressWarnings("rawtypes")
-    static final Map<Class, Object> nullableObjects = new ConcurrentHashMap<>();
+public class NullableData {
     
-    private NullableObject() {
+    private NullableData() {
         
     }
     
     /**
      * Create a nullable data object.
      * 
-     * This method is similar to {@link NullableObject#from(Supplier, Class, Class)}
+     * This method is similar to {@link NullableData#from(Supplier, Class, Class)}
      *   but the value given as object which this method will convert to supplier.
      * 
      * @param value                the value.
@@ -112,10 +116,10 @@ public class NullableObject {
         if (!dataObjectClass.isInterface())
             throw new IllegalArgumentException("The data class must be an interface: " + dataObjectClass);
         
-        return (N)NullableObject.nullableObjects.computeIfAbsent(nullableObjectClass, clzz->{
+        return (N)NullableObjectCache.nullableObjects.computeIfAbsent(nullableObjectClass, clzz->{
             val interfaces  = new Class<?>[] { nullableObjectClass };
             val classLoader = dataObjectClass.getClassLoader();
-            val handler     = createNullableInvocationHandler(valueSupplier);
+            val handler     = createNullableInvocationHandler(valueSupplier, (Class<T>)nullableObjectClass);
             val rawProxy    = Proxy.newProxyInstance(classLoader, interfaces, handler);
             val proxy       = nullableObjectClass.cast(rawProxy);
             return proxy;
@@ -136,10 +140,10 @@ public class NullableObject {
         if (!dataObjectClass.isInterface())
             throw new IllegalArgumentException("The data class must be an interface: " + dataObjectClass);
         
-        return (T)NullableObject.nullableObjects.computeIfAbsent(dataObjectClass, clzz->{
+        return (T)NullableObjectCache.nullableObjects.computeIfAbsent(dataObjectClass, clzz->{
                 val interfaces  = new Class<?>[] { dataObjectClass, Nullable.class };
                 val classLoader = dataObjectClass.getClassLoader();
-                val handler     = createNullableInvocationHandler(valueSupplier);
+                val handler     = createNullableInvocationHandler(valueSupplier, dataObjectClass);
                 val rawProxy    = Proxy.newProxyInstance(classLoader, interfaces, handler);
                 val proxy       = (T)rawProxy;
                 return proxy;

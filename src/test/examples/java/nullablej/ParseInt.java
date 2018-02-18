@@ -20,6 +20,7 @@ public class ParseInt {
         assertEquals(42, intOf("42"));
         assertEquals(0,  intOf(null));
         assertEquals(-5, intOf("-5"));
+        assertEquals(0,  intOf("Five"));
     }
     
 }

@@ -14,13 +14,14 @@ import nawaman.nullable.NullableJ;
 @ExtensionMethod({ NullableJ.class })
 public class AutoCompleteSearch {
     
-    private static Predicate<String> startsWith(String prefix) {
+    private static Predicate<String> thatStartsWith(String prefix) {
         return str->str.startsWith(prefix);
     }
     
+    // If term is empty, return the whole list, otherwise, use the search term to filter.
     public static List<String> autocompleteSearchCountries(String term) {
         return term._whenNotEmpty()
-                .map(t->Countries.list._butOnlyThat(startsWith(term)))
+                .map(t->Countries.list._butOnly(thatStartsWith(term)))
                 .orElse(Countries.list);
     }
     
