@@ -112,6 +112,28 @@ public class Otherwise<VALUE, OTHERWISE> implements Nullable<VALUE> {
         return value;
     }
     
+    /**
+     * Returns the value if not null otherwise using the throwableFunction to create a throable.
+     * Then throw the throwable if not null. Returns null otherwise.
+     * 
+     * @param <THROWABLE>  the throwable type.
+     * @param throwableFunction  the function to produce the throwable.
+     * @return  the value if not null.
+     * @throws THROWABLE  if the value is null.
+     */
+    public <THROWABLE extends Throwable> VALUE otherwiseThrow(Function<OTHERWISE, THROWABLE> throwableFunction)
+            throws THROWABLE {
+        VALUE value = get();
+        if (value != null)
+            return value;
+        
+        val throwable = throwableFunction.apply(otherwise);
+        if (throwable == null)
+            return null;
+        
+        throw throwable;
+    }
+    
     @Override
     public String toString() {
         return "[" + this.value + " otherwise " + this.otherwise + "]";
