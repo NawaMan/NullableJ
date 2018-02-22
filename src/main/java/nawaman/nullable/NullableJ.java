@@ -94,7 +94,7 @@ public class NullableJ {
     }
     
     /**
-     * Returns the toString of the give value or null if the given value is null. 
+     * Returns the toString of the given value or null if the given value is null. 
      * 
      * @param  theGivenObject   the given object.
      * @return the toString of the given object.
@@ -105,7 +105,7 @@ public class NullableJ {
     }
     
     /**
-     * Returns the toString of the give array or null if the given value is null. 
+     * Returns the toString of the given array or null if the given value is null. 
      * 
      * @param  theGivenArray   the given array.
      * @return the toString of the given object.
@@ -159,7 +159,7 @@ public class NullableJ {
     /**
      * Returns the null value.
      * 
-     * @param  theNullableObject  the optional object.
+     * @param  theNullableObject  the nullable object.
      * @param  theObjectClass     the class of the given data.
      * @param  <OBJECT>           the data type of the given object.
      * @return theGivenObject if not null or value from the elseSupplier if null.
@@ -170,7 +170,7 @@ public class NullableJ {
     }
     
     /**
-     * Extension method to create optional of theGivenObject. 
+     * Extension method to create nullable of theGivenObject. 
      * 
      * @param  theGivenObject  the given object.
      * @param  <OBJECT>        the data type of the given object.
