@@ -14,6 +14,40 @@ return string._whenMatches("^[0-9]+$").map(Integer::parseInt).orElse(-1);
 //            ^^^^^^^^^^^^
 ```
 
+## The methods
+
+Most of the methods in NullableJ is very straightforward.
+
+Methods that returns primitive data are the easiest to reason with.
+For example: `_equalsTo` returns `true` if the given object equals to another given object. It basically uses `Objects.equals(...)` methods.
+Non-primitive type methods that will not returns null are `_orXXX()` method (unless you call `_or(null)` of course - but don't do it).
+
+The methods that return non-primitive method might returns `null`.
+This might be surprise to many as the library to help dealing with `null` should not be returning `null` for any reason.
+But there is a reason and that is to allow you to chain the methods.
+For example: `_toString` will returns a string representation of the given object or null.
+Then the method like `_or()` can be used to further specify what to do next.
+Like, in case of array or collection,
+  you may want to use empty square brackets.
+
+```Java
+  System.out.println(obj.getStrings()._toString()._or("[]"));
+```
+
+Methods that deal with collections such as `_get()` or `_first()` are also return `null`.
+If the methods, however, returns array, collection or stream such as `_toList()`, `stream$()`, they will returns empty value.
+
+The last group of methods are those `_whenXXX` and `_as` methods.
+These methods allow us to test the given value if it fit a certain criteria.
+These methods return `Otherwise` object.
+The otherwise value acts very similar to `Nullable` (or `Optional`).
+The value is present or not depending on whether or not the criteria was met.
+The different between `Nullable` and `Otherwise` is that the later still have access to the original value.
+See Otherwise for more information.
+
+
+## Documentation
+
 `NullableJ` methods are very small, mostly a few lines, and very easy to understand.
 They also comes with JavaDoc and well covered unit tests.
 It does not seems productive to replicate them here.
@@ -21,8 +55,4 @@ So instead, it is recommended to find out about all the methods from looking at 
 
 - [Test](https://github.com/NawaMan/NullableJ/blob/master/src/test/java/nawaman/nullable/NullableJTest.java)
 - [Source](https://github.com/NawaMan/NullableJ/blob/master/src/main/java/nawaman/nullable/NullableJ.java)
-
-That being said, some example codes that highlight benefits of using NullableJ will be put below. :-)
-
-...
 
