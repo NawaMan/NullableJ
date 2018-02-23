@@ -68,7 +68,7 @@ public interface IAsNullable<OBJECT> {
      * 
      * @param <T>  the data type.
      */
-    public static <T> IAsNullable<T> from(Supplier<? extends T> supplier) {
+    public static <T> IAsNullable<T> from_(Supplier<? extends T> supplier) {
         return (IAsNullable<T>)()->Nullable.from(supplier);
     }
     
