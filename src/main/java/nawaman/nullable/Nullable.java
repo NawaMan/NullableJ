@@ -57,10 +57,9 @@ public interface Nullable<TYPE> extends Supplier<TYPE> {
      * 
      * @param <OBJECT>  the data type.
      */
-    @SuppressWarnings("unchecked")
     public static <OBJECT> Nullable<OBJECT> of(OBJECT theGivenValue) {
         if (theGivenValue == null)
-            return (Nullable<OBJECT>)EMPTY;
+            return empty();
         
         return new NullableImpl<OBJECT>(theGivenValue);
     }
@@ -74,7 +73,42 @@ public interface Nullable<TYPE> extends Supplier<TYPE> {
      * @param <OBJECT>  the data type.
      */
     public static <OBJECT> Nullable<OBJECT> from(Supplier<? extends OBJECT> theSupplier) {
-        return ()->theSupplier.get();
+        try {
+            return new NullableImpl<OBJECT>(theSupplier.get());
+        } catch (NullPointerException e) {
+            return empty();
+        }
+    }
+    
+    /**
+     * Returns the Nullable value of the given value.
+     * 
+     * @param theGivenValue  the given value.
+     * @return  the Nullable of the given value.
+     * 
+     * @param <OBJECT>  the data type.
+     */
+    public static <OBJECT> Nullable<OBJECT> nullable(OBJECT theGivenValue) {
+        if (theGivenValue == null)
+            return empty();
+        
+        return new NullableImpl<OBJECT>(theGivenValue);
+    }
+    
+    /**
+     * Returns the Nullable value from the value of the given supplier.
+     * 
+     * @param theSupplier  the supplier of the value.
+     * @return  the Nullable of the value.
+     * 
+     * @param <OBJECT>  the data type.
+     */
+    public static <OBJECT> Nullable<OBJECT> nullable(Supplier<? extends OBJECT> theSupplier) {
+        try {
+            return new NullableImpl<OBJECT>(theSupplier.get());
+        } catch (NullPointerException e) {
+            return empty();
+        }
     }
     
     /**

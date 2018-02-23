@@ -2,6 +2,8 @@ package nawaman.nullable;
 
 import static org.junit.Assert.assertEquals;
 
+import static nawaman.nullable.Nullable.nullable;
+
 import java.io.PrintStream;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -33,7 +35,7 @@ public class NullableTest {
     }
     
     @FunctionalInterface
-    public static interface NullablePerson extends Person, Nullable<Person> {
+    public static interface NullablePerson extends Person, LiveNullable<Person> {
         
         public static NullablePerson of(Person person) {
             return ()->person;
@@ -100,6 +102,31 @@ public class NullableTest {
         Nullable<CharSequence> blah2 = Nullable.empty();
         Nullable<CharSequence> or2 = blah2.or(()->Nullable.of("TWO"));
         assertEquals("TWO", or2.get());
+    }
+    
+    private String getString(int i) {
+        if (i <= 0)
+            return null;
+        return String.valueOf(i);
+    }
+    
+    @Test
+    public void testFrom_withException() {
+        Nullable<Integer> _plus42 = Nullable.from(()->getString(42).length());
+        Nullable<Integer> _minus5 = Nullable.from(()->getString(-1).length());
+        assertEquals(Integer.valueOf(2), _plus42.get());
+        assertEquals(null,               _minus5.get());
+    }
+    
+    @Test
+    public void testNullable_overload() {
+        Nullable<String>           _42      = nullable(getString(42));
+        Nullable<String>           string   = nullable(()->getString(42));
+        Nullable<Supplier<String>> supplier = Nullable.<Supplier<String>>nullable(()->getString(42));
+        
+        assertEquals("42", _42.get());
+        assertEquals("42", string.get());
+        assertEquals("42", supplier.get().get());
     }
     
 }
