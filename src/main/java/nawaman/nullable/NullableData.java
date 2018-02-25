@@ -15,8 +15,11 @@
 //  ========================================================================
 package nawaman.nullable;
 
-import static nawaman.nullable._internal.ReflectionUtil.createNullableInvocationHandler;
+import static nawaman.utils.reflection.UReflection.invokeDefaultMethod;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -24,18 +27,29 @@ import java.util.function.Supplier;
 
 import lombok.val;
 
-class NullableObjectCache {
-    
-    @SuppressWarnings("rawtypes")
-    static final Map<Class, Object> nullableObjects = new ConcurrentHashMap<>();
-    
-}
-
 /**
+ * NullableData can create an instance of any interface that act as a null object.
+ * 
+ * The result object (called nullable data) implements both the data interface and {@link IAsNullable} interface.
+ * This object holds the actual value of that interface type.
+ * But if that value is null, this nullable data instance will act as null object.
+ * The method {@code asNullable} from IAsNullable will return an instance of {@link Nullable} of the object.
+ * If the methods has default implementation, the implementation will be called.
+ * All other methods will do nothing and return null value of that method type
+ *   (by calling {@code NullValues.nullValueOf(returnType)}).
+ *   
+ * The nullable data implements both the data interface and {@link IAsNullable} instance.
+ * But the implement of {@link IAsNullable} is hidden meaning that
+ *   the instance has to be casted to IAsNullable before it can be used as such.
+ * You can also make the data interface to implement the {@link IAsNullable} interface.
+ *   
  * 
  * @author NawaMan -- nawa@nawaman.net
  */
 public class NullableData {
+    
+    @SuppressWarnings("rawtypes")
+    private static final Map<Class, Object> nullableObjects = new ConcurrentHashMap<>();
     
     @SuppressWarnings("rawtypes")
     private static final Supplier nullSupplier = ()->null;
@@ -64,7 +78,7 @@ public class NullableData {
             Class<T> dataObjectClass, 
             Class<N> nullableObjectClass) {
         if (value == null) {
-            return (N)NullableObjectCache.nullableObjects.computeIfAbsent(nullableObjectClass, clzz->{
+            return (N)nullableObjects.computeIfAbsent(nullableObjectClass, clzz->{
                 return from((Supplier<T>)nullSupplier, dataObjectClass, nullableObjectClass, Nullable.empty());
             });
         }
@@ -83,7 +97,7 @@ public class NullableData {
     @SuppressWarnings("unchecked")
     public static <T> T of(T dataValue, Class<T> dataClass) {
         if (dataValue == null) {
-            return (T)NullableObjectCache.nullableObjects.computeIfAbsent(dataClass, clzz->{
+            return (T)nullableObjects.computeIfAbsent(dataClass, clzz->{
                 return from((Supplier<T>)nullSupplier, dataClass, Nullable.empty());
             });
         }
@@ -175,6 +189,82 @@ public class NullableData {
         val rawProxy    = Proxy.newProxyInstance(classLoader, interfaces, handler);
         val proxy       = (T)rawProxy;
         return proxy;
+    }
+    
+    
+    private static Object invokeNullableProxy(Object proxy, Method method, Object[] args)
+            throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        @SuppressWarnings("rawtypes")
+        val value = ((IAsNullable)proxy).asNullable().get();
+        if (value == null) {
+            Class<?> returnType = method.getReturnType();
+            Object rawNullValue = NullValues.nullValueOf(returnType);
+            if (returnType.isPrimitive()) {
+                if (returnType == int.class)
+                    return ((Integer)rawNullValue).intValue();
+                if (returnType == boolean.class)
+                    return ((Boolean)rawNullValue).booleanValue();
+                if (returnType == long.class)
+                    return ((Long)rawNullValue).longValue();
+                if (returnType == double.class)
+                    return ((Double)rawNullValue).doubleValue();
+                
+                if (returnType == byte.class)
+                    return ((Byte)rawNullValue).byteValue();
+                if (returnType == short.class)
+                    return ((Short)rawNullValue).shortValue();
+                if (returnType == float.class)
+                    return ((Float)rawNullValue).floatValue();
+                if (returnType == char.class)
+                    return ((Character)rawNullValue).charValue();
+            }
+            
+            return returnType.cast(rawNullValue);
+        }
+        
+        return method.invoke(value, args);
+    }
+    
+    private static <T> InvocationHandler createNullableInvocationHandler(
+            Supplier<? extends T> valueSupplier,
+            Class<T> dataClass,
+            Nullable<T> nullable) {
+        val theNullable = NullableJ._orGet(nullable, ()->Nullable.from(valueSupplier));
+        val handler = (InvocationHandler)(proxy, method, methodArgs) -> {
+            if ("get".equals(method.getName()))
+                return valueSupplier.get();
+            if ("toString".equals(method.getName()) && (method.getParameterCount() == 0))
+                return dataClass.getSimpleName() + "=null";
+            if ("hashCode".equals(method.getName()) && (method.getParameterCount() == 0))
+                return dataClass.hashCode();
+            if ("equals".equals(method.getName()) && (method.getParameterCount() == 1)) {
+                if (methodArgs[0] == null)
+                    return true;
+                if (methodArgs[0] == proxy)
+                    return true;
+                if (!(dataClass == methodArgs[0].getClass()))
+                    return false;
+                if (!Nullable.class.isAssignableFrom(methodArgs[0].getClass()))
+                    return false;
+                @SuppressWarnings("rawtypes")
+                boolean isPresent = ((Nullable)proxy).isPresent();
+                return !isPresent;
+            }
+            
+            if ("asNullable".equals(method.getName()) && (method.getParameterCount() == 0))
+                return theNullable;
+            
+            if (method.isDefault()) {
+                return invokeDefaultMethod(proxy, method, methodArgs);
+            }
+            
+            boolean isICanBeNullableMethod = IAsNullable.class == method.getDeclaringClass();
+            if (!isICanBeNullableMethod)
+                return invokeNullableProxy(proxy, method, methodArgs);
+            
+            return null;
+        };
+        return handler;
     }
     
 }

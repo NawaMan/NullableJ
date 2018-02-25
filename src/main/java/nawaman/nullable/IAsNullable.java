@@ -32,7 +32,9 @@ public interface IAsNullable<OBJECT> {
      */
     public Nullable<OBJECT> asNullable();
     
-    // Factory methods.
+    
+    
+    // == Factory methods. ==
     
     /** Reusable value of empty. */
     @SuppressWarnings("rawtypes")
