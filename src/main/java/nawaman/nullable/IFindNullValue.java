@@ -19,7 +19,7 @@ import java.util.function.Function;
 import nawaman.nullable._internal.Default;
 
 /**
- * Classes implementing this interface knows how to fins null values given the class.
+ * Classes implementing this interface knows how to find null values given the class.
  * 
  * @author NawaMan -- nawa@nawaman.net
  */
