@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import static nawaman.nullable.Nullable.nullable;
 
 import java.io.PrintStream;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -49,7 +50,7 @@ public class NullableTest {
         }
         
         public default void setName(String name) {
-            this.ifPresent(()->{
+            this.ifPresentRun(()->{
                 this.get().setName(name);
             });
         }
@@ -110,12 +111,18 @@ public class NullableTest {
         return String.valueOf(i);
     }
     
+    @SuppressWarnings("null")
     @Test
     public void testFrom_withException() {
         Nullable<Integer> _plus42 = Nullable.from(()->getString(42).length());
         Nullable<Integer> _minus5 = Nullable.from(()->getString(-1).length());
         assertEquals(Integer.valueOf(2), _plus42.get());
         assertEquals(null,               _minus5.get());
+        
+        Map<String, Object> mapByString = null;
+        
+        Nullable.from(()->mapByString.get("PREFIX: text".toUpperCase().replaceAll("^PREFIX: ", "")))
+            .ifPresent(System.out::println);
     }
     
     @Test

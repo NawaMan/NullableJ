@@ -249,6 +249,20 @@ public interface Nullable<TYPE> extends Supplier<TYPE> {
     }
     
     /**
+     * Run a body of code with the value is not null. Then returns itself.
+     * 
+     * @param theConsumer  the consumer.
+     * @return  the value.
+     */
+    public default Nullable<TYPE> peek(Consumer<? super TYPE> theConsumer) {
+        val value = get();
+        if (value != null)
+            theConsumer.accept(value);
+        
+        return this;
+    }
+    
+    /**
      * Check if the value is not null.
      * 
      * @return {@code true} if the value is not null.
@@ -294,7 +308,7 @@ public interface Nullable<TYPE> extends Supplier<TYPE> {
      * @param theAction  the action.
      * @return  the value.
      */
-    public default TYPE ifPresent(Runnable theAction) {
+    public default TYPE ifPresentRun(Runnable theAction) {
         val value = get();
         if (value != null)
             theAction.run();
@@ -309,7 +323,7 @@ public interface Nullable<TYPE> extends Supplier<TYPE> {
      * @param elseRunnable  runnable in case the value is null.
      * @return  the value.
      */
-    public default TYPE ifPresent(Runnable theAction, Runnable elseRunnable) {
+    public default TYPE ifPresentRun(Runnable theAction, Runnable elseRunnable) {
         val value = get();
         if (value != null)
             theAction.run();

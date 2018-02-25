@@ -14,6 +14,44 @@ return string._whenMatches("^[0-9]+$").map(Integer::parseInt).orElse(-1);
 //            ^^^^^^^^^^^^
 ```
 
+Another example, consider the following code.
+
+```Java
+
+    public class SaleReport {
+        public BigDecimal totalMonthlySaleByPart(String partNumber, Color color, int year) {
+            val item        = itemService.findItem(partNumber, color);
+            val salesByYear = saleStatService.findItemSalesByYear(item);
+           return salesByYear.get(year).stream().map(Sale::getTotal).collect(reducing(ZERO, BigDecimal::add));
+        }
+    }
+```
+
+Lots of things can go wrong in this methods.
+* there might be no item for the `partNumber` and `color`.
+* the 3rd-party legacy `saleStatService.findItemSalesByYear(item)` may return null if item is null (can't find the time).
+* there might be no item in `salesByYear` map.
+
+With `NullableJ` methods, we may rewrite that method like this.
+
+```Java
+
+    @ExtensionMethod({ NullableJ.class })
+    public class SaleReport {
+        public BigDecimal totalMonthlySaleByPart(String partNumber, Color color, int year) {
+            val item        = itemService.findItem(partNumber, color);
+            val salesByYear = item._isNotNull() ? saleStatService.findItemSalesByYear(item) : null;
+            return salesByYear._get(year)._stream$().map(Sale::getTotal).collect(reducing(ZERO, BigDecimal::add));
+        }
+    }
+```
+
+Spot the differences?
+That exactly the point.
+`NullableJ` methods are designed to be used with Lombok's `@ExtensionMethod` to provide natural way to handle `null`.
+`NullableJ` has may often used methods that are ready.
+If you need more, you can create one in yourown class.
+
 ## The methods
 
 Most of the methods in NullableJ is very straightforward.

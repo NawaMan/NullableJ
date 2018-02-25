@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,11 +20,18 @@ public class NullableDataTest {
 
     public static interface Person {
         
-        public String getName();
-        public void setName(String name);
+        public String getFirstName();
+        public void setFirstName(String name);
+        
+        public String getLastName();
+        public void setLastName(String name);
+        
+        public default String getFullName() {
+            return (getFirstName() + " " + getLastName()).trim();
+        }
         
         public default void printlnName(PrintStream out) {
-            out.println("Person: " + this.getName());
+            out.println("Person: " + this.getFirstName());
         }
         
     }
@@ -31,7 +39,28 @@ public class NullableDataTest {
     @Data
     @AllArgsConstructor
     public static class PersonImpl implements Person {
-        private String name;
+        private String firstName;
+        private String lastName;
+        public PersonImpl(String firstName) {
+            this(firstName, "Smith");
+        }
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testBasic() {
+        val nullablePerson1 = NullableData.from(()->new PersonImpl("Peter", "Pan"), Person.class);
+        assertTrue(nullablePerson1 instanceof Person);
+        assertEquals("Peter",     nullablePerson1.getFirstName());
+        assertEquals("Pan",       nullablePerson1.getLastName());
+        assertEquals("Peter Pan", nullablePerson1.getFullName());
+        assertTrue(((IAsNullable<Person>)nullablePerson1).asNullable().isPresent());
+        
+        val nullablePerson2 = NullableData.from(()->null, Person.class);
+        assertEquals("", nullablePerson2.getFirstName());
+        assertEquals("", nullablePerson2.getLastName());
+        assertEquals("", nullablePerson2.getFullName());
+        assertFalse(((IAsNullable<Person>)nullablePerson2).asNullable().isPresent());
     }
     
     public static interface AnotherNullablePerson extends Person, IAsNullable<Person> {
@@ -43,17 +72,17 @@ public class NullableDataTest {
         
         val person = NullableData.from(()->orgPerson, Person.class, AnotherNullablePerson.class);
         
-        assertEquals("John", person.getName());
-        person.setName("Jack");
-        assertEquals("Jack", person.getName());
-        person.setName("Jim");
+        assertEquals("John", person.getFirstName());
+        person.setFirstName("Jack");
+        assertEquals("Jack", person.getFirstName());
+        person.setFirstName("Jim");
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
              PrintStream           out  = new PrintStream(baos)) {
             person.printlnName(out);
             assertEquals("Person: Jim", baos.toString().trim());
         } catch (IOException e) {
         }
-        assertEquals(3, person.asNullable().map(Person::getName).map(String::length).get().intValue());
+        assertEquals(3, person.asNullable().map(Person::getFirstName).map(String::length).get().intValue());
     }
     
     public static interface BuildInNullablePerson extends Nullable<BuildInNullablePerson> {

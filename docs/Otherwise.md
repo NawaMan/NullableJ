@@ -8,7 +8,7 @@ When the condition is not true, Otherwise behave like Nullable of null.
 But it store the original value so that it can later be used.
 
 ```Java
-	str._when(startsWith("prefix")).otherwiseThrow(s->new IllegalArgumentException("Mal-form string: " + str));
+	str._when(startsWith("prefix")).otherwiseThrow(s->new IllegalArgumentException("Mal-form string: " + s));
 ```
 
 Since `Otherwise`, implements Nullable you do a regular map/filter/flatMap operation as usual.
