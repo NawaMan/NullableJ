@@ -8,7 +8,7 @@ import java.util.function.Supplier;
 import org.junit.Test;
 
 import lombok.experimental.ExtensionMethod;
-import nawaman.nullable.NullableJ;
+import nawaman.nullablej.NullableJ;
 
 @SuppressWarnings("javadoc")
 @ExtensionMethod({ NullableJ.class })

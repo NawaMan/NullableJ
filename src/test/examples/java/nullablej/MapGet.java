@@ -16,7 +16,7 @@ import static java.util.stream.Collectors.reducing;
 import lombok.Value;
 import lombok.val;
 import lombok.experimental.ExtensionMethod;
-import nawaman.nullable.NullableJ;
+import nawaman.nullablej.NullableJ;
 
 @SuppressWarnings("javadoc")
 @ExtensionMethod({ NullableJ.class })
