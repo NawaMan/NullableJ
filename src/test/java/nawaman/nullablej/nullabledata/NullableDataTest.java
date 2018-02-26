@@ -1,4 +1,4 @@
-package nawaman.nullablej;
+package nawaman.nullablej.nullabledata;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

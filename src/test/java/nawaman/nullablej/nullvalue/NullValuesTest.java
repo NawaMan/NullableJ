@@ -13,7 +13,7 @@
 //
 //  You may elect to redistribute this code under either of these licenses.
 //  ========================================================================
-package nawaman.nullablej;
+package nawaman.nullablej.nullvalue;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

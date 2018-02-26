@@ -170,6 +170,117 @@ public class NullableJ {
         val result = theNullableObject.isPresent() ? theNullableObject : Nullable.of(NullValues.nullValueOf(theObjectClass));
         return result;
     }
+    //== Primitive types 'or' ==
+    
+    /**
+     * Returns elseValue if theGivenInteger is null. 
+     * 
+     * @param  theGivenInteger  the given integer.
+     * @param  elseValue        the return value for when the given object is null.
+     * @return theGivenObject if not null or elseValue if null.
+     **/
+    public static int _or(Integer theGivenInteger, int elseValue) {
+        return (theGivenInteger == null) ? elseValue : theGivenInteger.intValue();
+    }
+    
+    /**
+     * Returns elseValue if theGivenLong is null. 
+     * 
+     * @param  theGivenLong  the given long.
+     * @param  elseValue     the return value for when the given object is null.
+     * @return theGivenObject if not null or elseValue if null.
+     **/
+    public static long _or(Long theGivenLong, long elseValue) {
+        return (theGivenLong == null) ? elseValue : theGivenLong.longValue();
+    }
+    
+    /**
+     * Returns elseValue if theGivenLong is null. 
+     * 
+     * @param  theGivenLong  the given long.
+     * @param  elseValue     the return value for when the given object is null.
+     * @return theGivenObject if not null or elseValue if null.
+     **/
+    public static long _or(Long theGivenLong, int elseValue) {
+        return (theGivenLong == null) ? elseValue : theGivenLong.longValue();
+    }
+    
+    /**
+     * Returns elseValue if theGivenDouble is null. 
+     * 
+     * @param  theGivenDouble  the given double.
+     * @param  elseValue       the return value for when the given object is null.
+     * @return theGivenObject if not null or elseValue if null.
+     **/
+    public static double _or(Double theGivenDouble, double elseValue) {
+        return (theGivenDouble == null) ? elseValue : theGivenDouble.doubleValue();
+    }
+    
+    /**
+     * Returns elseValue if theGivenDouble is null. 
+     * 
+     * @param  theGivenDouble  the given double.
+     * @param  elseValue       the return value for when the given object is null.
+     * @return theGivenObject if not null or elseValue if null.
+     **/
+    public static double _or(Double theGivenDouble, int elseValue) {
+        return (theGivenDouble == null) ? elseValue : theGivenDouble.doubleValue();
+    }
+    
+    /**
+     * Returns elseValue if theGivenDouble is null. 
+     * 
+     * @param  theGivenBigInteger  the given BigInteger.
+     * @param  elseValue           the return value for when the given object is null.
+     * @return theGivenObject if not null or elseValue if null.
+     **/
+    public static BigInteger _or(BigInteger theGivenBigInteger, int elseValue) {
+        return (theGivenBigInteger == null) ? BigInteger.valueOf(elseValue) : theGivenBigInteger;
+    }
+    
+    /**
+     * Returns elseValue if theGivenDouble is null. 
+     * 
+     * @param  theGivenBigInteger  the given BigInteger.
+     * @param  elseValue           the return value for when the given object is null.
+     * @return theGivenObject if not null or elseValue if null.
+     **/
+    public static BigInteger _or(BigInteger theGivenBigInteger, long elseValue) {
+        return (theGivenBigInteger == null) ? BigInteger.valueOf(elseValue) : theGivenBigInteger;
+    }
+    
+    /**
+     * Returns elseValue if theGivenDouble is null. 
+     * 
+     * @param  theGivenBigDecimal  the given BigInteger.
+     * @param  elseValue           the return value for when the given object is null.
+     * @return theGivenObject if not null or elseValue if null.
+     **/
+    public static BigDecimal _or(BigDecimal theGivenBigDecimal, int elseValue) {
+        return (theGivenBigDecimal == null) ? BigDecimal.valueOf(elseValue) : theGivenBigDecimal;
+    }
+    
+    /**
+     * Returns elseValue if theGivenDouble is null. 
+     * 
+     * @param  theGivenBigDecimal  the given BigInteger.
+     * @param  elseValue           the return value for when the given object is null.
+     * @return theGivenObject if not null or elseValue if null.
+     **/
+    public static BigDecimal _or(BigDecimal theGivenBigDecimal, long elseValue) {
+        return (theGivenBigDecimal == null) ? BigDecimal.valueOf(elseValue) : theGivenBigDecimal;
+    }
+    
+    /**
+     * Returns elseValue if theGivenDouble is null. 
+     * 
+     * @param  theGivenBigDecimal  the given BigInteger.
+     * @param  elseValue           the return value for when the given object is null.
+     * @return theGivenObject if not null or elseValue if null.
+     **/
+    public static BigDecimal _or(BigDecimal theGivenBigDecimal, double elseValue) {
+        return (theGivenBigDecimal == null) ? BigDecimal.valueOf(elseValue) : theGivenBigDecimal;
+    }
     
     /**
      * Extension method to create nullable of theGivenObject. 
@@ -296,118 +407,6 @@ public class NullableJ {
      */
     public static <OBJECT, TARGET> TARGET _mapFrom(OBJECT theGivenObject, Function<OBJECT, TARGET> transformation) {
         return (theGivenObject != null) ? transformation.apply(theGivenObject) : null;
-    }
-    
-    //== Primitive types 'or' ==
-    
-    /**
-     * Returns elseValue if theGivenInteger is null. 
-     * 
-     * @param  theGivenInteger  the given integer.
-     * @param  elseValue        the return value for when the given object is null.
-     * @return theGivenObject if not null or elseValue if null.
-     **/
-    public static int _or(Integer theGivenInteger, int elseValue) {
-        return (theGivenInteger == null) ? elseValue : theGivenInteger.intValue();
-    }
-    
-    /**
-     * Returns elseValue if theGivenLong is null. 
-     * 
-     * @param  theGivenLong  the given long.
-     * @param  elseValue     the return value for when the given object is null.
-     * @return theGivenObject if not null or elseValue if null.
-     **/
-    public static long _or(Long theGivenLong, long elseValue) {
-        return (theGivenLong == null) ? elseValue : theGivenLong.longValue();
-    }
-    
-    /**
-     * Returns elseValue if theGivenLong is null. 
-     * 
-     * @param  theGivenLong  the given long.
-     * @param  elseValue     the return value for when the given object is null.
-     * @return theGivenObject if not null or elseValue if null.
-     **/
-    public static long _or(Long theGivenLong, int elseValue) {
-        return (theGivenLong == null) ? elseValue : theGivenLong.longValue();
-    }
-    
-    /**
-     * Returns elseValue if theGivenDouble is null. 
-     * 
-     * @param  theGivenDouble  the given double.
-     * @param  elseValue       the return value for when the given object is null.
-     * @return theGivenObject if not null or elseValue if null.
-     **/
-    public static double _or(Double theGivenDouble, double elseValue) {
-        return (theGivenDouble == null) ? elseValue : theGivenDouble.doubleValue();
-    }
-    
-    /**
-     * Returns elseValue if theGivenDouble is null. 
-     * 
-     * @param  theGivenDouble  the given double.
-     * @param  elseValue       the return value for when the given object is null.
-     * @return theGivenObject if not null or elseValue if null.
-     **/
-    public static double _or(Double theGivenDouble, int elseValue) {
-        return (theGivenDouble == null) ? elseValue : theGivenDouble.doubleValue();
-    }
-    
-    /**
-     * Returns elseValue if theGivenDouble is null. 
-     * 
-     * @param  theGivenBigInteger  the given BigInteger.
-     * @param  elseValue           the return value for when the given object is null.
-     * @return theGivenObject if not null or elseValue if null.
-     **/
-    public static BigInteger _or(BigInteger theGivenBigInteger, int elseValue) {
-        return (theGivenBigInteger == null) ? BigInteger.valueOf(elseValue) : theGivenBigInteger;
-    }
-    
-    /**
-     * Returns elseValue if theGivenDouble is null. 
-     * 
-     * @param  theGivenBigInteger  the given BigInteger.
-     * @param  elseValue           the return value for when the given object is null.
-     * @return theGivenObject if not null or elseValue if null.
-     **/
-    public static BigInteger _or(BigInteger theGivenBigInteger, long elseValue) {
-        return (theGivenBigInteger == null) ? BigInteger.valueOf(elseValue) : theGivenBigInteger;
-    }
-    
-    /**
-     * Returns elseValue if theGivenDouble is null. 
-     * 
-     * @param  theGivenBigDecimal  the given BigInteger.
-     * @param  elseValue           the return value for when the given object is null.
-     * @return theGivenObject if not null or elseValue if null.
-     **/
-    public static BigDecimal _or(BigDecimal theGivenBigDecimal, int elseValue) {
-        return (theGivenBigDecimal == null) ? BigDecimal.valueOf(elseValue) : theGivenBigDecimal;
-    }
-    
-    /**
-     * Returns elseValue if theGivenDouble is null. 
-     * 
-     * @param  theGivenBigDecimal  the given BigInteger.
-     * @param  elseValue           the return value for when the given object is null.
-     * @return theGivenObject if not null or elseValue if null.
-     **/
-    public static BigDecimal _or(BigDecimal theGivenBigDecimal, long elseValue) {
-        return (theGivenBigDecimal == null) ? BigDecimal.valueOf(elseValue) : theGivenBigDecimal;
-    }
-    
-    /**
-     * Returns elseValue if theGivenDouble is null. 
-     * 
-     * @param  theGivenBigDecimal  the given BigInteger.
-     * @param  elseValue           the return value for when the given object is null.
-     * @return theGivenObject if not null or elseValue if null.
-     **/
-    public static BigDecimal _or(BigDecimal theGivenBigDecimal, double elseValue) {
-        return (theGivenBigDecimal == null) ? BigDecimal.valueOf(elseValue) : theGivenBigDecimal;
     }
     
     //== Strings ==
@@ -920,50 +919,6 @@ public class NullableJ {
         return new Otherwise.WithMatchTypes<MAP>(map);
     }
     
-    /**
-     * Returns the stream of from the given list but does not contains null value.
-     * 
-     * @param array  the array.
-     * @return  the stream.
-     * 
-     * @param <OBJECT> the type of the data in the array.
-     */
-    public static <OBJECT> Stream<OBJECT> _butOnlyNonNull$(OBJECT[] array) {
-        if (array == null)
-            return Stream.empty();
-        if (array.length == 0)
-            return Stream.empty();
-        return stream(array).filter(Objects::nonNull);
-    }
-    
-    /**
-     * Returns the stream of from the given collection but does not contains null value.
-     * 
-     * @param collection  the collection.
-     * @return  the stream.
-     * 
-     * @param <OBJECT>     the type of the data in the list.
-     * @param <COLLECTION> the type of the collection.
-     */
-    public static <OBJECT, COLLECTION extends Collection<OBJECT>> Stream<OBJECT> _butOnlyNonNull$(COLLECTION collection) {
-        if (collection == null)
-            return Stream.empty();
-        return collection.stream().filter(Objects::nonNull);
-    }
-    
-    /**
-     * Returns the stream of from the given stream but does not contains null value.
-     * 
-     * @param stream  the stream.
-     * @return  the stream.
-     * 
-     * @param <OBJECT> the type of the data in the stream.
-     */
-    public static <OBJECT> Stream<OBJECT> _butOnlyNonNull$(Stream<OBJECT> stream) {
-        if (stream == null)
-            return Stream.empty();
-        return stream.filter(Objects::nonNull);
-    }
     
     /**
      * Returns the list of the given array.
@@ -1384,6 +1339,50 @@ public class NullableJ {
         if (collection == null)
             return null;
         return _butOnly$(collection, condition).collect(toList());
+    }
+    /**
+     * Returns the stream of from the given list but does not contains null value.
+     * 
+     * @param array  the array.
+     * @return  the stream.
+     * 
+     * @param <OBJECT> the type of the data in the array.
+     */
+    public static <OBJECT> Stream<OBJECT> _butOnlyNonNull$(OBJECT[] array) {
+        if (array == null)
+            return Stream.empty();
+        if (array.length == 0)
+            return Stream.empty();
+        return stream(array).filter(Objects::nonNull);
+    }
+    
+    /**
+     * Returns the stream of from the given collection but does not contains null value.
+     * 
+     * @param collection  the collection.
+     * @return  the stream.
+     * 
+     * @param <OBJECT>     the type of the data in the list.
+     * @param <COLLECTION> the type of the collection.
+     */
+    public static <OBJECT, COLLECTION extends Collection<OBJECT>> Stream<OBJECT> _butOnlyNonNull$(COLLECTION collection) {
+        if (collection == null)
+            return Stream.empty();
+        return collection.stream().filter(Objects::nonNull);
+    }
+    
+    /**
+     * Returns the stream of from the given stream but does not contains null value.
+     * 
+     * @param stream  the stream.
+     * @return  the stream.
+     * 
+     * @param <OBJECT> the type of the data in the stream.
+     */
+    public static <OBJECT> Stream<OBJECT> _butOnlyNonNull$(Stream<OBJECT> stream) {
+        if (stream == null)
+            return Stream.empty();
+        return stream.filter(Objects::nonNull);
     }
     
     /**

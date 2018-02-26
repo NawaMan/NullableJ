@@ -1,4 +1,4 @@
-package nawaman.nullablej;
+package nawaman.nullablej.nullable;
 
 import static org.junit.Assert.assertEquals;
 
