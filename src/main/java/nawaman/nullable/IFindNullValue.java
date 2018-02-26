@@ -35,19 +35,19 @@ public interface IFindNullValue {
      * 
      * @param clzz  the class.
      * @return  the null value.
-     * @param <OBJECT>  the type of the object.
+     * @param <TYPE>  the type of the object.
      */
-    public <OBJECT> OBJECT findNullValueOf(Class<OBJECT> clzz);
+    public <TYPE> TYPE findNullValueOf(Class<TYPE> clzz);
     
     /**
      * Return this object as a function.
      * 
      * @return the function.
      * 
-     * @param  <OBJECT>  the type of data.
+     * @param  <TYPE>  the type of data.
      */
-    public default <OBJECT> Function< Class<OBJECT>, OBJECT> asFunction() {
-        return (Function< Class<OBJECT>, OBJECT>)this::findNullValueOf;
+    public default <TYPE> Function< Class<TYPE>, TYPE> asFunction() {
+        return (Function< Class<TYPE>, TYPE>)this::findNullValueOf;
     }
     
 }

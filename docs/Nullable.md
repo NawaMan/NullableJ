@@ -1,14 +1,14 @@
 # Nullable
 
-`Nullable` is a copy-cat of Java 8 Optional.
-There are a few differences but if you know Optional,
+`Nullable` is a copy-cat of Java 8 `Optional`.
+There are a few differences but if you know `Optional`,
   you will almost know `Nullable`.
 So basically, `Nullable` is a wrapper to an object.
-That object can be null.
-You can check if the object is null (`isPresent()`).
+That object can be `null` -- dah.
+You can check if the object is `null` (`isPresent()`).
 You can transform the object using `map(...)`.
-And almost everything you do with Optional,
-  you can do it with Nullable.
+And almost everything you do with `Optional`,
+  you can do it with `Nullable`.
 
 As mentioned there are a few differences between `Optional` and `Nullable`.
 

@@ -19,18 +19,18 @@ import java.util.function.Supplier;
 /**
  * Classes implementing this interface knows hot to turn itself into a nullable.
  * 
- * @param <OBJECT> the type of the data.
+ * @param <TYPE> the type of the data.
  * @author NawaMan -- nawa@nawaman.net
  */
 
-public interface IAsNullable<OBJECT> {
+public interface IAsNullable<TYPE> {
     
     /**
      * Returns the nullable representation of this object.
      * 
      * @return the nullable.
      */
-    public Nullable<OBJECT> asNullable();
+    public Nullable<TYPE> asNullable();
     
     
     
@@ -44,11 +44,11 @@ public interface IAsNullable<OBJECT> {
      * Get the empty value 
      * 
      * @return  the empty IAsNullable.
-     * @param <T>  the data type.
+     * @param <TYPE>  the data type.
      **/
     @SuppressWarnings("unchecked")
-    public static <T> IAsNullable<T> empty() {
-        return (IAsNullable<T>)EMPTY;
+    public static <TYPE> IAsNullable<TYPE> empty() {
+        return (IAsNullable<TYPE>)EMPTY;
     }
     /**
      * Create an IAsNullable of the given value.
@@ -56,10 +56,10 @@ public interface IAsNullable<OBJECT> {
      * @param value  the data value.
      * @return the IAsNullable value.
      * 
-     * @param <T>  the data type.
+     * @param <TYPE>  the data type.
      */
-    public static <T> IAsNullable<T> of(T value) {
-        return (IAsNullable<T>)()->Nullable.of(value);
+    public static <TYPE> IAsNullable<TYPE> of(TYPE value) {
+        return (IAsNullable<TYPE>)()->Nullable.of(value);
     }
     
     /**
@@ -68,10 +68,10 @@ public interface IAsNullable<OBJECT> {
      * @param supplier  the data supplier.
      * @return the IAsNullable value.
      * 
-     * @param <T>  the data type.
+     * @param <TYPE>  the data type.
      */
-    public static <T> IAsNullable<T> from_(Supplier<? extends T> supplier) {
-        return (IAsNullable<T>)()->Nullable.from(supplier);
+    public static <TYPE> IAsNullable<TYPE> from_(Supplier<? extends TYPE> supplier) {
+        return (IAsNullable<TYPE>)()->Nullable.from(supplier);
     }
     
 }

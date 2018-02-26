@@ -64,25 +64,25 @@ public class NullableData {
      * This method is similar to {@link NullableData#from(Supplier, Class, Class)}
      *   but the value given as object which this method will convert to supplier.
      * 
-     * @param value                the value.
-     * @param dataObjectClass      the data object class.
-     * @param nullableObjectClass  the combine data and nullable class.
+     * @param value                  the value.
+     * @param dataObjectClass        the data object class.
+     * @param asNullableObjectClass  the combine data and iAsNullable class.
      * @return  the nullable data object.
      * 
-     * @param <T>  the data type.
-     * @param <N>  the Nullable data type.
+     * @param <DATA>        the data type.
+     * @param <ASNULLABLE>  the IAsNullable data type.
      */
     @SuppressWarnings("unchecked")
-    public static <T, N extends IAsNullable<T>> N of(
-            T value, 
-            Class<T> dataObjectClass, 
-            Class<N> nullableObjectClass) {
+    public static <DATA, ASNULLABLE extends IAsNullable<DATA>> ASNULLABLE of(
+            DATA              value, 
+            Class<DATA>       dataObjectClass, 
+            Class<ASNULLABLE> asNullableObjectClass) {
         if (value == null) {
-            return (N)nullableObjects.computeIfAbsent(nullableObjectClass, clzz->{
-                return from((Supplier<T>)nullSupplier, dataObjectClass, nullableObjectClass, Nullable.empty());
+            return (ASNULLABLE)nullableObjects.computeIfAbsent(asNullableObjectClass, clzz->{
+                return from((Supplier<DATA>)nullSupplier, dataObjectClass, asNullableObjectClass, Nullable.empty());
             });
         }
-        return from(()->value, dataObjectClass, nullableObjectClass);
+        return from(()->value, dataObjectClass, asNullableObjectClass);
     }
     
     /**
@@ -92,13 +92,13 @@ public class NullableData {
      * @param dataClass  the data class.
      * @return the nullable data object.
      * 
-     * @param <T>  the data type.
+     * @param <DATA>  the data type.
      */
     @SuppressWarnings("unchecked")
-    public static <T> T of(T dataValue, Class<T> dataClass) {
+    public static <DATA> DATA of(DATA dataValue, Class<DATA> dataClass) {
         if (dataValue == null) {
-            return (T)nullableObjects.computeIfAbsent(dataClass, clzz->{
-                return from((Supplier<T>)nullSupplier, dataClass, Nullable.empty());
+            return (DATA)nullableObjects.computeIfAbsent(dataClass, clzz->{
+                return from((Supplier<DATA>)nullSupplier, dataClass, Nullable.empty());
             });
         }
         
@@ -130,35 +130,35 @@ public class NullableData {
      * System.out.println(nullableData.map(Data::getValue()).orElse(Value.NO_VALUE));
      * </pre>
      * 
-     * @param valueSupplier        the supplier for the value.
-     * @param dataObjectClass      the data object class.
-     * @param nullableObjectClass  the combine data and nullable class.
+     * @param valueSupplier          the supplier for the value.
+     * @param dataObjectClass        the data object class.
+     * @param asNullableObjectClass  the combine data and nullable class.
      * @return  the nullable data object.
      * 
-     * @param <T>  the data type.
-     * @param <N>  the Nullable data type.
+     * @param <DATA>        the data type.
+     * @param <ASNULLABLE>  the Nullable data type.
      */
-    public static <T, N extends IAsNullable<T>> N from(
-            Supplier<T> valueSupplier, 
-            Class<T> dataObjectClass, 
-            Class<N> nullableObjectClass) {
-        return from(valueSupplier, dataObjectClass, nullableObjectClass, null);
+    public static <DATA, ASNULLABLE extends IAsNullable<DATA>> ASNULLABLE from(
+            Supplier<DATA>    valueSupplier, 
+            Class<DATA>       dataObjectClass, 
+            Class<ASNULLABLE> asNullableObjectClass) {
+        return from(valueSupplier, dataObjectClass, asNullableObjectClass, null);
     }
     
     @SuppressWarnings("unchecked")
-    private static <T, N extends IAsNullable<T>> N from(
-            Supplier<T> valueSupplier, 
-            Class<T> dataObjectClass, 
-            Class<N> nullableObjectClass,
-            Nullable<T> nullable) {
+    private static <DATA, ASNULLABLE extends IAsNullable<DATA>> ASNULLABLE from(
+            Supplier<DATA> valueSupplier, 
+            Class<DATA> dataObjectClass, 
+            Class<ASNULLABLE> asNullableObjectClass,
+            Nullable<DATA> nullable) {
         if (!dataObjectClass.isInterface())
             throw new IllegalArgumentException("The data class must be an interface: " + dataObjectClass);
         
-        val interfaces  = new Class<?>[] { nullableObjectClass };
+        val interfaces  = new Class<?>[] { dataObjectClass, asNullableObjectClass };
         val classLoader = dataObjectClass.getClassLoader();
-        val handler     = createNullableInvocationHandler(valueSupplier, (Class<T>)nullableObjectClass, nullable);
+        val handler     = createNullableInvocationHandler(valueSupplier, (Class<DATA>)asNullableObjectClass, nullable);
         val rawProxy    = Proxy.newProxyInstance(classLoader, interfaces, handler);
-        val proxy       = nullableObjectClass.cast(rawProxy);
+        val proxy       = asNullableObjectClass.cast(rawProxy);
         return proxy;
     }
     
@@ -169,17 +169,17 @@ public class NullableData {
      * @param dataObjectClass  the data object class.
      * @return the nullable data object.
      * 
-     * @param <T>  the data type.
+     * @param <DATA>  the data type.
      */
-    public static <T> T from(Supplier<? extends T> valueSupplier, Class<T> dataObjectClass) {
+    public static <DATA> DATA from(Supplier<? extends DATA> valueSupplier, Class<DATA> dataObjectClass) {
         return from(valueSupplier, dataObjectClass, null);
     }
     
     @SuppressWarnings("unchecked")
-    private static <T> T from(
-            Supplier<? extends T> valueSupplier,
-            Class<T> dataObjectClass,
-            Nullable<T> nullable) {
+    private static <DATA> DATA from(
+            Supplier<? extends DATA> valueSupplier,
+            Class<DATA> dataObjectClass,
+            Nullable<DATA> nullable) {
         if (!dataObjectClass.isInterface())
             throw new IllegalArgumentException("The data class must be an interface: " + dataObjectClass);
         
@@ -187,7 +187,7 @@ public class NullableData {
         val classLoader = dataObjectClass.getClassLoader();
         val handler     = createNullableInvocationHandler(valueSupplier, dataObjectClass, nullable);
         val rawProxy    = Proxy.newProxyInstance(classLoader, interfaces, handler);
-        val proxy       = (T)rawProxy;
+        val proxy       = (DATA)rawProxy;
         return proxy;
     }
     
@@ -225,10 +225,10 @@ public class NullableData {
         return method.invoke(value, args);
     }
     
-    private static <T> InvocationHandler createNullableInvocationHandler(
-            Supplier<? extends T> valueSupplier,
-            Class<T> dataClass,
-            Nullable<T> nullable) {
+    private static <DATA> InvocationHandler createNullableInvocationHandler(
+            Supplier<? extends DATA> valueSupplier,
+            Class<DATA> dataClass,
+            Nullable<DATA> nullable) {
         val theNullable = NullableJ._orGet(nullable, ()->Nullable.from(valueSupplier));
         val handler = (InvocationHandler)(proxy, method, methodArgs) -> {
             if ("get".equals(method.getName()))

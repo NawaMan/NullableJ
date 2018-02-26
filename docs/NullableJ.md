@@ -14,12 +14,12 @@ For example, you can write code like this...
 //                                      ^^^ and Elvis operator, any one?
 ```
 
-A bigger example, consider the following code.
+A slightly bigger example, consider the following code.
 
 ```Java
 
     public class SaleReport {
-        public BigDecimal totalMonthlySaleByPart(String partNumber, Color color, int year) {
+        public BigDecimal totalYearlySaleByPart(String partNumber, Color color, int year) {
             val item        = itemService.findItem(partNumber, color);
             val salesByYear = saleStatService.findItemSalesByYear(item);
            return salesByYear.get(year).stream().map(Sale::getTotal).collect(reducing(ZERO, BigDecimal::add));
@@ -27,18 +27,18 @@ A bigger example, consider the following code.
     }
 ```
 
-Lots of things can go wrong in this methods.
+This method is very readable but a lots of things can go wrong.
 * there might be no item for the `partNumber` and `color`.
-* the 3rd-party legacy `saleStatService.findItemSalesByYear(item)` may return null if item is null (can't find the time).
+* the legacy `saleStatService.findItemSalesByYear(item)` may return `null` if item is `null`.
 * there might be no item in `salesByYear` map.
 
-With `NullableJ` methods, we may rewrite that method like this.
+With `NullableJ` methods, we may adjust the method like this.
 
 ```Java
 
     @ExtensionMethod({ NullableJ.class })
     public class SaleReport {
-        public BigDecimal totalMonthlySaleByPart(String partNumber, Color color, int year) {
+        public BigDecimal totalYearlySaleByPart(String partNumber, Color color, int year) {
             val item        = itemService.findItem(partNumber, color);
             val salesByYear = item._isNotNull() ? saleStatService.findItemSalesByYear(item) : null;
             return salesByYear._get(year)._stream$().map(Sale::getTotal).collect(reducing(ZERO, BigDecimal::add));
@@ -49,22 +49,22 @@ With `NullableJ` methods, we may rewrite that method like this.
 Spot the differences?
 That exactly the point.
 `NullableJ` methods are designed to be used with Lombok's `@ExtensionMethod` to provide natural way to handle `null`.
-`NullableJ` has may often used methods that are ready.
-If you need more, you can create one in yourown class.
+`NullableJ` has may often-used methods that are ready.
+If you need more, you can create yourown.
 
 ## The methods
 
 Most of the methods in NullableJ is very straightforward.
 
 Methods that returns primitive data are the easiest to reason with.
-For example: `_equalsTo` returns `true` if the given object equals to another given object. It basically uses `Objects.equals(...)` methods.
+For example: `_equalsTo` returns `true` if the given object equals to another given object (it basically uses `Objects.equals(...)` method).
 Non-primitive type methods that will not returns null are `_orXXX()` method (unless you call `_or(null)` of course - but don't do it).
 
-The methods that return non-primitive method might returns `null`.
+The methods that return non-primitive might return `null`.
 This might be surprise to many as the library to help dealing with `null` should not be returning `null` for any reason.
-But there is a reason and that is to allow you to chain the methods.
+But there is a reason and that is to allow you to chain the call.
 For example: `_toString` will returns a string representation of the given object or null.
-Then the method like `_or()` can be used to further specify what to do next.
+Then, the method like `_or()` can be used to further specify what to do next.
 Like, in case of array or collection,
   you may want to use empty square brackets.
 
@@ -81,7 +81,7 @@ These methods return `Otherwise` object.
 The otherwise value acts very similar to `Nullable` (or `Optional`).
 The value is present or not depending on whether or not the criteria was met.
 The different between `Nullable` and `Otherwise` is that the later still have access to the original value.
-See Otherwise for more information.
+See [`Otherwise` page](https://github.com/NawaMan/NullableJ/blob/master/docs/Otherwise.md) for more info.
 
 
 ## Documentation

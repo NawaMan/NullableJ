@@ -32,9 +32,9 @@ public interface LiveNullable<TYPE> extends Nullable<TYPE> {
      * @param theSupplier  the supplier of the value.
      * @return  the Nullable of the value.
      * 
-     * @param <OBJECT>  the data type.
+     * @param <TYPE>  the data type.
      */
-    public static <OBJECT> LiveNullable<OBJECT> from(Supplier<? extends OBJECT> theSupplier) {
+    public static <TYPE> LiveNullable<TYPE> from(Supplier<? extends TYPE> theSupplier) {
         return ()-> {
             try {
                 return theSupplier.get();

@@ -42,7 +42,7 @@ import lombok.val;
  * @author NawaMan -- nawa@nawaman.net
  */
 @FunctionalInterface
-public interface Nullable<TYPE> extends Supplier<TYPE> {
+public interface Nullable<TYPE> extends Supplier<TYPE>, IAsNullable<TYPE> {
     
     @SuppressWarnings({ "rawtypes", "javadoc" })
     public static final Nullable EMPTY = (Nullable)()->null;
@@ -55,13 +55,13 @@ public interface Nullable<TYPE> extends Supplier<TYPE> {
      * @param theGivenValue  the given value.
      * @return  the Nullable of the given value.
      * 
-     * @param <OBJECT>  the data type.
+     * @param <TYPE>  the data type.
      */
-    public static <OBJECT> Nullable<OBJECT> of(OBJECT theGivenValue) {
+    public static <TYPE> Nullable<TYPE> of(TYPE theGivenValue) {
         if (theGivenValue == null)
             return empty();
         
-        return new NullableImpl<OBJECT>(theGivenValue);
+        return new NullableImpl<TYPE>(theGivenValue);
     }
     
     /**
@@ -70,11 +70,11 @@ public interface Nullable<TYPE> extends Supplier<TYPE> {
      * @param theSupplier  the supplier of the value.
      * @return  the Nullable of the value.
      * 
-     * @param <OBJECT>  the data type.
+     * @param <TYPE>  the data type.
      */
-    public static <OBJECT> Nullable<OBJECT> from(Supplier<? extends OBJECT> theSupplier) {
+    public static <TYPE> Nullable<TYPE> from(Supplier<? extends TYPE> theSupplier) {
         try {
-            return new NullableImpl<OBJECT>(theSupplier.get());
+            return new NullableImpl<TYPE>(theSupplier.get());
         } catch (NullPointerException e) {
             return empty();
         }
@@ -86,13 +86,13 @@ public interface Nullable<TYPE> extends Supplier<TYPE> {
      * @param theGivenValue  the given value.
      * @return  the Nullable of the given value.
      * 
-     * @param <OBJECT>  the data type.
+     * @param <TYPE>  the data type.
      */
-    public static <OBJECT> Nullable<OBJECT> nullable(OBJECT theGivenValue) {
+    public static <TYPE> Nullable<TYPE> nullable(TYPE theGivenValue) {
         if (theGivenValue == null)
             return empty();
         
-        return new NullableImpl<OBJECT>(theGivenValue);
+        return new NullableImpl<TYPE>(theGivenValue);
     }
     
     /**
@@ -101,11 +101,11 @@ public interface Nullable<TYPE> extends Supplier<TYPE> {
      * @param theSupplier  the supplier of the value.
      * @return  the Nullable of the value.
      * 
-     * @param <OBJECT>  the data type.
+     * @param <TYPE>  the data type.
      */
-    public static <OBJECT> Nullable<OBJECT> nullable(Supplier<? extends OBJECT> theSupplier) {
+    public static <TYPE> Nullable<TYPE> nullable(Supplier<? extends TYPE> theSupplier) {
         try {
-            return new NullableImpl<OBJECT>(theSupplier.get());
+            return new NullableImpl<TYPE>(theSupplier.get());
         } catch (NullPointerException e) {
             return empty();
         }
@@ -116,11 +116,11 @@ public interface Nullable<TYPE> extends Supplier<TYPE> {
      * 
      * @return  the Nullable of the no value.
      * 
-     * @param <OBJECT>  the data type.
+     * @param <TYPE>  the data type.
      */
     @SuppressWarnings("unchecked")
-    public static <OBJECT> Nullable<OBJECT> empty() {
-        return (Nullable<OBJECT>)EMPTY;
+    public static <TYPE> Nullable<TYPE> empty() {
+        return (Nullable<TYPE>)EMPTY;
     }
     
     //== Functional method ============================================================================================
@@ -133,6 +133,11 @@ public interface Nullable<TYPE> extends Supplier<TYPE> {
     public TYPE get();
     
     //== Default methods ==============================================================================================
+    
+    @Override
+    public default Nullable<TYPE> asNullable() {
+        return this;
+    }
     
     /**
      * Returns the value if it is not null or the fallbackValue otherwise
