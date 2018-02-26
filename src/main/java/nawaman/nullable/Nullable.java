@@ -273,6 +273,26 @@ public interface Nullable<TYPE> extends Supplier<TYPE> {
     }
     
     /**
+     * Check if the value is null.
+     * 
+     * @return {@code true} if the value is not null.
+     */
+    public default boolean isNull() {
+        val value = get();
+        return (value == null);
+    }
+    
+    /**
+     * Check if the value is not null.
+     * 
+     * @return {@code true} if the value is not null.
+     */
+    public default boolean isNotNull() {
+        val value = get();
+        return (value != null);
+    }
+    
+    /**
      * If the value is not null, pass it to the consumer.
      * 
      * @param theConsumer  the consumer.
@@ -329,6 +349,80 @@ public interface Nullable<TYPE> extends Supplier<TYPE> {
             theAction.run();
         
         elseRunnable.run();
+        return value;
+    }
+    
+    /**
+     * If the value is not null, pass it to the consumer.
+     * 
+     * @param theConsumer  the consumer.
+     * @return  the value.
+     */
+    public default TYPE ifNotNull(Consumer<? super TYPE> theConsumer) {
+        val value = get();
+        if (value != null)
+            theConsumer.accept(value);
+        
+        return value;
+    }
+    
+    /**
+     * If the value is not null, pass it to the consumer otherwise run elseRunnable.
+     * 
+     * @param theConsumer   the consumer.
+     * @param elseRunnable  runnable in case the value is null.
+     * @return  the value.
+     */
+    public default TYPE ifNotNull(Consumer<? super TYPE> theConsumer, Runnable elseRunnable) {
+        val value = get();
+        if (value != null)
+            theConsumer.accept(value);
+        
+        elseRunnable.run();
+        return value;
+    }
+    
+    /**
+     * If the value is not null, run the action.
+     * 
+     * @param theAction  the action.
+     * @return  the value.
+     */
+    public default TYPE ifNotNullRun(Runnable theAction) {
+        val value = get();
+        if (value != null)
+            theAction.run();
+        
+        return value;
+    }
+    
+    /**
+     * If the value is not null, run the action otherwise run elseRunnable.
+     * 
+     * @param theAction  the action.
+     * @param elseRunnable  runnable in case the value is null.
+     * @return  the value.
+     */
+    public default TYPE ifNotNullRun(Runnable theAction, Runnable elseRunnable) {
+        val value = get();
+        if (value != null)
+            theAction.run();
+        
+        elseRunnable.run();
+        return value;
+    }
+    
+    /**
+     * If the value is null, run the action. If the value is not null, return the value.
+     * 
+     * @param theAction  the action.
+     * @return  the value.
+     */
+    public default TYPE ifNull(Runnable theAction) {
+        val value = get();
+        if (value == null)
+            theAction.run();
+        
         return value;
     }
     
