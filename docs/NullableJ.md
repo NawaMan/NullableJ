@@ -9,12 +9,12 @@ The use of Lomlok's extension methods particularly magnify the value of null-saf
 For example, you can write code like this...
 
 ```Java
-// string CAN BE NULL.
-return string._whenMatches("^[0-9]+$").map(Integer::parseInt).orElse(-1);
-//            ^^^^^^^^^^^^
+
+    System.out.println("String: " + str._or(" <not-given>"));
+//                                      ^^^ and Elvis operator, any one?
 ```
 
-Another example, consider the following code.
+A bigger example, consider the following code.
 
 ```Java
 
