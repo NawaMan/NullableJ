@@ -44,8 +44,8 @@ import lombok.val;
 @FunctionalInterface
 public interface Nullable<TYPE> extends Supplier<TYPE>, IAsNullable<TYPE> {
     
-    @SuppressWarnings({ "rawtypes", "javadoc" })
-    public static final Nullable EMPTY = (Nullable)()->null;
+    @SuppressWarnings({ "rawtypes", "javadoc", "unchecked" })
+    public static final Nullable EMPTY = new NullableImpl(null);
     
     //== Factory method ===============================================================================================
     
