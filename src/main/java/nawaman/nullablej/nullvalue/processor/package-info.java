@@ -14,8 +14,8 @@
 //  ========================================================================
 
 /**
- * Classes in this package concern about {@link nawaman.nullablej.nullable.Nullable}.
+ * Classes in this package concern about annotation processing for @NullValue.
  * 
  * @author NawaMan -- nawa@nawaman.net
  */
-package nawaman.nullablej.nullable;
+package nawaman.nullablej.nullvalue.processor;
