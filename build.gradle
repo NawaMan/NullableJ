@@ -19,6 +19,8 @@ repositories {
 }
 
 dependencies {
+    compile files("build/classes/java/main")
+    
     compile 'org.projectlombok:lombok:1.16.16'
     
     compile group: 'nawaman-utils', name: 'nawaman-utils-reflection', version: '0.1.3'
@@ -80,5 +82,35 @@ gradle.projectsEvaluated {
     tasks.withType(JavaCompile) {
         options.compilerArgs << "-parameters"
         options.compilerArgs << "-Xlint:unchecked"
+        options.incremental = true
     }
 }
+
+// == Annotation processor
+
+//task compileAnnotationProcessor (type: JavaCompile) {
+//    options.compilerArgs << "-parameters"
+//    options.compilerArgs << "-Xlint:unchecked"
+//    options.compilerArgs << "-proc:none"
+//    include 'nawaman/nullablej/nullvalue/processor/NullValueAnnotationValidator.java'
+//    source = 'src/mian/annotationprocessor'
+//    classpath = sourceSets.main.compileClasspath
+//    destinationDir = new File(buildDir, "classes/main/java")
+//    println buildDir
+//}
+
+task compileAnnotationProcessor (type: JavaCompile) {
+    source = file("$projectDir/src/main/annotationprocessor")
+    include 'nawaman/nullablej/nullvalue/processor/NullValueAnnotationValidator.java'
+    include 'nawaman/nullablej/nullvalue/processor/NullValue.java'
+    classpath = sourceSets.main.compileClasspath
+    destinationDir = destinationDir = file('build/classes/java/main')
+}
+
+compileAnnotationProcessor.options.compilerArgs << "-parameters"
+compileAnnotationProcessor.options.compilerArgs << "-Xlint:unchecked"
+compileAnnotationProcessor.options.compilerArgs << "-proc:none"
+
+compileJava.dependsOn compileAnnotationProcessor
+
+

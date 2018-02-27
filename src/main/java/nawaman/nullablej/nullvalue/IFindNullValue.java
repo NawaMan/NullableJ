@@ -17,6 +17,7 @@ package nawaman.nullablej.nullvalue;
 import java.util.function.Function;
 
 import nawaman.nullablej._internal.Default;
+import nawaman.nullablej.nullvalue.processor.NullValue;
 
 /**
  * Classes implementing this interface knows how to find null values given the class.

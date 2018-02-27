@@ -33,8 +33,6 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
 
-import nawaman.nullablej.nullvalue.NullValue;
-
 /**
  * This annotation process ensures that {@link NullValue} is only annotated to public, static, final fields or methods.
  * 
