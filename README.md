@@ -2,7 +2,7 @@
 
 ![alt "Build status"](https://travis-ci.org/NawaMan/NullableJ.svg?branch=master)
 
-Java Uitility used to deal with `null`.
+Java Library for dealing with `null`.
 
 `NullableJ` deploy multiple techniques to deal with `null`.
 * `NullableJ` is a collection of extension methods that are null safe.

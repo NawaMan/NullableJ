@@ -1,6 +1,6 @@
 # NullableJ
 
-Java Uitility used to deal with 'null'.
+`NullableJ` contains methods for dealing with 'null'.
 It is designed to used with Lombok @ExtensionMethod (see [here](https://dzone.com/articles/lomboks-extension-methods) and [here](https://projectlombok.org/features/experimental/ExtensionMethod)).
 This means it will be the most beneficial when used with @ExtensionMethod
   although you can use the utilities without that.
