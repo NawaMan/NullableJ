@@ -43,7 +43,7 @@ However, since it is extensible,
   as well as, fixing some of the problems of `Optional`.
 For instance, `Nullable.of(...)` can accept `null` without throwing any exception.
 Its `get()` method, similarly, will return `null` instead of throw exception.
-These makes `Nullable` a true "maybe monad".
+These makes `Nullable` smoother to use was there are not separate cases for null and non-null. Also it make `Nullable` a true "maybe monad".
 
 For example, the following code will return the value associated with the string key or empty string if the key is null.
 ```java
@@ -125,7 +125,7 @@ and the dependencies to Lombok and NullableJ.
 
 ```Groovy
     compileOnly 'org.projectlombok:lombok:1.16.16'	// Include this if @ExtensionMethod is nedded.
-    compile     'nawaman:nullablej:2.0.0'			// Please fine the lastest version.
+    compile     'nawaman:nullablej:3.0.0.0'			// Please fine the lastest version.
 ```
 
 See [UseNullableJGradle](https://github.com/NawaMan/UseNullableJGradle) for more information.
@@ -152,7 +152,7 @@ and the dependencies to Lombok and NullableJ.
 <dependency>
 	<groupId>nawaman</groupId>
 	<artifactId>nullablej</artifactId>
-	<version>2.0.0</version> <!-- Please fine the lastest version. -->
+	<version>3.0.0.0</version> <!-- Please fine the lastest version. -->
 </dependency>
 <dependency>
 	<groupId>org.projectlombok</groupId>
