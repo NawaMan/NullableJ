@@ -16,12 +16,6 @@
 package nawaman.nullablej;
 
 import static java.util.Arrays.asList;
-import static java.util.Collections.singletonMap;
-import static java.util.stream.Collectors.joining;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -40,10 +34,18 @@ import java.util.stream.Stream;
 
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import static java.util.stream.Collectors.joining;
+
+import static java.util.Collections.singletonMap;
+
 import lombok.Getter;
 import lombok.val;
 import lombok.experimental.ExtensionMethod;
-import nawaman.nullablej.NullableJ;
 import nawaman.nullablej.nullable.Nullable;
 
 @SuppressWarnings("javadoc")

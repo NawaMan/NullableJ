@@ -18,6 +18,8 @@ repositories {
     }
 }
 
+buildM
+
 dependencies {
     compile files("build/classes/java/main")
     
@@ -88,29 +90,14 @@ gradle.projectsEvaluated {
 
 // == Annotation processor
 
-//task compileAnnotationProcessor (type: JavaCompile) {
-//    options.compilerArgs << "-parameters"
-//    options.compilerArgs << "-Xlint:unchecked"
-//    options.compilerArgs << "-proc:none"
-//    include 'nawaman/nullablej/nullvalue/processor/NullValueAnnotationValidator.java'
-//    source = 'src/mian/annotationprocessor'
-//    classpath = sourceSets.main.compileClasspath
-//    destinationDir = new File(buildDir, "classes/main/java")
-//    println buildDir
-//}
-
 task compileAnnotationProcessor (type: JavaCompile) {
-    source = file("$projectDir/src/main/annotationprocessor")
-    include 'nawaman/nullablej/nullvalue/processor/NullValueAnnotationValidator.java'
-    include 'nawaman/nullablej/nullvalue/processor/NullValue.java'
-    classpath = sourceSets.main.compileClasspath
-    destinationDir = destinationDir = file('build/classes/java/main')
+    options.compilerArgs << "-proc:none"
+    options.incremental = true
+    
+    source         = file("src/main/annotationprocessor")
+    destinationDir = file('build/classes/java/main')
+    classpath      = sourceSets.main.compileClasspath
 }
 
-compileAnnotationProcessor.options.compilerArgs << "-parameters"
-compileAnnotationProcessor.options.compilerArgs << "-Xlint:unchecked"
-compileAnnotationProcessor.options.compilerArgs << "-proc:none"
-
 compileJava.dependsOn compileAnnotationProcessor
-
 
