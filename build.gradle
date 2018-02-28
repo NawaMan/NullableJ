@@ -19,9 +19,9 @@ repositories {
 }
 
 dependencies {
-    compile 'org.projectlombok:lombok:1.16.16'
+    compile files("build/classes/java/main")
     
-    compile group: 'nawaman-utils', name: 'nawaman-utils-reflection', version: '0.1.3'
+    compile 'org.projectlombok:lombok:1.16.16'
     
     testCompile 'junit:junit:4.12'
 }
@@ -80,5 +80,20 @@ gradle.projectsEvaluated {
     tasks.withType(JavaCompile) {
         options.compilerArgs << "-parameters"
         options.compilerArgs << "-Xlint:unchecked"
+        options.incremental = true
     }
 }
+
+// == Annotation processor
+
+task compileAnnotationProcessor (type: JavaCompile) {
+    options.compilerArgs << "-proc:none"
+    options.incremental = true
+    
+    source         = file("src/main/annotationprocessor")
+    destinationDir = file('build/classes/java/main')
+    classpath      = sourceSets.main.compileClasspath
+}
+
+compileJava.dependsOn compileAnnotationProcessor
+
