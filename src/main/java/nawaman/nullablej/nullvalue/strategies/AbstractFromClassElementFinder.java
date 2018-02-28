@@ -14,7 +14,7 @@
 //  ========================================================================
 package nawaman.nullablej.nullvalue.strategies;
 
-import static nawaman.utils.reflection.UReflection.isPublicStaticFinalAndCompatible;
+import static nawaman.nullablej._internal.UReflection.isPublicStaticFinalAndCompatible;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

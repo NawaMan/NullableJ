@@ -15,7 +15,6 @@
 //  ========================================================================
 package nawaman.nullablej.nullabledata;
 
-import static nawaman.utils.reflection.UReflection.invokeDefaultMethod;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
@@ -27,6 +26,7 @@ import java.util.function.Supplier;
 
 import lombok.val;
 import nawaman.nullablej.NullableJ;
+import nawaman.nullablej._internal.UReflection;
 import nawaman.nullablej.nullable.IAsNullable;
 import nawaman.nullablej.nullable.Nullable;
 import nawaman.nullablej.nullvalue.NullValues;
@@ -259,7 +259,7 @@ public class NullableData {
                 return theNullable;
             
             if (method.isDefault()) {
-                return invokeDefaultMethod(proxy, method, methodArgs);
+                return UReflection.invokeDefaultMethod(proxy, method, methodArgs);
             }
             
             boolean isICanBeNullableMethod = IAsNullable.class == method.getDeclaringClass();

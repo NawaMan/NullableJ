@@ -14,8 +14,8 @@
 //  ========================================================================
 package nawaman.nullablej.nullvalue.strategies;
 
-import static nawaman.utils.reflection.UReflection.hasAnnotationWithName;
-import static nawaman.utils.reflection.UReflection.invokeStaticMethodOrNull;
+import static nawaman.nullablej._internal.UReflection.hasAnnotationWithName;
+import static nawaman.nullablej._internal.UReflection.invokeStaticMethodOrNull;
 
 import java.lang.annotation.Annotation;
 
