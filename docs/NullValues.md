@@ -22,10 +22,10 @@ Here are the strategies in the order.
 8. NullableInterface
 
 ## KnownNullValues
-`NullValues` maintains a list of classes its know exactly what the null value is.
+`NullValues` maintains a list of classes it knows exactly what the null value is.
 Most of the classes in this list are primitive or primitive wrapper types.
 The list also include abstract collection and map classes where empty immutable instances are their null values.
-The list also include nullable of `Runnable` which does nothing.
+The list also includes nullable of `Runnable` which does nothing.
 Notable values are:
 
 - 0 for all numeric types

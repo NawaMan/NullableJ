@@ -16,21 +16,21 @@ As mentioned there are a few differences between `Optional` and `Nullable`.
 The biggest difference (in the perspective of the user) is that
   `Nullable` embraces `null`.
 As the name imply,
-  the value wrapped inside `Nullable` can be null.
+  the value wrapped inside `Nullable` can be `null`.
 You can put null into it with `Nullable.of()`
-  -- there is no need for a separete `ofNullable(...)`.
+  -- there is no need for a separate `ofNullable(...)`.
 You can also get the value out using `get()` method
   without worry that it will throw an exception if the value is not present.
 `get()` will simply return `null`.
-This consolidate the way to get value in and out of `Nullable` or both `null` and non-`null`.
+This consolidates the way to get value in and out of `Nullable` or both `null` and non-`null`.
 These make `Nullable` a true "maybe monad". 
 
 ## Complex nullable
 `Nullable` can be created using factory methods.
 Two of which (`Nullable.from(Supplier<T> supplier)` or `Nullable.nullable(Supplier<T> supplier)`),
   accept a supplier.
-When called, the supplier will be executed right away and if it throw NullPointerException,
-  an empty Nullable is returned.
+When called, the supplier will be executed right away and if it throw `NullPointerException`,
+  an empty `Nullable` is returned.
 This is very useful in case of a complex supplier to get the value such as long call chain expression.
 For example.
 
@@ -46,7 +46,7 @@ In the above code,
 Without this feature,
   we need to put that expression combinations of map and flatMap.
 A small trick for those that are OK with static import,
-  you can use static factory method `Nullable.nullable()` to make a it more readable.
+  you can use static factory method `Nullable.nullable()` to make a it (a very little) more readable.
 Like this ...
 
 ```Java
@@ -86,7 +86,7 @@ That being said, the recommended way to create `Nullable` is the factory methods
 Because `Nullable` is an interface so it is extensible and expansible.
 This allow us to adapt `Nullable` to be used in many different ways.
 Just within NullableJ project,
-  we have `Nullable`, `LivNullable`, `NullableImpl`, nullable data and `Otherwise`.
+  we have `Nullable`, `LiveNullable`, `NullableImpl`, nullable data and `Otherwise`.
 
 We also expands `Nullable` to add more functionality than what comes with `Optional`.
 One good example is `orElseThrow()` which throw the NPE if not present.
@@ -96,7 +96,7 @@ This one is useful to allow additional filter or map but still throw NPE when no
 nullable(str).filter(s->s.startsWith(S)).map(String::toUpperCase).orElseThrow();
 ```
 
-Another is `or(Supplier<Nullable<T>> supplier)` which return itself if present or return the result from the supplier essentially combine the two.
+Another is `or(Supplier<Nullable<T>> supplier)` which returns itself if present or return the result from the given supplier -- essentially combine the two.
 
 There are also a set of overload `ifPresent(...)` methods that can accept both `Consumer` and `Runnable`
   (if you do not care about the value).
@@ -133,12 +133,23 @@ For example, if you often received nullable array but use them as list,
 ```
 
 ## Liveness
-As mention `Nullable` is a functional interface with `get()` as the functional method.
+As mentioned, `Nullable` is a functional interface with `get()` as the functional method.
 As an interface, it can't hold a state on itsown so the value is obtain from calling `get()` every time.
 This can be useful in some cases but in most case it can cause confusion.
 So it is recommended to use `Nullable.of(T value)`, `Nullable.nullable(T value)`, `Nullable.from(Supplier<T> value)` and `Nullable.nullable(Supplier<T> value)` to create a `Nullable` for most cases as it will actually instantiate a concrete class `NullableImpl` for it.
 
 If liveness is desirable, use `LiveNullable.from(...)` should be used or utilize functional-interface casting to create one -- `(Nullable<String>)()->getCurrentString()`.
 
+A good use of this is to have a nullable that may change the value over time.
+For example: 
 
+```Java
+
+        val ref = new AtomicReference<String>(null);
+        val nullableRef = LiveNullable.from(ref::get);
+        assertFalse(nullableRef.isPresent());
+        
+        ref.set("Hi");
+        assertTrue(nullableRef.isPresent());
+```
 
