@@ -18,8 +18,6 @@ repositories {
     }
 }
 
-buildM
-
 dependencies {
     compile files("build/classes/java/main")
     
