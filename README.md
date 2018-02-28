@@ -4,10 +4,10 @@
 
 Java Library for dealing with `null`.
 
-`NullableJ` deploy multiple techniques to deal with `null`.
+`NullableJ` deploys multiple techniques to deal with `null`.
 * `NullableJ` is a collection of extension methods that are null safe.
 * `Nullable` is a wrapper of a value that might be null. This is very similar to Optional.
-* `NullValues` is a utility to get null value of a class (value of a type that represent null).
+* `NullValues` is a utility to get null value of a class (value of a type that represents `null`).
 * `NullableData` is a utility to create a null data of any data interface.
 
 ## Functionalities
@@ -17,7 +17,7 @@ Java Library for dealing with `null`.
 These methods are designed to be used with [Lombok's @ExtensionMethod](https://dzone.com/articles/lomboks-extension-methods).
 They can be used as normal static methods but the naming is done with the intention that they will be used with Lombok's `@ExtensionMethod`.
 These are commonly used methods that are null safe.
-This include simple method like `_toString()` that return `null` if the object is `null`.
+Some simple methods are `_toString()` that return `null` if the object is `null`.
 Null specific methods like `_or(...)` to returns the given value if the object is `null`.
 Collection methods like `Map.get(...)` that return `null`, if the map is null or the key is `null`.
 Or even complex method like `when(...)` that allow you to discards the value if the condition is not met.
@@ -36,14 +36,13 @@ See [`NullableJ` page](https://github.com/NawaMan/NullableJ/blob/master/docs/Nul
 
 ### `Nullable`
 `Nullable` is an copy-cat of Java 8 `Optional` but it is extensible and with improvements.
-It also allow you to create a nullable object of interface data.
 Its benefits (as for dealing with `null`) are very similar to `Optional`.
 However, since it is extensible,
   more methods are added and sub typing is done to expands its utilities,
   as well as, fixing some of the problems of `Optional`.
 For instance, `Nullable.of(...)` can accept `null` without throwing any exception.
-Its `get()` method, similarly, will return `null` instead of throw exception.
-These makes `Nullable` smoother to use was there are not separate cases for null and non-null. Also it make `Nullable` a true "maybe monad".
+Its `get()` method, similarly, will return `null` instead of throwing an exception.
+These makes `Nullable` smoother to use was there are not separate cases for null and non-null. As a bonus, `Nullable` is a true "maybe monad".
 
 For example, the following code will return the value associated with the string key or empty string if the key is null.
 ```java
@@ -59,7 +58,7 @@ That means you can write any expression with in that supplier without having to 
 Find more information [here](https://github.com/NawaMan/NullableJ/blob/master/docs/Nullable.md).
 
 ### `NullValues`
-`NullValues` is a utility to get null value of a class.
+`NullValues` is a utility to get the null value of a class.
 `NullValues` will try to find the best candidate value to use as null value for a given class.
 It deploys many strategies to obtain the value such as from know list, single field with name or annotation and so on.
 
@@ -84,10 +83,10 @@ With this, you can specify exactly what make sense as a null value of your class
 Find more information [here](https://github.com/NawaMan/NullableJ/blob/master/docs/NullValues.md).
 
 ### `NullableData`
-`NullableData` is a utility to create nullable object of any interface (only work with interfaces).
+`NullableData` is a utility to create nullable objects of any interface (only work with interfaces).
 The nullable data created is a hybridge object between the data interface and `IAsNullable` (to quickly get it s `Nullable`).
 When invoking the method of the data class, nothing is done and null values are returned.
-This nullable data will look just like other instance of that data interface so it can be passed along and used just like other instance, hence, the null data object.
+This nullable data will look just like other instance of that data interface so it can be passed along and used just like other instances, hence, the null data object.
 
 For example, the following code will create a nullable of EmailService depending on whether if the service was enabled.
 
@@ -176,6 +175,18 @@ This project is developed as a gradle project on Eclipse
 Although, never tried, but I think it should be easy to import into IntelliJ.
 Simply run `gradle clean build` to build the project (or use the build-in gradle wrapper).
 
+## Versioning
+The versioning of this project is not the commonly used semantic versioning.
+Well, the last three digits are kind of semantic version.
+But the first one represents a conceptual version of the library.
+This is done this way as it was found that the version was updates too quickly
+  and there is nothing indicates the fundamental change in concept or philosophy of the library.
+  
+- The first digit is the version of the concept - changed when there is a big changes across the library or in the fundamental ways.
+- The second digit is the version of the API - changed when there is a breaking changes in the API.
+- The third digit is the version of the implementation.
+- The forth digit is the version of correction.
+
 ## Issues
 
 Please use our [issues tracking page](https://github.com/NawaMan/NullableJ/issues) to report any issues.
@@ -192,5 +203,5 @@ Feel free to help out.
 Report problems, suggest solutions, suggest more functionality ... anything is appreciated (please do it in [issues tracking page](https://github.com/NawaMan/NullableJ/issues) or email me directly).
 
 If this is useful to you and want to buy me a [coffee](https://www.paypal.me/NawaMan/2.00)
- or [lunch](https://www.paypal.me/NawaMan/10.00) or [help with my kid college fund](https://www.paypal.me/NawaMan/100.00) ... that would be great :-p
+ or [lunch](https://www.paypal.me/NawaMan/10.00) or [help with my kids college fund](https://www.paypal.me/NawaMan/100.00) ... that would be great :-p
 

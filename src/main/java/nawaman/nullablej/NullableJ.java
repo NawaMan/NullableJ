@@ -78,7 +78,7 @@ public class NullableJ {
      * @param theExpectedValue  the expected value.
      * @return {@code true} if theGivenObject is null.
      **/
-    public static boolean _equalsTo(Object theGivenObject, Object theExpectedValue) {
+    public static boolean _equals(Object theGivenObject, Object theExpectedValue) {
         val equalsTo = Objects.equals(theGivenObject, theExpectedValue);
         return equalsTo;
     }
@@ -90,7 +90,7 @@ public class NullableJ {
      * @param  theExpectedValue  the expected value.
      * @return {@code true} if theGivenObject is not null.
      **/
-    public static boolean _notEqualsTo(Object theGivenObject, Object theExpectedValue) {
+    public static boolean _notEquals(Object theGivenObject, Object theExpectedValue) {
         val equalsTo = Objects.equals(theGivenObject, theExpectedValue);
         return !equalsTo;
     }

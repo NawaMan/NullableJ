@@ -86,16 +86,16 @@ public class NullableJTest {
     
     @Test
     public void test_equalsTo() {
-        assertTrue( "String" ._equalsTo("String"));
-        assertTrue( "Integer"._equalsTo("Integer"));
-        assertFalse(nullString._equalsTo("String"));
+        assertTrue( "String" ._equals("String"));
+        assertTrue( "Integer"._equals("Integer"));
+        assertFalse(nullString._equals("String"));
     }
     
     @Test
     public void test_notEqualsTo() {
-        assertFalse("String" ._notEqualsTo("String"));
-        assertFalse("Integer"._notEqualsTo("Integer"));
-        assertTrue( nullString._notEqualsTo("String"));
+        assertFalse("String" ._notEquals("String"));
+        assertFalse("Integer"._notEquals("Integer"));
+        assertTrue( nullString._notEquals("String"));
     }
     
     @Test
