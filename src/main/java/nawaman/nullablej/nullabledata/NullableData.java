@@ -68,7 +68,7 @@ public class NullableData {
      * This method is similar to {@link NullableData#from(Supplier, Class, Class)}
      *   but the value given as object which this method will convert to supplier.
      * 
-     * @param value                  the value.
+     * @param dataValue              the value.
      * @param dataObjectClass        the data object class.
      * @param asNullableObjectClass  the combine data and iAsNullable class.
      * @return  the nullable data object.
@@ -78,15 +78,20 @@ public class NullableData {
      */
     @SuppressWarnings("unchecked")
     public static <DATA, ASNULLABLE extends IAsNullable<DATA>> ASNULLABLE of(
-            DATA              value, 
+            DATA              dataValue, 
             Class<DATA>       dataObjectClass, 
             Class<ASNULLABLE> asNullableObjectClass) {
-        if (value == null) {
+        if (dataValue == null) {
             return (ASNULLABLE)nullableObjects.computeIfAbsent(asNullableObjectClass, clzz->{
                 return from((Supplier<DATA>)nullSupplier, dataObjectClass, asNullableObjectClass, Nullable.empty());
             });
         }
-        return from(()->value, dataObjectClass, asNullableObjectClass);
+        if ((dataValue instanceof IAsNullable)
+                && dataObjectClass.isInstance(dataValue)
+                && asNullableObjectClass.isInstance(dataValue))
+            return asNullableObjectClass.cast(dataValue);
+        
+        return from(()->dataValue, dataObjectClass, asNullableObjectClass);
     }
     
     /**
@@ -105,6 +110,10 @@ public class NullableData {
                 return from((Supplier<DATA>)nullSupplier, dataClass, Nullable.empty());
             });
         }
+        if ((dataValue instanceof IAsNullable)
+                && dataClass.isInstance(dataValue))
+            return dataClass.cast(dataValue);
+        
         
         return from(()->dataValue, dataClass);
     }
