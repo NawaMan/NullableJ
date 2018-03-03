@@ -114,12 +114,28 @@ public interface Nullable<TYPE> extends Supplier<TYPE>, IAsNullable<TYPE> {
     /**
      * Return Nullable which has no value.
      * 
+     * NOTE: This is alias for {@code Nullable#ofNull()}.
+     * 
      * @return  the Nullable of the no value.
      * 
      * @param <TYPE>  the data type.
      */
     @SuppressWarnings("unchecked")
     public static <TYPE> Nullable<TYPE> empty() {
+        return (Nullable<TYPE>)EMPTY;
+    }
+    
+    /**
+     * Return Nullable which has no value.
+     * 
+     * NOTE: This is alias for {@code Nullable#empty()}.
+     * 
+     * @return  the Nullable of the no value.
+     * 
+     * @param <TYPE>  the data type.
+     */
+    @SuppressWarnings("unchecked")
+    public static <TYPE> Nullable<TYPE> ofNull() {
         return (Nullable<TYPE>)EMPTY;
     }
     

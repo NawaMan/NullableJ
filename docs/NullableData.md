@@ -2,20 +2,13 @@
 
 NullableData can create an instance of any interface that act as a null object.
 
-The result object (called nullable-data object) implements both the data interface and `IAsNullable` interface.
-This object holds the actual value of that interface type.
-But if that value is null, this nullable data instance will act as null object.
-The method {@code asNullable} from IAsNullable will return an instance of `Nullable` of the object.
+The result object (called nullable-data object) implements the data interface
+  and holds the actual value of that interface type.
+But if the provided value is null, this nullable data instance will act as null object.
 If the methods has default implementation, the implementation will be called.
-All other methods will do nothing and return null value of that method type
+All other methods will do nothing and return null value of that method return type
   (by calling `@code NullValues.nullValueOf(returnType)`).
-
-The nullable data implements both the data interface and `IAsNullable` instance.
-But the implement of `IAsNullable` is hidden -- meaning that
-  the instance has to be casted to `IAsNullable` before it can be used as such.
-You can also make the data interface to implement the `IAsNullable` interface.
-
-For example, if we have a Person interface.
+Here is the example.
 
 ```Java
 
@@ -44,29 +37,31 @@ then a nullable data can be created and used like this ...
 
 ```Java
 
-        val nullablePerson = NullableData.of(new PersonImpl("Peter", "Pan"), Person.class);
-        assertTrue(nullablePerson1 instanceof Person);
+        Person nullablePerson = NullableData.of(new PersonImpl("Peter", "Pan"), Person.class);
+        assertTrue(nullablePerson instanceof Person);
         assertEquals("Peter",     nullablePerson.getFirstName());
         assertEquals("Pan",       nullablePerson.getLastName());
         assertEquals("Peter Pan", nullablePerson.getFullName());
-        assertTrue(((IAsNullable<Person>)nullablePerson).asNullable().isPresent());
 ```
 
 If the data is null, the exact same operation can be used but it will acts as a null object of that type.
 
 ```Java
 
-        val nullablePerson = NullableData.of(null, Person.class);
-        assertTrue(nullablePerson1 instanceof Person);
+        Person nullablePerson = NullableData.of(null, Person.class);
+        assertTrue(nullablePerson instanceof Person);
         assertEquals("", nullablePerson.getFirstName());
         assertEquals("", nullablePerson.getLastName());
         assertEquals("", nullablePerson.getFullName());
-        assertFalse(((IAsNullable<Person>)nullablePerson).asNullable().isPresent());
 ```
 
-As mentioned, if the `asNullable()` is accessed often, you can have `Person` interface extends `IAsNullable`.
-You can also create another interface that both implements `Person` and `IAsNullable`
-  then use it to create the nullable data.
+What if you want to know if the underline value is `null`,
+  NullableData got you covered.
+The nulldata instance secretly implements the `IAsNullable` interface.
+The method `asNullable` from `IAsNullable` will return an instance of `Nullable` of the underline object.
+Because the implement of `IAsNullable` is hidden,
+  the instance has to be casted to `IAsNullable` before it can be used as such.
+You can also make the data interface to implement the `IAsNullable` interface.
 
 ```Java
 
@@ -74,11 +69,17 @@ You can also create another interface that both implements `Person` and `IAsNull
     
     ...
         val nullablePerson = NullableData.of(new PersonImpl("Peter", "Pan"), NullablePerson.class);
-        assertTrue(nullablePerson1 instanceof Person);
-        assertEquals("Peter",     nullablePerson.getFirstName());
-        assertEquals("Pan",       nullablePerson.getLastName());
-        assertEquals("Peter Pan", nullablePerson.getFullName());
+        assertTrue(nullablePerson instanceof Person);
         assertTrue(nullablePerson.asNullable().isPresent());
+        
+        val nullablePerson2 = NullableData.of(null, NullablePerson.class);
+        assertTrue(nullablePerson2 instanceof Person);
+        assertFalse(nullablePerson2.asNullable().isPresent());
 ```
 
-`NullableData` uses dynamic proxy to create these instances.
+`NullableData` is currently implemented using DynamicProxy is sufficient in most case.
+However, the interface and the implemented class has to be separated which is not exactly convenient.
+So, to having `Immutable` style code generation for this is under consideration.
+
+
+
