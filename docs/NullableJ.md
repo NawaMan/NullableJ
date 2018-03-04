@@ -11,7 +11,7 @@ For example, you can write code like this...
 ```Java
 
     System.out.println("String: " + str._or(" <not-given>"));
-//                                      ^^^ and Elvis operator, anyone?
+    //                                  ^^^ and Elvis operator, anyone?
 ```
 
 A slightly bigger example, consider the following code.
