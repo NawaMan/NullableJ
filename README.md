@@ -199,8 +199,8 @@ But if you just need a small part of it, feel free to fork it or just copy the p
 
 ## Contribute
 
-Feel free to help out.
-Report problems, suggest solutions, suggest more functionality ... anything is appreciated (please do it in [issues tracking page](https://github.com/NawaMan/NullableJ/issues) or email me directly).
+Feel free to join in.
+Report problems, suggest solutions, suggest more functionalities, making pull requests ... anything is appreciated (please do it in [issues tracking page](https://github.com/NawaMan/NullableJ/issues) or email me directly).
 
 If this is useful to you and want to buy me a [coffee](https://www.paypal.me/NawaMan/2.00)
  or [lunch](https://www.paypal.me/NawaMan/10.00) or [help with my kids college fund](https://www.paypal.me/NawaMan/100.00) ... that would be great :-p

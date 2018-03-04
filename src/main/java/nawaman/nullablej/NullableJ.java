@@ -363,11 +363,26 @@ public class NullableJ {
         
         return new Otherwise<CLASS, OBJECT>(theClass.cast(theGivenObject), theGivenObject);
     }
+
+    /**
+     * Map the given object using the transformation if the given object is not null or else return null.
+     * 
+     * This method is the alias of _mapTo, _mapBy and _mapFrom.
+     * 
+     * @param  theGivenObject  the given object.
+     * @param  transformation  the transformation function.
+     * @param  <OBJECT>        the data type of the given object.
+     * @param  <TARGET>        the data type of the target object.
+     * @return  the transformed value.
+     */
+    public static <OBJECT, TARGET> TARGET _map(OBJECT theGivenObject, Function<OBJECT, TARGET> transformation) {
+        return (theGivenObject != null) ? transformation.apply(theGivenObject) : null;
+    }
     
     /**
      * Map the given object using the transformation if the given object is not null or else return null.
      * 
-     * This method is the alias of mapBy and mapFrom.
+     * This method is the alias of _map, _mapBy and _mapFrom.
      * 
      * @param  theGivenObject  the given object.
      * @param  transformation  the transformation function.
@@ -382,7 +397,7 @@ public class NullableJ {
     /**
      * Map the given object using the transformation if the given object is not null or else return null.
      * 
-     * This method is the alias of mapTo and mapFrom.
+     * This method is the alias of _map, _mapTo and _mapFrom.
      * 
      * @param  theGivenObject  the given object.
      * @param  transformation  the transformation function.
@@ -397,7 +412,7 @@ public class NullableJ {
     /**
      * Map the given object using the transformation if the given object is not null or else return null.
      * 
-     * This method is the alias of mapTo and mapBy.
+     * This method is the alias of _map, _mapTo and _mapBy.
      * 
      * @param  theGivenObject  the given object.
      * @param  transformation  the transformation function.
@@ -410,6 +425,20 @@ public class NullableJ {
     }
     
     //== Strings ==
+    
+    /**
+     * Returns the length of the given string.
+     * 
+     * @param string  the string.
+     * @return  the lenght of the string.
+     * 
+     * @param <OBJECT> the type of the data in the list.
+     */
+    public static <OBJECT> int _length(String string) {
+        if (string == null)
+            return 0;
+        return string.length();
+    }
     
     /**
      * Checks if theGivenString is empty (null or 0-length).
@@ -633,6 +662,22 @@ public class NullableJ {
         return new Otherwise.WithMatchTypes<String>(theResult, theGivenString);
     }
     
+    /**
+     * Returns Nullable.empty() the given CharSequence is null or empty..
+     * 
+     * @param charSequence  the CharSequence such as an array.
+     * @return  Nullable value if the charSequence.
+     * 
+     * @param <CHARSEQUENCE>  the CharSequence type.
+     */
+    public static <CHARSEQUENCE extends CharSequence> Otherwise.WithMatchTypes<CHARSEQUENCE> _whenNotEmpty(CHARSEQUENCE charSequence) {
+        if (charSequence == null)
+            return new Otherwise.WithMatchTypes<CHARSEQUENCE>(null);
+        if (charSequence.length() == 0)
+            return new Otherwise.WithMatchTypes<CHARSEQUENCE>(null, charSequence);
+        return new Otherwise.WithMatchTypes<CHARSEQUENCE>(charSequence);
+    }
+    
     //== Array and Collection ==
     
     /**
@@ -663,20 +708,6 @@ public class NullableJ {
         if (collection == null)
             return Stream.empty();
         return collection.stream();
-    }
-    
-    /**
-     * Returns the length of the given string.
-     * 
-     * @param string  the string.
-     * @return  the lenght of the string.
-     * 
-     * @param <OBJECT> the type of the data in the list.
-     */
-    public static <OBJECT> int _length(String string) {
-        if (string == null)
-            return 0;
-        return string.length();
     }
     
     /**
@@ -852,22 +883,6 @@ public class NullableJ {
     }
     
     /**
-     * Returns Nullable.empty() the given CharSequence is null or empty..
-     * 
-     * @param charSequence  the CharSequence such as an array.
-     * @return  Nullable value if the charSequence.
-     * 
-     * @param <CHARSEQUENCE>  the CharSequence type.
-     */
-    public static <CHARSEQUENCE extends CharSequence> Otherwise.WithMatchTypes<CHARSEQUENCE> _whenNotEmpty(CHARSEQUENCE charSequence) {
-        if (charSequence == null)
-            return new Otherwise.WithMatchTypes<CHARSEQUENCE>(null);
-        if (charSequence.length() == 0)
-            return new Otherwise.WithMatchTypes<CHARSEQUENCE>(null, charSequence);
-        return new Otherwise.WithMatchTypes<CHARSEQUENCE>(charSequence);
-    }
-    
-    /**
      * Returns Nullable.empty if the given array is null or empty. Otherwise, return the Nullable of the array.
      * 
      * @param array  the array.
@@ -919,7 +934,6 @@ public class NullableJ {
         return new Otherwise.WithMatchTypes<MAP>(map);
     }
     
-    
     /**
      * Returns the list of the given array.
      * 
@@ -963,52 +977,6 @@ public class NullableJ {
         if (stream == null)
             return Collections.emptyList();
         return stream.collect(Collectors.toList());
-    }
-    
-    /**
-     * Get value from the supplier and return null if the supplier is null.
-     * 
-     * @param supplier  the supplier.
-     * @return  the value at the index or null.
-     * 
-     * @param <OBJECT> the type of the data in the supplier.
-     */
-    public static <OBJECT> OBJECT _get(Supplier<OBJECT> supplier) {
-        if (supplier == null)
-            return null;
-        return supplier.get();
-    }
-    
-    /**
-     * Get value from the function with the key and return null fail.
-     * 
-     * @param function  the function.
-     * @param key       the key.
-     * @return  the value at the index or null.
-     * 
-     * @param <KEY>   the type of the key of the function.
-     * @param <VALUE> the type of the value of the function.
-     */
-    public static <KEY, VALUE> VALUE _get(Function<KEY, VALUE> function, KEY key) {
-        if (function == null)
-            return null;
-        return function.apply(key);
-    }
-    
-    /**
-     * Get value from the function with the key and return null fail.
-     * 
-     * @param function  the function.
-     * @param key       the key.
-     * @return  the value at the index or null.
-     * 
-     * @param <KEY>   the type of the key of the function.
-     * @param <VALUE> the type of the value of the function.
-     */
-    public static <KEY, VALUE> VALUE _apply(Function<KEY, VALUE> function, KEY key) {
-        if (function == null)
-            return null;
-        return function.apply(key);
     }
     
     /**
@@ -1398,6 +1366,54 @@ public class NullableJ {
         if (stream == null)
             return Stream.empty();
         return _butOnlyNonNull$(_butOnlyNonNull$(stream.map(mapper)).flatMap(Collection::stream));
+    }
+    
+    //== Supplier and Function ==
+    
+    /**
+     * Get value from the supplier and return null if the supplier is null.
+     * 
+     * @param supplier  the supplier.
+     * @return  the value at the index or null.
+     * 
+     * @param <OBJECT> the type of the data in the supplier.
+     */
+    public static <OBJECT> OBJECT _get(Supplier<OBJECT> supplier) {
+        if (supplier == null)
+            return null;
+        return supplier.get();
+    }
+    
+    /**
+     * Get value from the function with the key and return null fail.
+     * 
+     * @param function  the function.
+     * @param key       the key.
+     * @return  the value at the index or null.
+     * 
+     * @param <KEY>   the type of the key of the function.
+     * @param <VALUE> the type of the value of the function.
+     */
+    public static <KEY, VALUE> VALUE _get(Function<KEY, VALUE> function, KEY key) {
+        if (function == null)
+            return null;
+        return function.apply(key);
+    }
+    
+    /**
+     * Get value from the function with the key and return null fail.
+     * 
+     * @param function  the function.
+     * @param key       the key.
+     * @return  the value at the index or null.
+     * 
+     * @param <KEY>   the type of the key of the function.
+     * @param <VALUE> the type of the value of the function.
+     */
+    public static <KEY, VALUE> VALUE _apply(Function<KEY, VALUE> function, KEY key) {
+        if (function == null)
+            return null;
+        return function.apply(key);
     }
     
 }
