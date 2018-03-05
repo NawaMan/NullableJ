@@ -26,10 +26,16 @@ import nawaman.nullablej.nullvalue.processor.NullValue;
  */
 public interface IFindNullValue {
     
-    /** The default value */
+    /**
+     * The default value.
+     * 
+     * @return the default instance.
+     **/
     @Default
     @NullValue
-    public static final IFindNullValue instance = NullValues.instance;
+    public static IFindNullValue instance() {
+        return NullValues.instance;
+    }
     
     /**
      * Find the null value given the class.
