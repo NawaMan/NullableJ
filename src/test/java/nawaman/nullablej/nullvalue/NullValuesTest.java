@@ -13,9 +13,10 @@
 //
 //  You may elect to redistribute this code under either of these licenses.
 //  ========================================================================
-package nawaman.nullable;
+package nawaman.nullablej.nullvalue;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -26,85 +27,98 @@ import org.junit.Test;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import nawaman.nullablej.nullvalue.IFindNullValue;
+import nawaman.nullablej.nullvalue.NullValues;
 
 @SuppressWarnings("javadoc")
-public class NullObjectsTest {
+public class NullValuesTest {
     
-    private IFindNullObject nullObjects = NullObjects.instance;
+    private IFindNullValue nullValues = NullValues.instance;
     
     @Test
     public void testPrimitive() {
-        assertEquals(0, nullObjects.findNullObjectOf(int.class).intValue());
-        assertEquals("", nullObjects.findNullObjectOf(String.class));
+        assertEquals(0, nullValues.findNullValueOf(int.class).intValue());
+        assertEquals("", nullValues.findNullValueOf(String.class));
     }
     
     @Test
     public void testArray() {
-        String[] nObj = nullObjects.findNullObjectOf(String[].class);
+        String[] nObj = nullValues.findNullValueOf(String[].class);
         assertEquals(0,            nObj.length);
         assertEquals(String.class, nObj.getClass().getComponentType());
     }
     
     @Retention(RetentionPolicy.RUNTIME)
     @Target({ ElementType.FIELD, ElementType.METHOD })
-    public static @interface NullObject {
+    public static @interface NullValue {
         
     }
     
     @Data
     @AllArgsConstructor
     public static class Person1 {
-        @NullObject
+        @NullValue
         public static final Person1 nullPerson1 = new Person1(null);
         private String name;
     }
     
     @Test
     public void testAnnotatedField() {
-        Person1 nullPerson1 = nullObjects.findNullObjectOf(Person1.class);
+        Person1 nullPerson1 = nullValues.findNullValueOf(Person1.class);
         assertEquals(nullPerson1, Person1.nullPerson1);
     }
 
-    private static Person2 nullObjectOfPerson2 = new Person2(null);
+    private static Person2 nullValueOfPerson2 = new Person2(null);
     @Data
     @AllArgsConstructor
     public static class Person2 {
-        @NullObject
-        public static final Person2 nullPerson2() { return nullObjectOfPerson2; }
+        @NullValue
+        public static final Person2 nullPerson2() { return nullValueOfPerson2; }
         private String name;
     }
     
     @Test
     public void testAnnotatedMethod() {
-        Person2 nullPerson2 = nullObjects.findNullObjectOf(Person2.class);
-        assertEquals(nullPerson2, nullObjectOfPerson2);
+        Person2 nullPerson2 = nullValues.findNullValueOf(Person2.class);
+        assertEquals(nullPerson2, nullValueOfPerson2);
     }
     
     @Data
     @AllArgsConstructor
     public static class Person3 {
-        public static final Person3 nullObject = new Person3(null);
+        public static final Person3 nullValue = new Person3(null);
         private String name;
     }
     
     @Test
     public void testNamedField() {
-        Person3 nullPerson3 = nullObjects.findNullObjectOf(Person3.class);
-        assertEquals(nullPerson3, Person3.nullObject);
+        Person3 nullPerson3 = nullValues.findNullValueOf(Person3.class);
+        assertEquals(nullPerson3, Person3.nullValue);
     }
     
-    private static Person4 nullObjectOfPerson4 = new Person4(null);
+    private static Person4 nullValueOfPerson4 = new Person4(null);
     @Data
     @AllArgsConstructor
     public static class Person4 {
-        public static final Person4 nullObject() { return nullObjectOfPerson4; }
+        public static final Person4 nullValue() { return nullValueOfPerson4; }
         private String name;
     }
     
     @Test
     public void testNamedMethod() {
-        Person4 nullPerson4 = nullObjects.findNullObjectOf(Person4.class);
-        assertEquals(nullPerson4, nullObjectOfPerson4);
+        Person4 nullPerson4 = nullValues.findNullValueOf(Person4.class);
+        assertEquals(nullPerson4, nullValueOfPerson4);
+    }
+    
+    public static interface IPerson {
+        public String name();
+        public void setName(String name);
+    }
+    
+    @Test
+    public void testDataInteface() {
+        IPerson nullIPerson = nullValues.findNullValueOf(IPerson.class);
+        assertNotNull(nullIPerson);
     }
     
 }

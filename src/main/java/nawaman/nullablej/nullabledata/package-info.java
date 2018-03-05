@@ -12,22 +12,10 @@
 //
 //  You may elect to redistribute this code under either of these licenses.
 //  ========================================================================
-package nawaman.nullable;
 
 /**
- * Classes implementing this interface knows how to fins null objects given the class.
+ * Classes in this package concern about creating a nullable-data instance.
  * 
  * @author NawaMan -- nawa@nawaman.net
  */
-public interface IFindNullObject {
-    
-    /**
-     * Find the null object given the class.
-     * 
-     * @param clzz  the class.
-     * @return  the null object.
-     * @param <OBJECT>  the type of the object.
-     */
-    public <OBJECT> OBJECT findNullObjectOf(Class<OBJECT> clzz);
-    
-}
+package nawaman.nullablej.nullabledata;

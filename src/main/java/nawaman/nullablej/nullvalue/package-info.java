@@ -12,20 +12,10 @@
 //
 //  You may elect to redistribute this code under either of these licenses.
 //  ========================================================================
-package nawaman.nullable;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 
 /**
- * This annotation can be used to mark a field/method that the field/method should be used as a null object.
+ * Classes in this package concern about finding null values of a class.
  * 
  * @author NawaMan -- nawa@nawaman.net
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.FIELD, ElementType.METHOD })
-public @interface NullObject {
-    
-}
+package nawaman.nullablej.nullvalue;

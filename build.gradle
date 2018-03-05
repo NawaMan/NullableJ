@@ -13,9 +13,14 @@ targetCompatibility = theSourceCompatibility
 repositories {
     mavenLocal()
     mavenCentral()
+    maven {
+        url 'https://raw.githubusercontent.com/NawaMan/nawaman-maven-repository/master/'
+    }
 }
 
 dependencies {
+    compile files("build/classes/java/main")
+    
     compile 'org.projectlombok:lombok:1.16.16'
     
     testCompile 'junit:junit:4.12'
@@ -75,5 +80,20 @@ gradle.projectsEvaluated {
     tasks.withType(JavaCompile) {
         options.compilerArgs << "-parameters"
         options.compilerArgs << "-Xlint:unchecked"
+        options.incremental = true
     }
 }
+
+// == Annotation processor
+
+task compileAnnotationProcessor (type: JavaCompile) {
+    options.compilerArgs << "-proc:none"
+    options.incremental = true
+    
+    source         = file("src/main/annotationprocessor")
+    destinationDir = file('build/classes/java/main')
+    classpath      = sourceSets.main.compileClasspath
+}
+
+compileJava.dependsOn compileAnnotationProcessor
+

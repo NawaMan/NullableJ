@@ -13,11 +13,13 @@
 //
 //  You may elect to redistribute this code under either of these licenses.
 //  ========================================================================
-package nawaman.nullable;
+package nawaman.nullablej;
 
 import static java.lang.reflect.Array.newInstance;
 import static java.util.Arrays.stream;
+import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Stream.empty;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -37,6 +39,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import lombok.val;
+import nawaman.nullablej.nullable.Nullable;
+import nawaman.nullablej.nullvalue.NullValues;
 
 /**
  * This utility class contains useful methods to deal with null.
@@ -66,6 +70,7 @@ public class NullableJ {
     public static boolean _isNotNull(Object theGivenObject) {
         return (theGivenObject != null);
     }
+    
     /**
      * Returns {@code true} if theGivenObject equals to the expected value. 
      * 
@@ -73,7 +78,7 @@ public class NullableJ {
      * @param theExpectedValue  the expected value.
      * @return {@code true} if theGivenObject is null.
      **/
-    public static boolean _equalsTo(Object theGivenObject, Object theExpectedValue) {
+    public static boolean _equals(Object theGivenObject, Object theExpectedValue) {
         val equalsTo = Objects.equals(theGivenObject, theExpectedValue);
         return equalsTo;
     }
@@ -85,9 +90,33 @@ public class NullableJ {
      * @param  theExpectedValue  the expected value.
      * @return {@code true} if theGivenObject is not null.
      **/
-    public static boolean _notEqualsTo(Object theGivenObject, Object theExpectedValue) {
+    public static boolean _notEquals(Object theGivenObject, Object theExpectedValue) {
         val equalsTo = Objects.equals(theGivenObject, theExpectedValue);
         return !equalsTo;
+    }
+    
+    /**
+     * Returns the toString of the given value or null if the given value is null. 
+     * 
+     * @param  theGivenObject   the given object.
+     * @return the toString of the given object.
+     **/
+    public static String _toString(Object theGivenObject) {
+        val toString = (theGivenObject != null) ? theGivenObject.toString() : null;
+        return toString;
+    }
+    
+    /**
+     * Returns the toString of the given array or null if the given value is null. 
+     * 
+     * @param  theGivenArray   the given array.
+     * @return the toString of the given object.
+     * 
+     * @param <OBJECT>  the data type of the element in the array.
+     **/
+    public static <OBJECT> String _toString(OBJECT[] theGivenArray) {
+        val toString = (theGivenArray != null) ? Arrays.toString((Object[])theGivenArray) : null;
+        return toString;
     }
     
     /**
@@ -117,147 +146,30 @@ public class NullableJ {
     }
     
     /**
-     * Returns the null object.
+     * Returns the null value.
      * 
      * @param  theGivenObject  the given object.
      * @param  theObjectClass  the class of the given data.
      * @param  <OBJECT>        the data type of the given object.
      * @return theGivenObject if not null or value from the elseSupplier if null.
      **/
-    public static <OBJECT> OBJECT _orNullObject(OBJECT theGivenObject, Class<OBJECT> theObjectClass) {
-        val result = (theGivenObject == null) ? NullObjects.nullObjectOf(theObjectClass) : theGivenObject;
+    public static <OBJECT> OBJECT _orNullValue(OBJECT theGivenObject, Class<OBJECT> theObjectClass) {
+        val result = (theGivenObject == null) ? NullValues.nullValueOf(theObjectClass) : theGivenObject;
         return result;
     }
     
     /**
-     * Returns the null object.
+     * Returns the null value.
      * 
-     * @param  theOptionalObject  the optional object.
+     * @param  theNullableObject  the nullable object.
      * @param  theObjectClass     the class of the given data.
      * @param  <OBJECT>           the data type of the given object.
      * @return theGivenObject if not null or value from the elseSupplier if null.
      **/
-    public static <OBJECT> Optional<OBJECT> _orElseNullObject(Optional<OBJECT> theOptionalObject, Class<OBJECT> theObjectClass) {
-        val result = theOptionalObject.isPresent() ? theOptionalObject : Optional.ofNullable(NullObjects.nullObjectOf(theObjectClass));
+    public static <OBJECT> Nullable<OBJECT> _orElseNullValue(Nullable<OBJECT> theNullableObject, Class<OBJECT> theObjectClass) {
+        val result = theNullableObject.isPresent() ? theNullableObject : Nullable.of(NullValues.nullValueOf(theObjectClass));
         return result;
     }
-    
-    /**
-     * Extension method to create optional of theGivenObject. 
-     * 
-     * @param  theGivenObject  the given object.
-     * @param  <OBJECT>        the data type of the given object.
-     * @return the optional value of the theGivenObject.
-     **/
-    public static <OBJECT> Optional<OBJECT> _toOptional(OBJECT theGivenObject) {
-        return Optional.ofNullable(theGivenObject);
-    }
-    
-    /**
-     * Extension method to create optional of theGivenObject. 
-     * 
-     * @param  theGivenObject  the given object.
-     * @param  <OBJECT>        the data type of the given object.
-     * @return the optional value of the theGivenObject.
-     **/
-    public static <OBJECT> Optional<OBJECT> _whenNotNull(OBJECT theGivenObject) {
-        return Optional.ofNullable(theGivenObject);
-    }
-    
-    /**
-     * Perform the theAction of theGivenObject is not null. 
-     * 
-     * @param  theGivenObject  the given object.
-     * @param  theAction       the action.
-     * @param  <OBJECT>        the data type of the given object.
-     **/
-    public static <OBJECT> void _whenNotNull(OBJECT theGivenObject, Consumer<OBJECT> theAction) {
-        if (theGivenObject == null)
-            return;
-        theAction.accept(theGivenObject);
-    }
-    
-    /**
-     * Return the Optional of the given object if the test yields {@code true} or else return {@code Optional.empty}.
-     * 
-     * @param  theGivenObject  the given object.
-     * @param  theTest         the test.
-     * @param  <OBJECT>        the data type of the given object.
-     * @return  the Optional of the original object or {@code Optional.empty}.
-     */
-    public static <OBJECT> Optional<OBJECT> _when(OBJECT theGivenObject, Predicate<OBJECT> theTest) {
-        if (theGivenObject == null)
-            return Optional.empty();
-        
-        val conditionResult = theTest.test(theGivenObject);
-        if (!conditionResult)
-            return Optional.empty();
-        
-        return Optional.of(theGivenObject);
-    }
-    
-    /**
-     * Return the given object if it is of the given class or else return null.
-     * 
-     * @param  theGivenObject  the given object.
-     * @param  theClass        the class.
-     * @param  <OBJECT>        the data type of the given object.
-     * @param  <CLASS>         the data type of the returned object.
-     * @return  the original object as the type class or null.
-     */
-    public static <OBJECT, CLASS> CLASS _as(OBJECT theGivenObject, Class<CLASS> theClass) {
-        val isInstanceOf = theClass.isInstance(theGivenObject);
-        if (!isInstanceOf)
-            return null;
-        
-        return theClass.cast(theGivenObject);
-    }
-    
-    /**
-     * Map the given object using the transformation if the given object is not null or else return null.
-     * 
-     * This method is the alias of mapBy and mapFrom.
-     * 
-     * @param  theGivenObject  the given object.
-     * @param  transformation  the transformation function.
-     * @param  <OBJECT>        the data type of the given object.
-     * @param  <TARGET>        the data type of the target object.
-     * @return  the transformed value.
-     */
-    public static <OBJECT, TARGET> TARGET _mapTo(OBJECT theGivenObject, Function<OBJECT, TARGET> transformation) {
-        return (theGivenObject != null) ? transformation.apply(theGivenObject) : null;
-    }
-    
-    /**
-     * Map the given object using the transformation if the given object is not null or else return null.
-     * 
-     * This method is the alias of mapTo and mapFrom.
-     * 
-     * @param  theGivenObject  the given object.
-     * @param  transformation  the transformation function.
-     * @param  <OBJECT>        the data type of the given object.
-     * @param  <TARGET>        the data type of the target object.
-     * @return  the transformed value.
-     */
-    public static <OBJECT, TARGET> TARGET _mapBy(OBJECT theGivenObject, Function<OBJECT, TARGET> transformation) {
-        return (theGivenObject != null) ? transformation.apply(theGivenObject) : null;
-    }
-    
-    /**
-     * Map the given object using the transformation if the given object is not null or else return null.
-     * 
-     * This method is the alias of mapTo and mapBy.
-     * 
-     * @param  theGivenObject  the given object.
-     * @param  transformation  the transformation function.
-     * @param  <OBJECT>        the data type of the given object.
-     * @param  <TARGET>        the data type of the target object.
-     * @return the transformed value.
-     */
-    public static <OBJECT, TARGET> TARGET _mapFrom(OBJECT theGivenObject, Function<OBJECT, TARGET> transformation) {
-        return (theGivenObject != null) ? transformation.apply(theGivenObject) : null;
-    }
-    
     //== Primitive types 'or' ==
     
     /**
@@ -370,7 +282,163 @@ public class NullableJ {
         return (theGivenBigDecimal == null) ? BigDecimal.valueOf(elseValue) : theGivenBigDecimal;
     }
     
+    /**
+     * Extension method to create nullable of theGivenObject. 
+     * 
+     * @param  theGivenObject  the given object.
+     * @param  <OBJECT>        the data type of the given object.
+     * @return the optional value of the theGivenObject.
+     **/
+    public static <OBJECT> Nullable<OBJECT> _toNullable(OBJECT theGivenObject) {
+        return Nullable.of(theGivenObject);
+    }
+    
+    /**
+     * Extension method to create optional of theGivenObject. 
+     * 
+     * @param  theGivenObject  the given object.
+     * @param  <OBJECT>        the data type of the given object.
+     * @return the optional value of the theGivenObject.
+     **/
+    public static <OBJECT> Optional<OBJECT> _toOptional(OBJECT theGivenObject) {
+        return Optional.ofNullable(theGivenObject);
+    }
+    
+    /**
+     * Extension method to create optional of theGivenObject. 
+     * 
+     * @param  theGivenObject  the given object.
+     * @param  <OBJECT>        the data type of the given object.
+     * @return the optional value of the theGivenObject.
+     **/
+    public static <OBJECT> Otherwise.WithMatchTypes<OBJECT> _whenNotNull(OBJECT theGivenObject) {
+        return new Otherwise.WithMatchTypes<OBJECT>(theGivenObject);
+    }
+    
+    /**
+     * Perform the theAction of theGivenObject is not null. 
+     * 
+     * @param  theGivenObject  the given object.
+     * @param  theAction       the action.
+     * @param  <OBJECT>        the data type of the given object.
+     **/
+    public static <OBJECT> void _whenNotNull(OBJECT theGivenObject, Consumer<OBJECT> theAction) {
+        if (theGivenObject == null)
+            return;
+        theAction.accept(theGivenObject);
+    }
+    
+    /**
+     * Return the Nullable of the given object if the test yields {@code true} or else return {@code Nullable.empty}.
+     * 
+     * @param  theGivenObject  the given object.
+     * @param  theTest         the test.
+     * @param  <OBJECT>        the data type of the given object.
+     * @return  the Nullable of the original object or {@code Nullable.empty}.
+     */
+    public static <OBJECT> Otherwise.WithMatchTypes<OBJECT> _when(OBJECT theGivenObject, Predicate<OBJECT> theTest) {
+        if (theGivenObject == null)
+            return new Otherwise.WithMatchTypes<OBJECT>(null);
+        
+        val conditionResult = theTest.test(theGivenObject);
+        if (!conditionResult)
+            return new Otherwise.WithMatchTypes<OBJECT>(null, theGivenObject);
+        
+        return new Otherwise.WithMatchTypes<OBJECT>(theGivenObject);
+    }
+    
+    /**
+     * Return the given object if it is of the given class or else return null.
+     * 
+     * @param  theGivenObject  the given object.
+     * @param  theClass        the class.
+     * @param  <OBJECT>        the data type of the given object.
+     * @param  <CLASS>         the data type of the returned object.
+     * @return  the original object as the type class or null.
+     */
+    public static <OBJECT, CLASS> Otherwise<CLASS, OBJECT> _as(OBJECT theGivenObject, Class<CLASS> theClass) {
+        val isInstanceOf = theClass.isInstance(theGivenObject);
+        if (!isInstanceOf)
+            return new Otherwise<CLASS, OBJECT>(null, theGivenObject);
+        
+        return new Otherwise<CLASS, OBJECT>(theClass.cast(theGivenObject), theGivenObject);
+    }
+
+    /**
+     * Map the given object using the transformation if the given object is not null or else return null.
+     * 
+     * This method is the alias of _mapTo, _mapBy and _mapFrom.
+     * 
+     * @param  theGivenObject  the given object.
+     * @param  transformation  the transformation function.
+     * @param  <OBJECT>        the data type of the given object.
+     * @param  <TARGET>        the data type of the target object.
+     * @return  the transformed value.
+     */
+    public static <OBJECT, TARGET> TARGET _map(OBJECT theGivenObject, Function<OBJECT, TARGET> transformation) {
+        return (theGivenObject != null) ? transformation.apply(theGivenObject) : null;
+    }
+    
+    /**
+     * Map the given object using the transformation if the given object is not null or else return null.
+     * 
+     * This method is the alias of _map, _mapBy and _mapFrom.
+     * 
+     * @param  theGivenObject  the given object.
+     * @param  transformation  the transformation function.
+     * @param  <OBJECT>        the data type of the given object.
+     * @param  <TARGET>        the data type of the target object.
+     * @return  the transformed value.
+     */
+    public static <OBJECT, TARGET> TARGET _mapTo(OBJECT theGivenObject, Function<OBJECT, TARGET> transformation) {
+        return (theGivenObject != null) ? transformation.apply(theGivenObject) : null;
+    }
+    
+    /**
+     * Map the given object using the transformation if the given object is not null or else return null.
+     * 
+     * This method is the alias of _map, _mapTo and _mapFrom.
+     * 
+     * @param  theGivenObject  the given object.
+     * @param  transformation  the transformation function.
+     * @param  <OBJECT>        the data type of the given object.
+     * @param  <TARGET>        the data type of the target object.
+     * @return  the transformed value.
+     */
+    public static <OBJECT, TARGET> TARGET _mapBy(OBJECT theGivenObject, Function<OBJECT, TARGET> transformation) {
+        return (theGivenObject != null) ? transformation.apply(theGivenObject) : null;
+    }
+    
+    /**
+     * Map the given object using the transformation if the given object is not null or else return null.
+     * 
+     * This method is the alias of _map, _mapTo and _mapBy.
+     * 
+     * @param  theGivenObject  the given object.
+     * @param  transformation  the transformation function.
+     * @param  <OBJECT>        the data type of the given object.
+     * @param  <TARGET>        the data type of the target object.
+     * @return the transformed value.
+     */
+    public static <OBJECT, TARGET> TARGET _mapFrom(OBJECT theGivenObject, Function<OBJECT, TARGET> transformation) {
+        return (theGivenObject != null) ? transformation.apply(theGivenObject) : null;
+    }
+    
     //== Strings ==
+    
+    /**
+     * Returns the length of the given string.
+     * 
+     * @param string  the string.
+     * @return  the lenght of the string.
+     * 
+     * @param <OBJECT> the type of the data in the list.
+     */
+    public static <OBJECT> int _length(String string) {
+        if (string == null)
+            return 0;
+        return string.length();
+    }
     
     /**
      * Checks if theGivenString is empty (null or 0-length).
@@ -439,21 +507,6 @@ public class NullableJ {
     }
     
     /**
-     * Check if the given string contains the needle.
-     * 
-     * @param theGivenString  the given string.
-     * @param theNeedle       the needle.
-     * @return  if the given string DOES NOT contain the needle or {@code true} if it is null.
-     */
-    public static boolean _notContains(String theGivenString, CharSequence theNeedle) {
-        if (theGivenString == null)
-            return true;
-        
-        val theResult = !theGivenString.contains(theNeedle);
-        return theResult;
-    }
-    
-    /**
      * Check if the given string matches the regular expression.
      * 
      * @param theGivenString  the given string.
@@ -518,15 +571,15 @@ public class NullableJ {
      * 
      * @param theGivenString  the given string.
      * @param theNeedle       the needle.
-     * @return  the Optional of the original string if it contains the value otherwise return {@code Optional.empty()}.
+     * @return  the Nullable of the original string if it contains the value otherwise return {@code Nullable.empty()}.
      */
-    public static Optional<String> _whenContains(String theGivenString, CharSequence theNeedle) {
+    public static Otherwise.WithMatchTypes<String> _whenContains(String theGivenString, CharSequence theNeedle) {
         if (theGivenString == null)
-            return Optional.empty();
+            return new Otherwise.WithMatchTypes<String>(null, theGivenString);
         
         val isContains = theGivenString.contains(theNeedle);
         val theResult  = isContains ? theGivenString : null;
-        return Optional.ofNullable(theResult);
+        return new Otherwise.WithMatchTypes<String>(theResult, theGivenString);
     }
     
     /**
@@ -534,15 +587,15 @@ public class NullableJ {
      * 
      * @param theGivenString  the given string.
      * @param theNeedle       the needle.
-     * @return  the Optional of the original string if it DOES NOT contain the needle otherwise return {@code null}.
+     * @return  the Nullable of the original string if it DOES NOT contain the needle otherwise return {@code null}.
      */
-    public static Optional<String> _whenNotContains(String theGivenString, CharSequence theNeedle) {
+    public static Otherwise.WithMatchTypes<String> _whenNotContains(String theGivenString, CharSequence theNeedle) {
         if (theGivenString == null)
-            return Optional.empty();
+            return new Otherwise.WithMatchTypes<String>(null, theGivenString);
         
         val isContains = theGivenString.contains(theNeedle);
         val theResult  = isContains ? null : theGivenString;
-        return Optional.ofNullable(theResult);
+        return new Otherwise.WithMatchTypes<String>(theResult, theGivenString);
     }
     
     /**
@@ -550,15 +603,15 @@ public class NullableJ {
      * 
      * @param theGivenString  the given string.
      * @param theRegex        the regular expression.
-     * @return  the Optional of the original string if it matches the needle otherwise return {@code Optional.empty()}.
+     * @return  the Nullable of the original string if it matches the needle otherwise return {@code Nullable.empty()}.
      */
-    public static Optional<String> _whenMatches(String theGivenString, String theRegex) {
+    public static Otherwise.WithMatchTypes<String> _whenMatches(String theGivenString, String theRegex) {
         if (theGivenString == null)
-            return Optional.empty();
+            return new Otherwise.WithMatchTypes<String>(null, theGivenString);
         
         val isMatches = theGivenString.matches(theRegex);
         val theResult  = isMatches ? theGivenString : null;
-        return Optional.ofNullable(theResult);
+        return new Otherwise.WithMatchTypes<String>(theResult, theGivenString);
     }
     
     /**
@@ -566,15 +619,15 @@ public class NullableJ {
      * 
      * @param theGivenString  the given string.
      * @param theRegex        the regular expression.
-     * @return  the Optional of the original string if it DOES NOT contain the needle otherwise return {@code Optional.empty()}.
+     * @return  the Nullable of the original string if it DOES NOT contain the needle otherwise return {@code Nullable.empty()}.
      */
-    public static Optional<String> _whenNotMatches(String theGivenString, String theRegex) {
+    public static Otherwise.WithMatchTypes<String>_whenNotMatches(String theGivenString, String theRegex) {
         if (theGivenString == null)
-            return Optional.empty();
+            return new Otherwise.WithMatchTypes<String>(null, theGivenString);
         
         val isMatches = theGivenString.matches(theRegex);
         val theResult  = isMatches ? null : theGivenString;
-        return Optional.ofNullable(theResult);
+        return new Otherwise.WithMatchTypes<String>(theResult, theGivenString);
     }
     
     /**
@@ -582,15 +635,15 @@ public class NullableJ {
      * 
      * @param theGivenString  the given string.
      * @param theRegex        the regular expression.
-     * @return  the Optional of the original string if it matches the needle otherwise return {@code Optional.empty()}.
+     * @return  the Nullable of the original string if it matches the needle otherwise return {@code Nullable.empty()}.
      */
-    public static Optional<String> _whenMatches(String theGivenString, Pattern theRegex) {
+    public static Otherwise.WithMatchTypes<String> _whenMatches(String theGivenString, Pattern theRegex) {
         if (theGivenString == null)
-            return Optional.empty();
+            return new Otherwise.WithMatchTypes<String>(null, theGivenString);
         
         val isMatches = theRegex.matcher(theGivenString).find();
         val theResult  = isMatches ? theGivenString : null;
-        return Optional.ofNullable(theResult);
+        return new Otherwise.WithMatchTypes<String>(theResult, theGivenString);
     }
     
     /**
@@ -598,15 +651,31 @@ public class NullableJ {
      * 
      * @param theGivenString  the given string.
      * @param theRegex        the regular expression.
-     * @return  the Optional of the original string if it DOES NOT contain the needle otherwise return {@code Optional.empty()}.
+     * @return  the Nullable of the original string if it DOES NOT contain the needle otherwise return {@code Nullable.empty()}.
      */
-    public static Optional<String> _whenNotMatches(String theGivenString, Pattern theRegex) {
+    public static Otherwise.WithMatchTypes<String> _whenNotMatches(String theGivenString, Pattern theRegex) {
         if (theGivenString == null)
-            return Optional.empty();
+            return new Otherwise.WithMatchTypes<String>(null, theGivenString);
         
         val isMatches = theRegex.matcher(theGivenString).find();
         val theResult  = isMatches ? null : theGivenString;
-        return Optional.ofNullable(theResult);
+        return new Otherwise.WithMatchTypes<String>(theResult, theGivenString);
+    }
+    
+    /**
+     * Returns Nullable.empty() the given CharSequence is null or empty..
+     * 
+     * @param charSequence  the CharSequence such as an array.
+     * @return  Nullable value if the charSequence.
+     * 
+     * @param <CHARSEQUENCE>  the CharSequence type.
+     */
+    public static <CHARSEQUENCE extends CharSequence> Otherwise.WithMatchTypes<CHARSEQUENCE> _whenNotEmpty(CHARSEQUENCE charSequence) {
+        if (charSequence == null)
+            return new Otherwise.WithMatchTypes<CHARSEQUENCE>(null);
+        if (charSequence.length() == 0)
+            return new Otherwise.WithMatchTypes<CHARSEQUENCE>(null, charSequence);
+        return new Otherwise.WithMatchTypes<CHARSEQUENCE>(charSequence);
     }
     
     //== Array and Collection ==
@@ -628,60 +697,241 @@ public class NullableJ {
     }
     
     /**
-     * Returns the stream of the given object.
+     * Returns the stream of the given collection.
      * 
-     * @param list  the list.
+     * @param collection  the collection.
      * @return  the stream.
      * 
      * @param <OBJECT> the type of the data in the list.
      */
-    public static <OBJECT> Stream<OBJECT> _stream$(List<OBJECT> list) {
-        if (list == null)
+    public static <OBJECT> Stream<OBJECT> _stream$(Collection<OBJECT> collection) {
+        if (collection == null)
             return Stream.empty();
-        return list.stream();
+        return collection.stream();
     }
+    
     /**
-     * Returns the stream of from the given list but does not contains null value.
+     * Returns the length of the given array.
      * 
      * @param array  the array.
-     * @return  the stream.
+     * @return  the length of the array.
+     * 
+     * @param <OBJECT> the type of the data in the list.
+     */
+    public static <OBJECT> int _length(OBJECT[] array) {
+        if (array == null)
+            return 0;
+        return array.length;
+    }
+    
+    /**
+     * Returns the size of the given collection.
+     * 
+     * @param collection  the collection.
+     * @return  the size of the list.
+     * 
+     * @param <OBJECT> the type of the data in the list.
+     */
+    public static <OBJECT> int _size(Collection<OBJECT> collection) {
+        if (collection == null)
+            return 0;
+        return collection.size();
+    }
+    
+    /**
+     * Returns the size of the given map.
+     * 
+     * @param map  the map.
+     * @return  the size of the map.
+     * 
+     * @param <KEY>   the type of the key of the function.
+     * @param <VALUE> the type of the value of the function.
+     */
+    public static <KEY, VALUE> int _size(Map<KEY, VALUE> map) {
+        if (map == null)
+            return 0;
+        return map.size();
+    }
+    
+    /**
+     * Returns the given array is empty.
+     * 
+     * @param array  the array.
+     * @return  {@code true}  if the array is empty.
      * 
      * @param <OBJECT> the type of the data in the array.
      */
-    public static <OBJECT> Stream<OBJECT> _butOnlyNonNull$(OBJECT[] array) {
+    public static <OBJECT> boolean _isEmpty(OBJECT[] array) {
         if (array == null)
-            return Stream.empty();
-        if (array.length == 0)
-            return Stream.empty();
-        return stream(array).filter(Objects::nonNull);
+            return true;
+        return array.length == 0;
     }
     
     /**
-     * Returns the stream of from the given list but does not contains null value.
+     * Returns the given collection is empty.
      * 
-     * @param list  the list.
-     * @return  the stream.
+     * @param collection  the collection.
+     * @return  {@code true}  if the list is empty.
      * 
      * @param <OBJECT> the type of the data in the list.
      */
-    public static <OBJECT> Stream<OBJECT> _butOnlyNonNull$(List<OBJECT> list) {
-        if (list == null)
-            return Stream.empty();
-        return list.stream().filter(Objects::nonNull);
+    public static <OBJECT> boolean _isEmpty(Collection<OBJECT> collection) {
+        if (collection == null)
+            return true;
+        return collection.isEmpty();
     }
     
     /**
-     * Returns the stream of from the given stream but does not contains null value.
+     * Returns the given map is empty.
      * 
-     * @param stream  the stream.
-     * @return  the stream.
+     * @param map  the map.
+     * @return  {@code true}  if the map is empty.
      * 
-     * @param <OBJECT> the type of the data in the stream.
+     * @param <KEY>   the type of the key of the function.
+     * @param <VALUE> the type of the value of the function.
      */
-    public static <OBJECT> Stream<OBJECT> _butOnlyNonNull$(Stream<OBJECT> stream) {
-        if (stream == null)
-            return Stream.empty();
-        return stream.filter(Objects::nonNull);
+    public static <KEY, VALUE> boolean _isEmpty(Map<KEY, VALUE> map) {
+        if (map == null)
+            return true;
+        return map.isEmpty();
+    }
+    
+    /**
+     * Check if the given array contains the needle.
+     * 
+     * @param theGivenArray  the given array.
+     * @param theNeedle      the needle.
+     * @return  if the given string contains the needle or {@code false} if it is null.
+     * 
+     * @param <OBJECT>  the target of the mapping.
+     */
+    public static <OBJECT> boolean _contains(OBJECT[] theGivenArray, OBJECT theNeedle) {
+        if (theGivenArray == null)
+            return false;
+        
+        try {
+            val theResult = _stream$(theGivenArray).filter(each->Objects.equals(each, theNeedle)).findAny().isPresent();
+            return theResult;
+        } catch (NullPointerException e) {
+            return false;
+        }
+    }
+    
+    /**
+     * Check if the given collection contains the needle.
+     * 
+     * @param theGivenList  the given list.
+     * @param theNeedle     the needle.
+     * @return  if the given list contains the needle or {@code false} if it is null.
+     * 
+     * @param <OBJECT>  the target of the mapping.
+     */
+    public static <OBJECT> boolean _contains(Collection<OBJECT> theGivenList, OBJECT theNeedle) {
+        if (theGivenList == null)
+            return false;
+        
+        try {
+            val theResult = theGivenList.contains(theNeedle);
+            return theResult;
+        } catch (NullPointerException e) {
+            return false;
+        }
+    }
+    
+    /**
+     * Check if the given map contains the key.
+     * 
+     * @param theGivenMap  the given map.
+     * @param theKey       the key.
+     * @return  if the given map contains the key or {@code false} otherwise.
+     * 
+     * @param <KEY>    the type of the key.
+     * @param <VALUE>  the type of the value.
+     */
+    public static <KEY, VALUE> boolean _containsKey(Map<KEY, VALUE> theGivenMap, KEY theKey) {
+        if (theGivenMap == null)
+            return false;
+        
+        try {
+            val theResult = theGivenMap.containsKey(theKey);
+            return theResult;
+        } catch (NullPointerException e) {
+            return false;
+        }
+    }
+    
+    /**
+     * Check if the given map contains the key.
+     * 
+     * @param theGivenMap  the given map.
+     * @param theValue     the value.
+     * @return  if the given map contains the value or {@code false} otherwise.
+     * 
+     * @param <KEY>    the type of the key.
+     * @param <VALUE>  the type of the value.
+     */
+    public static <KEY, VALUE> boolean _containsValue(Map<KEY, VALUE> theGivenMap, VALUE theValue) {
+        if (theGivenMap == null)
+            return false;
+        
+        try {
+            val theResult = theGivenMap.containsValue(theValue);
+            return theResult;
+        } catch (NullPointerException e) {
+            return false;
+        }
+    }
+    
+    /**
+     * Returns Nullable.empty if the given array is null or empty. Otherwise, return the Nullable of the array.
+     * 
+     * @param array  the array.
+     * @return  Nullable value if the array.
+     * 
+     * @param <OBJECT> the type of the data in the array.
+     */
+    public static <OBJECT> Otherwise.WithMatchTypes<OBJECT[]> _whenNotEmpty(OBJECT[] array) {
+        if (array == null)
+            return new Otherwise.WithMatchTypes<OBJECT[]>(null);
+        if (array.length == 0)
+            return new Otherwise.WithMatchTypes<OBJECT[]>(null, array);
+        return new Otherwise.WithMatchTypes<OBJECT[]>(array);
+    }
+    
+    /**
+     * Returns Nullable.empty if the given collection is null or empty. Otherwise, return the Nullable of the list.
+     * 
+     * @param collection  the collection.
+     * @return  Nullable value if the list.
+     * 
+     * @param <OBJECT>      the type of the data in the list.
+     * @param <COLLECTION>  the type of the collection.
+     */
+    public static <OBJECT, COLLECTION extends Collection<OBJECT>> Otherwise.WithMatchTypes<COLLECTION> _whenNotEmpty(COLLECTION collection) {
+        if (collection == null)
+            return new Otherwise.WithMatchTypes<COLLECTION>(null);
+        if (collection.isEmpty())
+            return new Otherwise.WithMatchTypes<COLLECTION>(null, collection);
+        return new Otherwise.WithMatchTypes<COLLECTION>(collection);
+    }
+    
+    /**
+     * Returns Nullable.empty if the given map is null or empty. Otherwise, return the Nullable of the map.
+     * 
+     * @param map  the map.
+     * @return  Nullable value if the map.
+     * 
+     * @param <KEY>   the type of the key of the function.
+     * @param <VALUE> the type of the value of the function.
+     * @param <MAP>   the type of the map.
+     */
+    public static <KEY, VALUE, MAP extends Map<KEY, VALUE>> Otherwise.WithMatchTypes<MAP> _whenNotEmpty(MAP map) {
+        if (map == null)
+            return new Otherwise.WithMatchTypes<MAP>(null);
+        if (map.isEmpty())
+            return new Otherwise.WithMatchTypes<MAP>(null, map);
+        
+        return new Otherwise.WithMatchTypes<MAP>(map);
     }
     
     /**
@@ -694,24 +944,25 @@ public class NullableJ {
      */
     public static <OBJECT> List<OBJECT> _toList(OBJECT[] array) {
         if (array == null)
-            return Collections.emptyList();
+            return emptyList();
         if (array.length == 0)
-            return Collections.emptyList();
+            return emptyList();
         return stream(array).collect(Collectors.toList());
     }
     
     /**
      * Returns the list of the given list (a copy using stream().collect(toList())).
      * 
-     * @param list  the list.
+     * @param collection  the collection.
      * @return  the list.
      * 
-     * @param <OBJECT> the type of the data in the list.
+     * @param <OBJECT>     the type of the data in the list.
+     * @param <COLLECTION> the type of the collection.
      */
-    public static <OBJECT> List<OBJECT> _toList(List<OBJECT> list) {
-        if (list == null)
+    public static <OBJECT, COLLECTION extends Collection<OBJECT>> List<OBJECT> _toList(COLLECTION collection) {
+        if (collection == null)
             return Collections.emptyList();
-        return list.stream().collect(Collectors.toList());
+        return collection.stream().collect(Collectors.toList());
     }
     
     /**
@@ -726,52 +977,6 @@ public class NullableJ {
         if (stream == null)
             return Collections.emptyList();
         return stream.collect(Collectors.toList());
-    }
-    
-    /**
-     * Get value from the supplier and return null if the supplier is null.
-     * 
-     * @param supplier  the supplier.
-     * @return  the value at the index or null.
-     * 
-     * @param <OBJECT> the type of the data in the supplier.
-     */
-    public static <OBJECT> OBJECT _get(Supplier<OBJECT> supplier) {
-        if (supplier == null)
-            return null;
-        return supplier.get();
-    }
-    
-    /**
-     * Get value from the function with the key and return null fail.
-     * 
-     * @param function  the function.
-     * @param key       the key.
-     * @return  the value at the index or null.
-     * 
-     * @param <KEY>   the type of the key of the function.
-     * @param <VALUE> the type of the value of the function.
-     */
-    public static <KEY, VALUE> VALUE _get(Function<KEY, VALUE> function, KEY key) {
-        if (function == null)
-            return null;
-        return function.apply(key);
-    }
-    
-    /**
-     * Get value from the function with the key and return null fail.
-     * 
-     * @param function  the function.
-     * @param key       the key.
-     * @return  the value at the index or null.
-     * 
-     * @param <KEY>   the type of the key of the function.
-     * @param <VALUE> the type of the value of the function.
-     */
-    public static <KEY, VALUE> VALUE _apply(Function<KEY, VALUE> function, KEY key) {
-        if (function == null)
-            return null;
-        return function.apply(key);
     }
     
     /**
@@ -839,148 +1044,6 @@ public class NullableJ {
             return null;
         }
         return map.get(key);
-    }
-    
-    /**
-     * Get the element in the array at the index and return orValue if fail.
-     * 
-     * @param array    the array.
-     * @param index    the index.
-     * @param orValue  the value to return if getting the value fail.
-     * @return  the value at the index or null.
-     * 
-     * @param <OBJECT> the type of the data in the array.
-     */
-    public static <OBJECT> OBJECT _get(OBJECT[] array, int index, OBJECT orValue) {
-        if (array == null)
-            return orValue;
-        if (array.length == 0)
-            return orValue;
-        if (index < 0)
-            return orValue;
-        if (index >= array.length)
-            return orValue;
-        
-        return array[index];
-    }
-    /**
-     * Get the element in the array at the index and return orValue if fail.
-     * 
-     * @param list   the list.
-     * @param index  the index.
-     * @param orValue  the value to return if getting the value fail.
-     * @return  the value at the index or null.
-     * 
-     * @param <OBJECT> the type of the data in the list.
-     */
-    public static <OBJECT> OBJECT _get(List<OBJECT> list, int index, OBJECT orValue) {
-        if (list == null)
-            return orValue;
-        if (list.isEmpty())
-            return orValue;
-        if (index < 0)
-            return orValue;
-        if (index >= list.size())
-            return orValue;
-        
-        return list.get(index);
-    }
-    
-    /**
-     * Get the element in the map associating with the key and return the default value if fail.
-     * 
-     * @param map      the map.
-     * @param key      the key.
-     * @param orValue  the default value.
-     * @return  the value at the index or null.
-     * 
-     * @param <KEY>   the type of the key of the map.
-     * @param <VALUE> the type of the value of the map.
-     */
-    public static <KEY, VALUE> VALUE _get(Map<KEY, VALUE> map, KEY key, VALUE orValue) {
-        if (map == null)
-            return orValue;
-        if (map.isEmpty())
-            return orValue;
-        try {
-            if (!map.containsKey(key))
-                return orValue;
-        } catch (NullPointerException e) {
-            // Some map throws exception for null key.
-            return orValue;
-        }
-        return _or(map.get(key), orValue);
-    }
-    
-    /**
-     * Get the element in the array at the index and return the value from orSupplier if fail.
-     * 
-     * @param array       the array.
-     * @param index       the index.
-     * @param orSupplier  the supplier of the value to return if getting the value fail.
-     * @return  the value at the index or null.
-     * 
-     * @param <OBJECT> the type of the data in the array.
-     */
-    public static <OBJECT> OBJECT _get(OBJECT[] array, int index, Supplier<OBJECT> orSupplier) {
-        if (array == null)
-            return orSupplier.get();
-        if (array.length == 0)
-            return orSupplier.get();
-        if (index < 0)
-            return orSupplier.get();
-        if (index >= array.length)
-            return orSupplier.get();
-        
-        return array[index];
-    }
-    /**
-     * Get the element in the array at the index and return the value from orSupplier if fail.
-     * 
-     * @param list        the list.
-     * @param index       the index.
-     * @param orSupplier  the supplier of the value to return if getting the value fail.
-     * @return  the value at the index or null.
-     * 
-     * @param <OBJECT> the type of the data in the list.
-     */
-    public static <OBJECT> OBJECT _get(List<OBJECT> list, int index, Supplier<OBJECT> orSupplier) {
-        if (list == null)
-            return orSupplier.get();
-        if (list.isEmpty())
-            return orSupplier.get();
-        if (index < 0)
-            return orSupplier.get();
-        if (index >= list.size())
-            return orSupplier.get();
-        
-        return list.get(index);
-    }
-    
-    /**
-     * Get the element in the map associating with the key and return the orSupplier if fail.
-     * 
-     * @param map      the map.
-     * @param key      the key.
-     * @param orSupplier  the supplier of the value to return if getting the value fail.
-     * @return  the value at the index or null.
-     * 
-     * @param <KEY>   the type of the key of the map.
-     * @param <VALUE> the type of the value of the map.
-     */
-    public static <KEY, VALUE> VALUE _get(Map<KEY, VALUE> map, KEY key, Supplier<VALUE> orSupplier) {
-        if (map == null)
-            return _get(orSupplier);
-        if (map.isEmpty())
-            return _get(orSupplier);
-        try {
-            if (!map.containsKey(key))
-                return _get(orSupplier);
-        } catch (NullPointerException e) {
-            // Some map throws exception for null key.
-            return _get(orSupplier);
-        }
-        return _orGet(map.get(key), orSupplier);
     }
     
     /**
@@ -1125,7 +1188,7 @@ public class NullableJ {
      * 
      * @param <OBJECT> the type of the data in the array.
      */
-    public static <OBJECT> boolean _hasAllWith(OBJECT[] array, Predicate<OBJECT> condition) {
+    public static <OBJECT> boolean _hasAll(OBJECT[] array, Predicate<OBJECT> condition) {
         if (array == null)
             return false;
         if (array.length == 0)
@@ -1141,7 +1204,7 @@ public class NullableJ {
      * 
      * @param <OBJECT> the type of the data in the list.
      */
-    public static <OBJECT> boolean _hasAllWith(List<OBJECT> list, Predicate<OBJECT> condition) {
+    public static <OBJECT> boolean _hasAll(List<OBJECT> list, Predicate<OBJECT> condition) {
         if (list == null)
             return false;
         if (list.isEmpty())
@@ -1158,7 +1221,7 @@ public class NullableJ {
      * 
      * @param <OBJECT> the type of the data in the array.
      */
-    public static <OBJECT> boolean _hasSomeWith(OBJECT[] array, Predicate<OBJECT> condition) {
+    public static <OBJECT> boolean _hasSome(OBJECT[] array, Predicate<OBJECT> condition) {
         if (array == null)
             return false;
         if (array.length == 0)
@@ -1174,7 +1237,7 @@ public class NullableJ {
      * 
      * @param <OBJECT> the type of the data in the list.
      */
-    public static <OBJECT> boolean _hasSomeWith(List<OBJECT> list, Predicate<OBJECT> condition) {
+    public static <OBJECT> boolean _hasSome(List<OBJECT> list, Predicate<OBJECT> condition) {
         if (list == null)
             return false;
         if (list.isEmpty())
@@ -1191,7 +1254,7 @@ public class NullableJ {
      * 
      * @param <OBJECT> the type of the data in the array.
      */
-    public static <OBJECT> Stream<OBJECT> _butOnlyWith$(OBJECT[] array, Predicate<OBJECT> condition) {
+    public static <OBJECT> Stream<OBJECT> _butOnly$(OBJECT[] array, Predicate<OBJECT> condition) {
         if (array == null)
             return Stream.empty();
         return stream(array).filter(condition);
@@ -1199,16 +1262,17 @@ public class NullableJ {
     /**
      * Check if at lease one element in the the given list pass all the check by the condition.
      * 
-     * @param list       the list.
+     * @param collection the collection.
      * @param condition  the condition.
      * @return  the element with only the matching elements.
      * 
-     * @param <OBJECT> the type of the data in the list.
+     * @param <OBJECT>     the type of the data in the list.
+     * @param <COLLECTION> the type of the collection.
      */
-    public static <OBJECT> Stream<OBJECT> _butOnlyWith$(List<OBJECT> list, Predicate<OBJECT> condition) {
-        if (list == null)
-            return Stream.empty();
-        return list.stream().filter(condition);
+    public static <OBJECT, COLLECTION extends Collection<OBJECT>> Stream<OBJECT> _butOnly$(COLLECTION collection, Predicate<OBJECT> condition) {
+        if (collection == null)
+            return empty();
+        return collection.stream().filter(condition);
     }
     
     /**
@@ -1221,27 +1285,72 @@ public class NullableJ {
      * @param <OBJECT> the type of the data in the array.
      */
     @SuppressWarnings("unchecked")
-    public static <OBJECT> OBJECT[] _butOnlyWith(OBJECT[] array, Predicate<OBJECT> condition) {
+    public static <OBJECT> OBJECT[] _butOnly(OBJECT[] array, Predicate<OBJECT> condition) {
         if (array == null)
             return null;
-        val list = _butOnlyWith$(array, condition).collect(toList());
+        val list = _butOnly$(array, condition).collect(toList());
         val newArray = (OBJECT[])newInstance(array.getClass().getComponentType(), list.size());
         return list.toArray(newArray);
     }
     
     /**
-     * Check if at lease one element in the the given list pass all the check by the condition.
+     * Check if at lease one element in the the given collection pass all the check by the condition.
      * 
-     * @param list       the list.
+     * @param collection the collection.
      * @param condition  the condition.
      * @return  the element with only the matching elements or null if the given element is null.
      * 
-     * @param <OBJECT> the type of the data in the list.
+     * @param <OBJECT>     the type of the data in the list.
+     * @param <COLLECTION> the type of the collection.
      */
-    public static <OBJECT> List<OBJECT> _butOnlyWith(List<OBJECT> list, Predicate<OBJECT> condition) {
-        if (list == null)
+    public static <OBJECT, COLLECTION extends Collection<OBJECT>> List<OBJECT> _butOnly(COLLECTION collection, Predicate<OBJECT> condition) {
+        if (collection == null)
             return null;
-        return _butOnlyWith$(list, condition).collect(toList());
+        return _butOnly$(collection, condition).collect(toList());
+    }
+    /**
+     * Returns the stream of from the given list but does not contains null value.
+     * 
+     * @param array  the array.
+     * @return  the stream.
+     * 
+     * @param <OBJECT> the type of the data in the array.
+     */
+    public static <OBJECT> Stream<OBJECT> _butOnlyNonNull$(OBJECT[] array) {
+        if (array == null)
+            return Stream.empty();
+        if (array.length == 0)
+            return Stream.empty();
+        return stream(array).filter(Objects::nonNull);
+    }
+    
+    /**
+     * Returns the stream of from the given collection but does not contains null value.
+     * 
+     * @param collection  the collection.
+     * @return  the stream.
+     * 
+     * @param <OBJECT>     the type of the data in the list.
+     * @param <COLLECTION> the type of the collection.
+     */
+    public static <OBJECT, COLLECTION extends Collection<OBJECT>> Stream<OBJECT> _butOnlyNonNull$(COLLECTION collection) {
+        if (collection == null)
+            return Stream.empty();
+        return collection.stream().filter(Objects::nonNull);
+    }
+    
+    /**
+     * Returns the stream of from the given stream but does not contains null value.
+     * 
+     * @param stream  the stream.
+     * @return  the stream.
+     * 
+     * @param <OBJECT> the type of the data in the stream.
+     */
+    public static <OBJECT> Stream<OBJECT> _butOnlyNonNull$(Stream<OBJECT> stream) {
+        if (stream == null)
+            return Stream.empty();
+        return stream.filter(Objects::nonNull);
     }
     
     /**
@@ -1257,6 +1366,54 @@ public class NullableJ {
         if (stream == null)
             return Stream.empty();
         return _butOnlyNonNull$(_butOnlyNonNull$(stream.map(mapper)).flatMap(Collection::stream));
+    }
+    
+    //== Supplier and Function ==
+    
+    /**
+     * Get value from the supplier and return null if the supplier is null.
+     * 
+     * @param supplier  the supplier.
+     * @return  the value at the index or null.
+     * 
+     * @param <OBJECT> the type of the data in the supplier.
+     */
+    public static <OBJECT> OBJECT _get(Supplier<OBJECT> supplier) {
+        if (supplier == null)
+            return null;
+        return supplier.get();
+    }
+    
+    /**
+     * Get value from the function with the key and return null fail.
+     * 
+     * @param function  the function.
+     * @param key       the key.
+     * @return  the value at the index or null.
+     * 
+     * @param <KEY>   the type of the key of the function.
+     * @param <VALUE> the type of the value of the function.
+     */
+    public static <KEY, VALUE> VALUE _get(Function<KEY, VALUE> function, KEY key) {
+        if (function == null)
+            return null;
+        return function.apply(key);
+    }
+    
+    /**
+     * Get value from the function with the key and return null fail.
+     * 
+     * @param function  the function.
+     * @param key       the key.
+     * @return  the value at the index or null.
+     * 
+     * @param <KEY>   the type of the key of the function.
+     * @param <VALUE> the type of the value of the function.
+     */
+    public static <KEY, VALUE> VALUE _apply(Function<KEY, VALUE> function, KEY key) {
+        if (function == null)
+            return null;
+        return function.apply(key);
     }
     
 }
