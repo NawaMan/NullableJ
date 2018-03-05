@@ -28,6 +28,7 @@ public class NullableDataTest {
         
         public String getLastName();
         public void setLastName(String name);
+        public int getAge();
         
         public default String getFullName() {
             return (getFirstName() + " " + getLastName()).trim();
@@ -44,25 +45,28 @@ public class NullableDataTest {
     public static class PersonImpl implements Person {
         private String firstName;
         private String lastName;
+        private int age = 25;
         public PersonImpl(String firstName) {
-            this(firstName, "Smith");
+            this(firstName, "Smith", 25);
         }
     }
     
     @SuppressWarnings("unchecked")
     @Test
     public void testBasic() {
-        val nullablePerson1 = NullableData.from(()->new PersonImpl("Peter", "Pan"), Person.class);
+        val nullablePerson1 = NullableData.from(()->new PersonImpl("Peter", "Pan", 25), Person.class);
         assertTrue(nullablePerson1 instanceof Person);
         assertEquals("Peter",     nullablePerson1.getFirstName());
         assertEquals("Pan",       nullablePerson1.getLastName());
         assertEquals("Peter Pan", nullablePerson1.getFullName());
+        assertEquals(25, nullablePerson1.getAge());
         assertTrue(((IAsNullable<Person>)nullablePerson1).asNullable().isPresent());
         
         val nullablePerson2 = NullableData.from(()->null, Person.class);
         assertEquals("", nullablePerson2.getFirstName());
         assertEquals("", nullablePerson2.getLastName());
         assertEquals("", nullablePerson2.getFullName());
+        assertEquals(0,  nullablePerson2.getAge());
         assertFalse(((IAsNullable<Person>)nullablePerson2).asNullable().isPresent());
     }
     
