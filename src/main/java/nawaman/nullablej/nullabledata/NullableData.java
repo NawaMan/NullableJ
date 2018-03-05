@@ -238,7 +238,7 @@ public class NullableData {
                     return true;
                 if (methodArgs[0] == proxy)
                     return true;
-                if (!(dataClass == methodArgs[0].getClass()))
+                if (dataClass != methodArgs[0].getClass())
                     return false;
                 if (!Nullable.class.isAssignableFrom(methodArgs[0].getClass()))
                     return false;
