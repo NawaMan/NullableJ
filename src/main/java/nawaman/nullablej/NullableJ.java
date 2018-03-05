@@ -690,9 +690,9 @@ public class NullableJ {
      */
     public static <OBJECT> Stream<OBJECT> _stream$(OBJECT[] array) {
         if (array == null)
-            return Stream.empty();
+            return empty();
         if (array.length == 0)
-            return Stream.empty();
+            return empty();
         return stream(array);
     }
     
@@ -706,7 +706,7 @@ public class NullableJ {
      */
     public static <OBJECT> Stream<OBJECT> _stream$(Collection<OBJECT> collection) {
         if (collection == null)
-            return Stream.empty();
+            return empty();
         return collection.stream();
     }
     
@@ -1256,7 +1256,7 @@ public class NullableJ {
      */
     public static <OBJECT> Stream<OBJECT> _butOnly$(OBJECT[] array, Predicate<OBJECT> condition) {
         if (array == null)
-            return Stream.empty();
+            return empty();
         return stream(array).filter(condition);
     }
     /**
@@ -1318,9 +1318,9 @@ public class NullableJ {
      */
     public static <OBJECT> Stream<OBJECT> _butOnlyNonNull$(OBJECT[] array) {
         if (array == null)
-            return Stream.empty();
+            return empty();
         if (array.length == 0)
-            return Stream.empty();
+            return empty();
         return stream(array).filter(Objects::nonNull);
     }
     
@@ -1335,7 +1335,7 @@ public class NullableJ {
      */
     public static <OBJECT, COLLECTION extends Collection<OBJECT>> Stream<OBJECT> _butOnlyNonNull$(COLLECTION collection) {
         if (collection == null)
-            return Stream.empty();
+            return empty();
         return collection.stream().filter(Objects::nonNull);
     }
     
@@ -1349,7 +1349,7 @@ public class NullableJ {
      */
     public static <OBJECT> Stream<OBJECT> _butOnlyNonNull$(Stream<OBJECT> stream) {
         if (stream == null)
-            return Stream.empty();
+            return empty();
         return stream.filter(Objects::nonNull);
     }
     
@@ -1364,7 +1364,7 @@ public class NullableJ {
      */
     public static <OBJECT, COLLECTION extends Collection<OBJECT>> Stream<OBJECT> _flatMap$(Stream<OBJECT> stream, Function<OBJECT, COLLECTION> mapper) {
         if (stream == null)
-            return Stream.empty();
+            return empty();
         return _butOnlyNonNull$(_butOnlyNonNull$(stream.map(mapper)).flatMap(Collection::stream));
     }
     
