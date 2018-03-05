@@ -726,8 +726,8 @@ public class NullableJTest {
         
         @Getter
         class Person {
-            String name;
-            List<Person> children = new ArrayList<>();
+            private String name;
+            private List<Person> children = new ArrayList<>();
             Person(String name) {
                 this.name = name;
             }
