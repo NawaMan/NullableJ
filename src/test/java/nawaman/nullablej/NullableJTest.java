@@ -20,7 +20,6 @@ import static java.util.Arrays.asList;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -590,7 +589,7 @@ public class NullableJTest {
     
     @Test
     public void test_get__orFunction__map() {
-        Map<String, String> map1 = Collections.singletonMap("1", "One");
+        Map<String, String> map1 = singletonMap("1", "One");
         Function<String,String> orElse = key->"Else-"+key;
         assertEquals("One",      map1._get("1",  orElse));
         assertEquals("Else-2",   map1._get("2",  orElse));
