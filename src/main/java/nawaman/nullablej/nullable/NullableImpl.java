@@ -73,6 +73,9 @@ public class NullableImpl<TYPE> implements Nullable<TYPE> {
     }
     
     public String toString() {
+        if (value == null)
+            return "Nullable.EMPTY";
+        
         return "Nullable.of(" + value + ")";
     }
     
