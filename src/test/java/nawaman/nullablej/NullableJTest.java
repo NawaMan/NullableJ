@@ -29,7 +29,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.junit.Test;
@@ -458,7 +457,7 @@ public class NullableJTest {
                 ._butOnlyNonNull$()
                 .map(String::length)
                 .map(Object::toString)
-                .collect(Collectors.joining(",")));
+                .collect(joining(",")));
     }
     
     @Test
@@ -545,7 +544,7 @@ public class NullableJTest {
     
     @Test
     public void test_get__map() {
-        Map<String, String> map1 = Collections.singletonMap("1", "One");
+        Map<String, String> map1 = singletonMap("1", "One");
         assertEquals("One", map1._get("1"));
         assertEquals(null,  map1._get("2"));
         assertEquals(null,  map1._get(null));

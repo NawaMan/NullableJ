@@ -4,19 +4,17 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.val;
 import nawaman.nullablej.nullable.IAsNullable;
 import nawaman.nullablej.nullable.Nullable;
-import nawaman.nullablej.nullabledata.NullableData;
 
 @SuppressWarnings("javadoc")
 public class NullableDataTest {
@@ -160,7 +158,7 @@ public class NullableDataTest {
     public void testNullOfSubClassNotEqualsToNullOfSuper() {
         val thing = NullableData.of(null, Thing.class);
         val thingAndMore = NullableData.of(null, ThingAndMore.class);
-        Assert.assertFalse(thing.equals(thingAndMore));
+        assertFalse(thing.equals(thingAndMore));
     }
     
 }

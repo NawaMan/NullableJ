@@ -17,15 +17,12 @@ package nawaman.nullablej;
 
 import static java.lang.reflect.Array.newInstance;
 import static java.util.Arrays.stream;
-import static java.util.Collections.emptyList;
-import static java.util.stream.Collectors.toList;
 import static java.util.stream.Stream.empty;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -35,8 +32,11 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toList;
+
+import static java.util.Collections.emptyList;
 
 import lombok.val;
 import nawaman.nullablej.nullable.Nullable;
@@ -947,7 +947,7 @@ public class NullableJ {
             return emptyList();
         if (array.length == 0)
             return emptyList();
-        return stream(array).collect(Collectors.toList());
+        return stream(array).collect(toList());
     }
     
     /**
@@ -961,8 +961,8 @@ public class NullableJ {
      */
     public static <OBJECT, COLLECTION extends Collection<OBJECT>> List<OBJECT> _toList(COLLECTION collection) {
         if (collection == null)
-            return Collections.emptyList();
-        return collection.stream().collect(Collectors.toList());
+            return emptyList();
+        return collection.stream().collect(toList());
     }
     
     /**
@@ -975,8 +975,8 @@ public class NullableJ {
      */
     public static <OBJECT> List<OBJECT> _toList(Stream<OBJECT> stream) {
         if (stream == null)
-            return Collections.emptyList();
-        return stream.collect(Collectors.toList());
+            return emptyList();
+        return stream.collect(toList());
     }
     
     /**
@@ -1193,7 +1193,7 @@ public class NullableJ {
             return false;
         if (array.length == 0)
             return false;
-        return Arrays.stream(array).allMatch(condition);
+        return stream(array).allMatch(condition);
     }
     /**
      * Check if all elements in the the given list pass all the check by the condition.
@@ -1226,7 +1226,7 @@ public class NullableJ {
             return false;
         if (array.length == 0)
             return false;
-        return Arrays.stream(array).anyMatch(condition);
+        return stream(array).anyMatch(condition);
     }
     /**
      * Check if at lease one element in the the given list pass all the check by the condition.
