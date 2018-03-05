@@ -51,6 +51,18 @@ public class NullValues implements IFindNullValue {
     /** The ready to use instance of NullValues.  */
     public static final NullValues instance = new NullValues();
     
+    
+    protected final KnownNullValuesFinder    knownNullFinder          = new KnownNullValuesFinder();
+    protected final KnownNewNullValuesFinder KnownNewNullValuesFinder = new KnownNewNullValuesFinder();
+    protected final AnnotatedFieldFinder     annotatedFieldFinder     = new AnnotatedFieldFinder(NULL_VALUE_ANNOTTION_NAME);
+    protected final AnnotatedMethodFinder    annotatedMethodFinder    = new AnnotatedMethodFinder(NULL_VALUE_ANNOTTION_NAME);
+    protected final NamedFieldFinder         namedFieldFinder1        = new NamedFieldFinder(NULL_VALUE_FIELD_NAME1);
+    protected final NamedFieldFinder         namedFieldFinder2        = new NamedFieldFinder(NULL_VALUE_FIELD_NAME2);
+    protected final NamedMethodFinder        namedMethodFinder1       = new NamedMethodFinder(NULL_VALUE_METHOD_NAME1);
+    protected final NamedMethodFinder        namedMethodFinder2       = new NamedMethodFinder(NULL_VALUE_METHOD_NAME2);
+    protected final DefaultConstructorFinder defaultConstructorFinder = new DefaultConstructorFinder();
+    protected final NullableInterfaceFinder  nullableInterfaceFinder  = new NullableInterfaceFinder();
+    
     /**
      * Find the null value of the given class.
      * 
@@ -74,17 +86,6 @@ public class NullValues implements IFindNullValue {
         val nullObj = instance.findNullValueOf(clzz);
         return nullObj;
     }
-    
-    protected final KnownNullValuesFinder    knownNullFinder          = new KnownNullValuesFinder();
-    protected final KnownNewNullValuesFinder KnownNewNullValuesFinder = new KnownNewNullValuesFinder();
-    protected final AnnotatedFieldFinder     annotatedFieldFinder     = new AnnotatedFieldFinder(NULL_VALUE_ANNOTTION_NAME);
-    protected final AnnotatedMethodFinder    annotatedMethodFinder    = new AnnotatedMethodFinder(NULL_VALUE_ANNOTTION_NAME);
-    protected final NamedFieldFinder         namedFieldFinder1        = new NamedFieldFinder(NULL_VALUE_FIELD_NAME1);
-    protected final NamedFieldFinder         namedFieldFinder2        = new NamedFieldFinder(NULL_VALUE_FIELD_NAME2);
-    protected final NamedMethodFinder        namedMethodFinder1       = new NamedMethodFinder(NULL_VALUE_METHOD_NAME1);
-    protected final NamedMethodFinder        namedMethodFinder2       = new NamedMethodFinder(NULL_VALUE_METHOD_NAME2);
-    protected final DefaultConstructorFinder defaultConstructorFinder = new DefaultConstructorFinder();
-    protected final NullableInterfaceFinder  nullableInterfaceFinder  = new NullableInterfaceFinder();
     
     @Override
     public <T> T findNullValueOf(Class<T> clzz) {
