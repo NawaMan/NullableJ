@@ -52,8 +52,8 @@ public class DefaultConstructorFinder extends AbstractFromClassElementFinder imp
             if (constructors.containsKey(clzz)) {
                 constructor = (Constructor<OBJECT>)constructors.get(clzz);
             } else {
-                constructors.put(clzz, null);
                 constructor = clzz.getConstructor();
+                constructors.put(clzz, constructor);
             }
         } catch (Exception e) {
         }

@@ -44,7 +44,7 @@ public class NullValueAnnotationValidator extends AbstractProcessor {
     private static final EnumSet<ElementKind> FIELDS_OR_METHODS = EnumSet.of(FIELD, METHOD);
     
     private Messager messager;
-    boolean hasError;
+    private boolean hasError;
     
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {

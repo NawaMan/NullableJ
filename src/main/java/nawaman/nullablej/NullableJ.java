@@ -17,15 +17,12 @@ package nawaman.nullablej;
 
 import static java.lang.reflect.Array.newInstance;
 import static java.util.Arrays.stream;
-import static java.util.Collections.emptyList;
-import static java.util.stream.Collectors.toList;
 import static java.util.stream.Stream.empty;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -35,8 +32,11 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toList;
+
+import static java.util.Collections.emptyList;
 
 import lombok.val;
 import nawaman.nullablej.nullable.Nullable;
@@ -280,6 +280,23 @@ public class NullableJ {
      **/
     public static BigDecimal _or(BigDecimal theGivenBigDecimal, double elseValue) {
         return (theGivenBigDecimal == null) ? BigDecimal.valueOf(elseValue) : theGivenBigDecimal;
+    }
+    
+    /**
+     * Check if the condition is true, then return the object. Otherwise, return null.
+     * 
+     * @param <OBJECT>
+     * @param theGivenObject  the given object.
+     * @param theCheck        the check.
+     * @return  the original object if the condition is true otherwise return null.
+     */
+    public static <OBJECT> OBJECT _only(OBJECT theGivenObject, Predicate<OBJECT> theCheck) {
+        if (theGivenObject == null)
+            return null;
+        if (!theCheck.test(theGivenObject))
+            return null;
+        
+        return theGivenObject;
     }
     
     /**
@@ -690,9 +707,9 @@ public class NullableJ {
      */
     public static <OBJECT> Stream<OBJECT> _stream$(OBJECT[] array) {
         if (array == null)
-            return Stream.empty();
+            return empty();
         if (array.length == 0)
-            return Stream.empty();
+            return empty();
         return stream(array);
     }
     
@@ -706,7 +723,7 @@ public class NullableJ {
      */
     public static <OBJECT> Stream<OBJECT> _stream$(Collection<OBJECT> collection) {
         if (collection == null)
-            return Stream.empty();
+            return empty();
         return collection.stream();
     }
     
@@ -947,7 +964,7 @@ public class NullableJ {
             return emptyList();
         if (array.length == 0)
             return emptyList();
-        return stream(array).collect(Collectors.toList());
+        return stream(array).collect(toList());
     }
     
     /**
@@ -961,8 +978,8 @@ public class NullableJ {
      */
     public static <OBJECT, COLLECTION extends Collection<OBJECT>> List<OBJECT> _toList(COLLECTION collection) {
         if (collection == null)
-            return Collections.emptyList();
-        return collection.stream().collect(Collectors.toList());
+            return emptyList();
+        return collection.stream().collect(toList());
     }
     
     /**
@@ -975,8 +992,8 @@ public class NullableJ {
      */
     public static <OBJECT> List<OBJECT> _toList(Stream<OBJECT> stream) {
         if (stream == null)
-            return Collections.emptyList();
-        return stream.collect(Collectors.toList());
+            return emptyList();
+        return stream.collect(toList());
     }
     
     /**
@@ -1193,7 +1210,7 @@ public class NullableJ {
             return false;
         if (array.length == 0)
             return false;
-        return Arrays.stream(array).allMatch(condition);
+        return stream(array).allMatch(condition);
     }
     /**
      * Check if all elements in the the given list pass all the check by the condition.
@@ -1226,7 +1243,7 @@ public class NullableJ {
             return false;
         if (array.length == 0)
             return false;
-        return Arrays.stream(array).anyMatch(condition);
+        return stream(array).anyMatch(condition);
     }
     /**
      * Check if at lease one element in the the given list pass all the check by the condition.
@@ -1256,7 +1273,7 @@ public class NullableJ {
      */
     public static <OBJECT> Stream<OBJECT> _butOnly$(OBJECT[] array, Predicate<OBJECT> condition) {
         if (array == null)
-            return Stream.empty();
+            return empty();
         return stream(array).filter(condition);
     }
     /**
@@ -1318,9 +1335,9 @@ public class NullableJ {
      */
     public static <OBJECT> Stream<OBJECT> _butOnlyNonNull$(OBJECT[] array) {
         if (array == null)
-            return Stream.empty();
+            return empty();
         if (array.length == 0)
-            return Stream.empty();
+            return empty();
         return stream(array).filter(Objects::nonNull);
     }
     
@@ -1335,7 +1352,7 @@ public class NullableJ {
      */
     public static <OBJECT, COLLECTION extends Collection<OBJECT>> Stream<OBJECT> _butOnlyNonNull$(COLLECTION collection) {
         if (collection == null)
-            return Stream.empty();
+            return empty();
         return collection.stream().filter(Objects::nonNull);
     }
     
@@ -1349,7 +1366,7 @@ public class NullableJ {
      */
     public static <OBJECT> Stream<OBJECT> _butOnlyNonNull$(Stream<OBJECT> stream) {
         if (stream == null)
-            return Stream.empty();
+            return empty();
         return stream.filter(Objects::nonNull);
     }
     
@@ -1364,7 +1381,7 @@ public class NullableJ {
      */
     public static <OBJECT, COLLECTION extends Collection<OBJECT>> Stream<OBJECT> _flatMap$(Stream<OBJECT> stream, Function<OBJECT, COLLECTION> mapper) {
         if (stream == null)
-            return Stream.empty();
+            return empty();
         return _butOnlyNonNull$(_butOnlyNonNull$(stream.map(mapper)).flatMap(Collection::stream));
     }
     
