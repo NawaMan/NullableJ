@@ -733,6 +733,35 @@ public class NullableJTest {
     }
     
     @Test
+    public void test_find__array() {
+        val length5 = (Predicate<String>)s->s.length() == 5;
+        
+        String[] array1 = new String[] { "One", "Two" };
+        assertEquals(null, array1._find(length5).get());
+        
+        String[] array2 = new String[] { "One", "Two", "Three" };
+        assertEquals("Three", array2._find(length5).get());
+        
+        String[] arrayNull = null;
+        assertNull(arrayNull._find(length5).get());
+    }
+    
+    @Test
+    public void test_find__list() {
+        val length5 = (Predicate<String>)s->s.length() == 5;
+        
+        List<String> list1 = asList("One", "Two");
+        assertEquals(null, list1._find(length5).get());
+        
+        List<String> list2 = asList("One", "Two", "Three");
+        assertEquals("Three", list2._find(length5).get());
+        
+        String[] listNull = null;
+        assertNull(listNull._find(length5).get());
+    }
+    
+    
+    @Test
     public void testflatMap$() {
         
         @Getter

@@ -1263,7 +1263,7 @@ public class NullableJ {
     }
     
     /**
-     * Returns the array contains the element that match the given condition.
+     * Returns the stream contains the element that match the given condition.
      * 
      * @param array      the array.
      * @param condition  the condition.
@@ -1277,10 +1277,10 @@ public class NullableJ {
         return stream(array).filter(condition);
     }
     /**
-     * Check if at lease one element in the the given list pass all the check by the condition.
+     * Returns the stream contains the element that match the given condition.
      * 
-     * @param collection the collection.
-     * @param condition  the condition.
+     * @param collection  the collection.
+     * @param condition   the condition.
      * @return  the element with only the matching elements.
      * 
      * @param <OBJECT>     the type of the data in the list.
@@ -1311,10 +1311,10 @@ public class NullableJ {
     }
     
     /**
-     * Check if at lease one element in the the given collection pass all the check by the condition.
+     * Returns the collection contains the element that match the given condition.
      * 
-     * @param collection the collection.
-     * @param condition  the condition.
+     * @param collection  the collection.
+     * @param condition   the condition.
      * @return  the element with only the matching elements or null if the given element is null.
      * 
      * @param <OBJECT>     the type of the data in the list.
@@ -1325,6 +1325,37 @@ public class NullableJ {
             return null;
         return _butOnly$(collection, condition).collect(toList());
     }
+    
+    /**
+     * Returns the first element that match the given condition.
+     * 
+     * @param array      the array.
+     * @param condition  the condition.
+     * @return  the element that match the given condition.
+     * 
+     * @param <OBJECT> the type of the data in the array.
+     */
+    public static <OBJECT> Nullable<OBJECT> _find(OBJECT[] array, Predicate<OBJECT> condition) {
+        if (array == null)
+            return Nullable.empty();
+        return Nullable.of(stream(array).filter(condition).findFirst().orElse(null));
+    }
+    /**
+     * Returns the first element that match the given condition.
+     * 
+     * @param collection  the collection.
+     * @param condition   the condition.
+     * @return  the element that match the given condition.
+     * 
+     * @param <OBJECT>     the type of the data in the list.
+     * @param <COLLECTION> the type of the collection.
+     */
+    public static <OBJECT, COLLECTION extends Collection<OBJECT>> Nullable<OBJECT> _find(COLLECTION collection, Predicate<OBJECT> condition) {
+        if (collection == null)
+            return Nullable.empty();
+        return Nullable.of(collection.stream().filter(condition).findAny().orElse(null));
+    }
+    
     /**
      * Returns the stream of from the given list but does not contains null value.
      * 
