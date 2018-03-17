@@ -285,7 +285,7 @@ public class NullableJ {
     /**
      * Check if the condition is true, then return the object. Otherwise, return null.
      * 
-     * @param <OBJECT>
+     * @param <OBJECT>        the object type.
      * @param theGivenObject  the given object.
      * @param theCheck        the check.
      * @return  the original object if the condition is true otherwise return null.
