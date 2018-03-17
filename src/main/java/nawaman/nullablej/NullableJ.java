@@ -283,6 +283,23 @@ public class NullableJ {
     }
     
     /**
+     * Check if the condition is true, then return the object. Otherwise, return null.
+     * 
+     * @param <OBJECT>
+     * @param theGivenObject  the given object.
+     * @param theCheck        the check.
+     * @return  the original object if the condition is true otherwise return null.
+     */
+    public static <OBJECT> OBJECT _only(OBJECT theGivenObject, Predicate<OBJECT> theCheck) {
+        if (theGivenObject == null)
+            return null;
+        if (!theCheck.test(theGivenObject))
+            return null;
+        
+        return theGivenObject;
+    }
+    
+    /**
      * Extension method to create nullable of theGivenObject. 
      * 
      * @param  theGivenObject  the given object.

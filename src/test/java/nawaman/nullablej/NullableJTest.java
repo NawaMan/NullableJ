@@ -133,6 +133,17 @@ public class NullableJTest {
     }
     
     @Test
+    public void test_only() {
+        val str1 = "One";
+        val str2 = "Two";
+        val str3 = (String)null;
+        
+        assertEquals(str1, NullableJ._only(str1, contains(str1)));
+        assertEquals(null, NullableJ._only(str2, contains(str1)));
+        assertEquals(null, NullableJ._only(str3, contains(str1)));
+    }
+    
+    @Test
     public void test_toOptional() {
         assertTrue("String"._toOptional() instanceof Optional);
         assertTrue("String"._toOptional().isPresent());
