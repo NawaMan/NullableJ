@@ -61,9 +61,10 @@ public class NullableImpl<TYPE> implements Nullable<TYPE> {
         if ((obj.getClass() == Nullable.class) || (obj.getClass() == Optional.class))
             return false;
         @SuppressWarnings({ "rawtypes", "unchecked" })
-        Object otherValue = (Nullable.class.isAssignableFrom(obj.getClass()))
-                ? ((Nullable)obj).get()
-                : ((Optional)obj).orElse(null);
+        Object otherValue
+                = (Nullable.class.isAssignableFrom(obj.getClass())) ? ((Nullable)obj).get()
+                : (Optional.class.isAssignableFrom(obj.getClass())) ? ((Optional)obj).orElse(null)
+                : null;
         if (value == null) {
             if (otherValue != null)
                 return false;
@@ -73,6 +74,9 @@ public class NullableImpl<TYPE> implements Nullable<TYPE> {
     }
     
     public String toString() {
+        if (value == null)
+            return "Nullable.EMPTY";
+        
         return "Nullable.of(" + value + ")";
     }
     

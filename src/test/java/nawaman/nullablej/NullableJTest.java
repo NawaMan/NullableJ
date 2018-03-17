@@ -20,7 +20,6 @@ import static java.util.Arrays.asList;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -29,7 +28,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.junit.Test;
@@ -132,6 +130,17 @@ public class NullableJTest {
     public void test_orElseNullValue() {
         assertEquals("String", Nullable.of("String")  ._orElseNullValue(String.class).orElse(null));
         assertEquals("",       Nullable.of(nullString)._orElseNullValue(String.class).orElse(null));
+    }
+    
+    @Test
+    public void test_only() {
+        val str1 = "One";
+        val str2 = "Two";
+        val str3 = (String)null;
+        
+        assertEquals(str1, NullableJ._only(str1, contains(str1)));
+        assertEquals(null, NullableJ._only(str2, contains(str1)));
+        assertEquals(null, NullableJ._only(str3, contains(str1)));
     }
     
     @Test
@@ -458,7 +467,7 @@ public class NullableJTest {
                 ._butOnlyNonNull$()
                 .map(String::length)
                 .map(Object::toString)
-                .collect(Collectors.joining(",")));
+                .collect(joining(",")));
     }
     
     @Test
@@ -545,7 +554,7 @@ public class NullableJTest {
     
     @Test
     public void test_get__map() {
-        Map<String, String> map1 = Collections.singletonMap("1", "One");
+        Map<String, String> map1 = singletonMap("1", "One");
         assertEquals("One", map1._get("1"));
         assertEquals(null,  map1._get("2"));
         assertEquals(null,  map1._get(null));
@@ -591,7 +600,7 @@ public class NullableJTest {
     
     @Test
     public void test_get__orFunction__map() {
-        Map<String, String> map1 = Collections.singletonMap("1", "One");
+        Map<String, String> map1 = singletonMap("1", "One");
         Function<String,String> orElse = key->"Else-"+key;
         assertEquals("One",      map1._get("1",  orElse));
         assertEquals("Else-2",   map1._get("2",  orElse));
@@ -728,8 +737,8 @@ public class NullableJTest {
         
         @Getter
         class Person {
-            String name;
-            List<Person> children = new ArrayList<>();
+            private String name;
+            private List<Person> children = new ArrayList<>();
             Person(String name) {
                 this.name = name;
             }

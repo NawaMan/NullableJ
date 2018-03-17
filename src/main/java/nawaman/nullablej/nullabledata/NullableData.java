@@ -212,25 +212,8 @@ public class NullableData {
         if (value == null) {
             Class<?> returnType = method.getReturnType();
             Object rawNullValue = NullValues.nullValueOf(returnType);
-            if (returnType.isPrimitive()) {
-                if (returnType == int.class)
-                    return ((Integer)rawNullValue).intValue();
-                if (returnType == boolean.class)
-                    return ((Boolean)rawNullValue).booleanValue();
-                if (returnType == long.class)
-                    return ((Long)rawNullValue).longValue();
-                if (returnType == double.class)
-                    return ((Double)rawNullValue).doubleValue();
-                
-                if (returnType == byte.class)
-                    return ((Byte)rawNullValue).byteValue();
-                if (returnType == short.class)
-                    return ((Short)rawNullValue).shortValue();
-                if (returnType == float.class)
-                    return ((Float)rawNullValue).floatValue();
-                if (returnType == char.class)
-                    return ((Character)rawNullValue).charValue();
-            }
+            if (returnType.isPrimitive())
+                return rawNullValue;
             
             return returnType.cast(rawNullValue);
         }
@@ -255,7 +238,7 @@ public class NullableData {
                     return true;
                 if (methodArgs[0] == proxy)
                     return true;
-                if (!(dataClass == methodArgs[0].getClass()))
+                if (dataClass != methodArgs[0].getClass())
                     return false;
                 if (!Nullable.class.isAssignableFrom(methodArgs[0].getClass()))
                     return false;

@@ -25,6 +25,18 @@ import java.util.function.Supplier;
 
 public interface IAsNullable<TYPE> {
     
+    /** Reusable value of empty. */
+    @SuppressWarnings({ "rawtypes", "unchecked"})
+    public static final IAsNullable EMPTY = new IAsNullable<Object>() {
+        @Override
+        public Nullable<Object> asNullable() {
+            return Nullable.EMPTY;
+        }
+        public String toString() {
+            return "IAsNullable.EMPTY";
+        }
+    };
+    
     /**
      * Returns the nullable representation of this object.
      * 
@@ -33,12 +45,7 @@ public interface IAsNullable<TYPE> {
     public Nullable<TYPE> asNullable();
     
     
-    
     // == Factory methods. ==
-    
-    /** Reusable value of empty. */
-    @SuppressWarnings("rawtypes")
-    public static final IAsNullable EMPTY = ()->Nullable.EMPTY;
     
     /**
      * Get the empty value 
