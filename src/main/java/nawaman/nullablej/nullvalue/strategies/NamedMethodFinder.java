@@ -14,7 +14,7 @@
 //  ========================================================================
 package nawaman.nullablej.nullvalue.strategies;
 
-import static nawaman.nullablej._internal.UReflection.invokeStaticMethodOrNull;
+import static nawaman.utils.reflection.UReflection.invokeStaticMethodOrNull;
 
 import lombok.NonNull;
 import lombok.val;
