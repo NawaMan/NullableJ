@@ -14,7 +14,8 @@
 //  ========================================================================
 package nawaman.nullablej.nullvalue.strategies;
 
-import static nawaman.nullablej._internal.UReflection.isPublicStaticFinalAndCompatible;
+
+import static nawaman.utils.reflection.UReflection.isPublicStaticFinalAndCompatible;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -37,7 +38,7 @@ public class AbstractFromClassElementFinder {
         for (val field : clzz.getDeclaredFields()) {
             val type      = field.getType();
             val modifiers = field.getModifiers();
-            if (isPublicStaticFinalAndCompatible(clzz, type, modifiers))
+            if (!isPublicStaticFinalAndCompatible(clzz, type, modifiers))
                 continue;
             
             val value = supplier.apply(field);
@@ -52,7 +53,7 @@ public class AbstractFromClassElementFinder {
         for (val method : clzz.getDeclaredMethods()) {
             val type      = method.getReturnType();
             val modifiers = method.getModifiers();
-            if (isPublicStaticFinalAndCompatible(clzz, type, modifiers))
+            if (!isPublicStaticFinalAndCompatible(clzz, type, modifiers))
                 continue;
             if (!clzz.getTypeParameters()._isEmpty())
                 continue;
