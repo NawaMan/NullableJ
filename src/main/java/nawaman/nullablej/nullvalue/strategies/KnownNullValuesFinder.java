@@ -62,8 +62,8 @@ public class KnownNullValuesFinder implements IFindNullValue {
         map.put(String.class,       "");
         map.put(CharSequence.class, "");
         
-        map.put(boolean.class,   false);
-        map.put(Character.class, Boolean.FALSE);
+        map.put(boolean.class, false);
+        map.put(Boolean.class, Boolean.FALSE);
         
         map.put(Runnable.class,   ((Runnable)()->{}));
         map.put(Supplier.class,   ((Supplier)()->null));
