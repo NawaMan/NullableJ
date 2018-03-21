@@ -110,4 +110,3 @@ task compileAnnotationProcessor (type: JavaCompile) {
 }
 
 compileJava.dependsOn compileAnnotationProcessor
-
