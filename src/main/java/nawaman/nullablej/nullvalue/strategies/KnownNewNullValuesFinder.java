@@ -52,6 +52,17 @@ public class KnownNewNullValuesFinder implements IFindNullValue {
     
     protected final DefaultConstructorFinder  defaultConstructorFinder  = new DefaultConstructorFinder();
     
+    /**
+     * Checks if this finder can find a null value for the given class.
+     * 
+     * @param <OBJECT>  the data type.
+     * @param clzz      the data class.
+     * @return {@code true} if this find can find null value for the class.
+     */
+    public <OBJECT> boolean canFindFor(Class<OBJECT> clzz) {
+        return knownNewNullValues.contains(clzz);
+    }
+    
     @Override
     public <OBJECT> OBJECT findNullValueOf(Class<OBJECT> clzz) {
         if (knownNewNullValues.contains(clzz))
