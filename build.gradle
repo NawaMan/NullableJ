@@ -22,6 +22,7 @@ repositories {
 dependencies {
     compile files("build/classes/java/main")
     
+    compile 'nawaman-utils:nawaman-utils-reflection:0.1.5'
     compile 'org.projectlombok:lombok:1.16.16'
     
     testCompile 'junit:junit:4.12'

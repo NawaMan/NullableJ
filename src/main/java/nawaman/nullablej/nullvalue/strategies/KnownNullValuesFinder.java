@@ -43,16 +43,16 @@ public class KnownNullValuesFinder implements IFindNullValue {
     private static final Map<Class, Object> knownNullValues = new ConcurrentHashMap<>();
     static {
         Map<Class, Object> map = knownNullValues;
-        map.put(byte.class,    0);
+        map.put(byte.class,    (byte)0);
         map.put(Byte.class,    Byte.valueOf((byte) 0));
-        map.put(short.class,   0);
+        map.put(short.class,   (short)0);
         map.put(Short.class,   Short.valueOf((short) 0));
         map.put(int.class,     0);
         map.put(Integer.class, Integer.valueOf(0));
-        map.put(long.class,    0);
+        map.put(long.class,    0L);
         map.put(Long.class,    Long.valueOf(0L));
         
-        map.put(float.class,  0.0);
+        map.put(float.class,  0.0f);
         map.put(Float.class,  0.0f);
         map.put(double.class, 0.0);
         map.put(Double.class, 0.0);
@@ -62,8 +62,8 @@ public class KnownNullValuesFinder implements IFindNullValue {
         map.put(String.class,       "");
         map.put(CharSequence.class, "");
         
-        map.put(boolean.class,   false);
-        map.put(Character.class, Boolean.FALSE);
+        map.put(boolean.class, false);
+        map.put(Boolean.class, Boolean.FALSE);
         
         map.put(Runnable.class,   ((Runnable)()->{}));
         map.put(Supplier.class,   ((Supplier)()->null));
