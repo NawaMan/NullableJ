@@ -75,7 +75,7 @@ public class Otherwise<VALUE, OTHERWISE> implements Nullable<VALUE> {
     
     @SuppressWarnings("unchecked")
     @Override
-    public <TARGET> Otherwise<TARGET, OTHERWISE> map(Function<VALUE, TARGET> mapper) {
+    public <TARGET> Otherwise<TARGET, OTHERWISE> map(Function<? super VALUE, TARGET> mapper) {
         VALUE value = get();
         if (value == null)
             return (Otherwise<TARGET, OTHERWISE>)this;

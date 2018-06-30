@@ -244,7 +244,7 @@ public interface Nullable<TYPE> extends Supplier<TYPE>, IAsNullable<TYPE> {
      * @return  the result Nullable or empty Nullable.
      * @param <TARGET>  the target of the mapping.
      */
-    public default <TARGET> Nullable<TARGET> flatMap(Function<TYPE, Nullable<TARGET>> mapper) {
+    public default <TARGET> Nullable<TARGET> flatMap(Function<? super TYPE, ? extends Nullable<TARGET>> mapper) {
         val value = get();
         if (value == null)
             return Nullable.empty();
@@ -260,7 +260,7 @@ public interface Nullable<TYPE> extends Supplier<TYPE>, IAsNullable<TYPE> {
      * @return  the result Nullable or empty Nullable.
      * @param <TARGET>  the target of the mapping.
      */
-    public default <TARGET> Nullable<TARGET> map(Function<TYPE,TARGET> mapper) {
+    public default <TARGET> Nullable<TARGET> map(Function<? super TYPE, TARGET> mapper) {
         val value = get();
         if (value == null)
             return Nullable.empty();
