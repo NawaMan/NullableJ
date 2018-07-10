@@ -319,12 +319,12 @@ public interface Nullable<TYPE> extends Supplier<TYPE>, IAsNullable<TYPE> {
      * @param theConsumer  the consumer.
      * @return  the value.
      */
-    public default TYPE ifPresent(Consumer<? super TYPE> theConsumer) {
+    public default Nullable<TYPE> ifPresent(Consumer<? super TYPE> theConsumer) {
         val value = get();
         if (value != null)
             theConsumer.accept(value);
         
-        return value;
+        return this;
     }
     
     /**
@@ -334,13 +334,13 @@ public interface Nullable<TYPE> extends Supplier<TYPE>, IAsNullable<TYPE> {
      * @param elseRunnable  runnable in case the value is null.
      * @return  the value.
      */
-    public default TYPE ifPresent(Consumer<? super TYPE> theConsumer, Runnable elseRunnable) {
+    public default Nullable<TYPE> ifPresent(Consumer<? super TYPE> theConsumer, Runnable elseRunnable) {
         val value = get();
         if (value != null)
             theConsumer.accept(value);
         
         elseRunnable.run();
-        return value;
+        return this;
     }
     
     /**
@@ -349,12 +349,12 @@ public interface Nullable<TYPE> extends Supplier<TYPE>, IAsNullable<TYPE> {
      * @param theAction  the action.
      * @return  the value.
      */
-    public default TYPE ifPresentRun(Runnable theAction) {
+    public default Nullable<TYPE> ifPresentRun(Runnable theAction) {
         val value = get();
         if (value != null)
             theAction.run();
         
-        return value;
+        return this;
     }
     
     /**
@@ -364,13 +364,13 @@ public interface Nullable<TYPE> extends Supplier<TYPE>, IAsNullable<TYPE> {
      * @param elseRunnable  runnable in case the value is null.
      * @return  the value.
      */
-    public default TYPE ifPresentRun(Runnable theAction, Runnable elseRunnable) {
+    public default Nullable<TYPE> ifPresentRun(Runnable theAction, Runnable elseRunnable) {
         val value = get();
         if (value != null)
             theAction.run();
         
         elseRunnable.run();
-        return value;
+        return this;
     }
     
     /**
@@ -379,12 +379,12 @@ public interface Nullable<TYPE> extends Supplier<TYPE>, IAsNullable<TYPE> {
      * @param theConsumer  the consumer.
      * @return  the value.
      */
-    public default TYPE ifNotNull(Consumer<? super TYPE> theConsumer) {
+    public default Nullable<TYPE> ifNotNull(Consumer<? super TYPE> theConsumer) {
         val value = get();
         if (value != null)
             theConsumer.accept(value);
         
-        return value;
+        return this;
     }
     
     /**
@@ -394,13 +394,13 @@ public interface Nullable<TYPE> extends Supplier<TYPE>, IAsNullable<TYPE> {
      * @param elseRunnable  runnable in case the value is null.
      * @return  the value.
      */
-    public default TYPE ifNotNull(Consumer<? super TYPE> theConsumer, Runnable elseRunnable) {
+    public default Nullable<TYPE> ifNotNull(Consumer<? super TYPE> theConsumer, Runnable elseRunnable) {
         val value = get();
         if (value != null)
             theConsumer.accept(value);
         
         elseRunnable.run();
-        return value;
+        return this;
     }
     
     /**
@@ -409,12 +409,12 @@ public interface Nullable<TYPE> extends Supplier<TYPE>, IAsNullable<TYPE> {
      * @param theAction  the action.
      * @return  the value.
      */
-    public default TYPE ifNotNullRun(Runnable theAction) {
+    public default Nullable<TYPE> ifNotNullRun(Runnable theAction) {
         val value = get();
         if (value != null)
             theAction.run();
         
-        return value;
+        return this;
     }
     
     /**
@@ -424,13 +424,13 @@ public interface Nullable<TYPE> extends Supplier<TYPE>, IAsNullable<TYPE> {
      * @param elseRunnable  runnable in case the value is null.
      * @return  the value.
      */
-    public default TYPE ifNotNullRun(Runnable theAction, Runnable elseRunnable) {
+    public default Nullable<TYPE> ifNotNullRun(Runnable theAction, Runnable elseRunnable) {
         val value = get();
         if (value != null)
             theAction.run();
         
         elseRunnable.run();
-        return value;
+        return this;
     }
     
     /**
@@ -439,12 +439,12 @@ public interface Nullable<TYPE> extends Supplier<TYPE>, IAsNullable<TYPE> {
      * @param theAction  the action.
      * @return  the value.
      */
-    public default TYPE ifNull(Runnable theAction) {
+    public default Nullable<TYPE> ifNullRun(Runnable theAction) {
         val value = get();
         if (value == null)
             theAction.run();
         
-        return value;
+        return this;
     }
     
     /**
