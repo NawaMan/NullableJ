@@ -110,7 +110,7 @@ Find more information [here](https://github.com/NawaMan/NullableJ/blob/master/do
 
 ## Usage
 
-### Using NullableJ in Gradle project
+### Using NullableJ in a Gradle project
 
 This project binary is published on [my maven repo](https://github.com/NawaMan/nawaman-maven-repository) hosted on GitHub. So to use NullableJ you will need to ...
 
@@ -123,13 +123,13 @@ Add the maven repository ...
 and the dependencies to Lombok and NullableJ.
 
 ```Groovy
-    compileOnly 'org.projectlombok:lombok:1.16.16'	// Include this if @ExtensionMethod is nedded.
-    compile     'nawaman:nullablej:3.0.0.0'			// Please fine the lastest version.
+    compileOnly 'org.projectlombok:lombok:1.16.16'	// Include this if @ExtensionMethod is needed.
+    compile     'nawaman:nullablej:3.0.0.0'			// Please lookup for the latest version.
 ```
 
 See [UseNullableJGradle](https://github.com/NawaMan/UseNullableJGradle) for more information.
 
-### Using NullableJ in Maven project
+### Using NullableJ in a Maven project
 
 Adding the required maven repository (hosted by github).
 
@@ -151,12 +151,12 @@ and the dependencies to Lombok and NullableJ.
 <dependency>
 	<groupId>nawaman</groupId>
 	<artifactId>nullablej</artifactId>
-	<version>3.0.0.0</version> <!-- Please fine the lastest version. -->
+	<version>3.0.0.0</version> <!-- Please lookup for the latest version. -->
 </dependency>
 <dependency>
 	<groupId>org.projectlombok</groupId>
 	<artifactId>lombok</artifactId>
-	<version>1.16.16</version> <!-- Please fine the lastest version. -->
+	<version>1.16.16</version> <!-- Please lookup for the latest version. -->
 </dependency>
 <dependency>
 	<groupId>junit</groupId>
