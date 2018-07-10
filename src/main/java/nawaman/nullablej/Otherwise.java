@@ -75,7 +75,7 @@ public class Otherwise<VALUE, OTHERWISE> implements Nullable<VALUE> {
     
     @SuppressWarnings("unchecked")
     @Override
-    public <TARGET> Otherwise<TARGET, OTHERWISE> map(Function<? super VALUE,? extends TARGET> mapper) {
+    public <TARGET> Otherwise<TARGET, OTHERWISE> map(Function<? super VALUE, TARGET> mapper) {
         VALUE value = get();
         if (value == null)
             return (Otherwise<TARGET, OTHERWISE>)this;
@@ -90,7 +90,7 @@ public class Otherwise<VALUE, OTHERWISE> implements Nullable<VALUE> {
      * @param mapper  the mapper.
      * @return  the Otherwise with map type.
      */
-    public WithMatchTypes<OTHERWISE> mapToMatch(Function<? super VALUE,? extends OTHERWISE> mapper) {
+    public WithMatchTypes<OTHERWISE> mapToMatch(Function<VALUE, OTHERWISE> mapper) {
         VALUE value = get();
         if (value == null)
             return new WithMatchTypes<OTHERWISE>(null, otherwise);
