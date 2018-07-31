@@ -44,7 +44,8 @@ import lombok.val;
 @FunctionalInterface
 public interface Nullable<TYPE> extends Supplier<TYPE>, IAsNullable<TYPE> {
     
-    @SuppressWarnings({ "rawtypes", "javadoc", "unchecked" })
+    /** Reusable instance for empty Nullable */
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     public static final Nullable EMPTY = new NullableImpl(null);
     
     //== Factory method ===============================================================================================
@@ -260,7 +261,7 @@ public interface Nullable<TYPE> extends Supplier<TYPE>, IAsNullable<TYPE> {
      * @return  the result Nullable or empty Nullable.
      * @param <TARGET>  the target of the mapping.
      */
-    public default <TARGET> Nullable<TARGET> map(Function<? super TYPE, TARGET> mapper) {
+    public default <TARGET> Nullable<TARGET> map(Function<? super TYPE, ? extends TARGET> mapper) {
         val value = get();
         if (value == null)
             return Nullable.empty();

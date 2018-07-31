@@ -14,7 +14,6 @@
 //  ========================================================================
 package nawaman.nullablej.nullvalue.strategies;
 
-import nawaman.nullablej.nullable.Nullable;
 import nawaman.nullablej.nullabledata.NullableData;
 import nawaman.nullablej.nullvalue.IFindNullValue;
 
