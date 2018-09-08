@@ -23,7 +23,7 @@ dependencies {
     compile files("build/classes/java/main")
     
     compile 'nawaman-utils:nawaman-utils-reflection:0.1.5'
-    compile 'org.projectlombok:lombok:1.16.16'
+    compile 'org.projectlombok:lombok:1.18.2'
     
     testCompile 'junit:junit:4.12'
 }
