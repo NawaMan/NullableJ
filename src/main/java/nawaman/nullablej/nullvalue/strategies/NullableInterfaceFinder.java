@@ -18,7 +18,7 @@ import nawaman.nullablej.nullabledata.NullableData;
 import nawaman.nullablej.nullvalue.IFindNullValue;
 
 /**
- * This finder use {@link Nullable} to create the null value if possible.
+ * This finder use Nullable to create the null value if possible.
  * 
  * @author NawaMan -- nawa@nawaman.net
  */
