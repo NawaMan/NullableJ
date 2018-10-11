@@ -33,7 +33,7 @@ import nawaman.nullablej.NullableJ;
 @ExtensionMethod({ NullableJ.class })
 public class AbstractFromClassElementFinder {
     
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "javadoc" })
     protected static <T> T getPublicStaticFinalCompatibleField(Class<T> clzz, Function<Field, Object> supplier) {
         for (val field : clzz.getDeclaredFields()) {
             val type      = field.getType();
@@ -48,7 +48,7 @@ public class AbstractFromClassElementFinder {
         return null;
     }
     
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "javadoc" })
     protected static final <T> T getPublicStaticFinalCompatibleMethod(Class<T> clzz, Function<Method, Object> supplier) {
         for (val method : clzz.getDeclaredMethods()) {
             val type      = method.getReturnType();
