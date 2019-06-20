@@ -7,7 +7,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import lombok.val;
-import nawaman.nullablej.nullable.LiveNullable;
+import nullablej.nullable.LiveNullable;
 
 @SuppressWarnings("javadoc")
 public class LiveNullableTest {

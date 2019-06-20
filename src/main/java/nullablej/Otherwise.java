@@ -13,13 +13,13 @@
 //
 //  You may elect to redistribute this code under either of these licenses.
 //  ========================================================================
-package nawaman.nullablej;
+package nullablej;
 
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
 import lombok.val;
-import nawaman.nullablej.nullable.Nullable;
+import nullablej.nullable.Nullable;
 
 /**
  * Otherwise holds two alternative values -- main value and otherwise value.

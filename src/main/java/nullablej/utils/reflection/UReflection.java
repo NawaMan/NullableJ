@@ -12,7 +12,7 @@
 //
 //  You may elect to redistribute this code under either of these licenses.
 //  ========================================================================
-package nawaman.nullablej.utils.reflection;
+package nullablej.utils.reflection;
 
 import static java.util.Arrays.stream;
 

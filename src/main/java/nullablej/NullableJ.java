@@ -13,7 +13,7 @@
 //
 //  You may elect to redistribute this code under either of these licenses.
 //  ========================================================================
-package nawaman.nullablej;
+package nullablej;
 
 import static java.lang.reflect.Array.newInstance;
 import static java.util.Arrays.stream;
@@ -39,8 +39,8 @@ import static java.util.stream.Collectors.toList;
 import static java.util.Collections.emptyList;
 
 import lombok.val;
-import nawaman.nullablej.nullable.Nullable;
-import nawaman.nullablej.nullvalue.NullValues;
+import nullablej.nullable.Nullable;
+import nullablej.nullvalue.NullValues;
 
 /**
  * This utility class contains useful methods to deal with null.

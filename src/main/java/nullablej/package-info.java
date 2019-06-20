@@ -18,4 +18,4 @@
  * 
  * @author NawaMan -- nawa@nawaman.net
  */
-package nawaman.nullablej;
+package nullablej;

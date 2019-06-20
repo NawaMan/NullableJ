@@ -12,7 +12,7 @@
 //
 //  You may elect to redistribute this code under either of these licenses.
 //  ========================================================================
-package nawaman.nullablej.utils.reflection;
+package nullablej.utils.reflection;
 
 /**
  * Implement this interface if it is desired to have toString, hashCode and equals for dynamic proxy.
