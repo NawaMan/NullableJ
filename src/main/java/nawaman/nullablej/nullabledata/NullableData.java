@@ -16,7 +16,7 @@
 package nawaman.nullablej.nullabledata;
 
 
-import static nawaman.utils.reflection.UProxy.invokeDefaultMethod;
+import static nawaman.nullablej.utils.reflection.UProxy.invokeDefaultMethod;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;

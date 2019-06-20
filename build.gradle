@@ -2,7 +2,6 @@ group   = theGroup
 version = theVersion
 
 apply plugin: 'java'
-apply plugin: 'jacoco'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'maven'
@@ -22,7 +21,7 @@ repositories {
 dependencies {
     compile files("build/classes/java/main")
     
-    compile 'nawaman-utils:nawaman-utils-reflection:0.1.5'
+    // compile 'nawaman-utils:nawaman-utils-reflection:0.1.5'
     compile 'org.projectlombok:lombok:1.18.2'
     
     testCompile 'junit:junit:4.12'
@@ -84,19 +83,6 @@ gradle.projectsEvaluated {
         options.compilerArgs << "-Xlint:unchecked"
         options.incremental = true
     }
-}
-
-
-jacocoTestReport {
-    group = "Reporting"
-    description = "Generate Jacoco coverage reports after running tests."
-    additionalSourceDirs = files(sourceSets.main.allJava.srcDirs)
-}
-
-jacocoTestReport {
-    group = "Reporting"
-    description = "Generate Jacoco coverage reports after running tests."
-    additionalSourceDirs = files(sourceSets.main.allJava.srcDirs)
 }
 
 // == Annotation processor
