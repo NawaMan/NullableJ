@@ -1,28 +1,35 @@
-//  Copyright (c) 2017 Nawapunth Manusitthipol (NawaMan).
-//  ------------------------------------------------------------------------
-//  All rights reserved. This program and the accompanying materials
-//  are made available under the terms of the Eclipse Public License v1.0
-//  and Apache License v2.0 which accompanies this distribution.
-//
-//      The Eclipse Public License is available at
-//      http://www.eclipse.org/legal/epl-v10.html
-//
-//      The Apache License v2.0 is available at
-//      http://www.opensource.org/licenses/apache2.0.php
-//
-//  You may elect to redistribute this code under either of these licenses.
-//  ========================================================================
-package nawaman.nullablej.nullvalue;
+//  MIT License
+//  
+//  Copyright (c) 2017-2019 Nawa Manusitthipol
+//  
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//  
+//  The above copyright notice and this permission notice shall be included in all
+//  copies or substantial portions of the Software.
+//  
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//  SOFTWARE.
+package nullablej.nullvalue;
 
 import lombok.val;
-import nawaman.nullablej.nullvalue.strategies.AnnotatedFieldFinder;
-import nawaman.nullablej.nullvalue.strategies.AnnotatedMethodFinder;
-import nawaman.nullablej.nullvalue.strategies.DefaultConstructorFinder;
-import nawaman.nullablej.nullvalue.strategies.KnownNewNullValuesFinder;
-import nawaman.nullablej.nullvalue.strategies.KnownNullValuesFinder;
-import nawaman.nullablej.nullvalue.strategies.NamedFieldFinder;
-import nawaman.nullablej.nullvalue.strategies.NamedMethodFinder;
-import nawaman.nullablej.nullvalue.strategies.NullableInterfaceFinder;
+import nullablej.nullvalue.strategies.AnnotatedFieldFinder;
+import nullablej.nullvalue.strategies.AnnotatedMethodFinder;
+import nullablej.nullvalue.strategies.DefaultConstructorFinder;
+import nullablej.nullvalue.strategies.KnownNewNullValuesFinder;
+import nullablej.nullvalue.strategies.KnownNullValuesFinder;
+import nullablej.nullvalue.strategies.NamedFieldFinder;
+import nullablej.nullvalue.strategies.NamedMethodFinder;
+import nullablej.nullvalue.strategies.NullableInterfaceFinder;
 
 /**
  * Default implementation of {@link IFindNullValue}.
