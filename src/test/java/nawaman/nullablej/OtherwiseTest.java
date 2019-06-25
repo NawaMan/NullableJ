@@ -6,7 +6,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import lombok.val;
-import nawaman.nullablej.Otherwise;
+import nullablej.Otherwise;
 
 @SuppressWarnings("javadoc")
 public class OtherwiseTest {

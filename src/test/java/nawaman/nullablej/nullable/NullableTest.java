@@ -1,8 +1,7 @@
 package nawaman.nullablej.nullable;
 
+import static nullablej.nullable.Nullable.nullable;
 import static org.junit.Assert.assertEquals;
-
-import static nawaman.nullablej.nullable.Nullable.nullable;
 
 import java.io.PrintStream;
 import java.util.Map;
@@ -14,8 +13,8 @@ import org.junit.Test;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.val;
-import nawaman.nullablej.nullable.LiveNullable;
-import nawaman.nullablej.nullable.Nullable;
+import nullablej.nullable.LiveNullable;
+import nullablej.nullable.Nullable;
 
 @SuppressWarnings("javadoc")
 public class NullableTest {

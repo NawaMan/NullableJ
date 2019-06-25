@@ -1,113 +1,174 @@
-group   = theGroup
-version = theVersion
-
-apply plugin: 'java'
-apply plugin: 'jacoco'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
-apply plugin: 'maven'
-apply plugin: 'maven-publish'
-
-sourceCompatibility = theSourceCompatibility
-targetCompatibility = theSourceCompatibility
-
-repositories {
-    mavenLocal()
-    mavenCentral()
-    maven {
-        url 'https://raw.githubusercontent.com/NawaMan/nawaman-maven-repository/master/'
-    }
-}
-
-dependencies {
-    compile files("build/classes/java/main")
+    group   = theGroup
+    version = theVersion
     
-    compile 'nawaman-utils:nawaman-utils-reflection:0.1.5'
-    compile 'org.projectlombok:lombok:1.16.16'
+    apply plugin: 'java'
+    apply plugin: 'eclipse'
+    apply plugin: 'idea'
+    apply plugin: 'maven'
+    apply plugin: 'maven-publish'
     
-    testCompile 'junit:junit:4.12'
-}
-
-
-// IDE
-
-eclipse {
-    classpath {
-        downloadJavadoc = true
-        downloadSources = true
+    sourceCompatibility = theSourceCompatibility
+    targetCompatibility = theSourceCompatibility
+    
+    repositories {
+        mavenLocal()
+        mavenCentral()
     }
-}
-idea {
-    module {
-        downloadJavadoc = true
-        downloadSources = true
+    
+    dependencies {
+        compile files("build/classes/java/main")
+        
+        compileOnly         'org.projectlombok:lombok:1.18.8'
+        annotationProcessor 'org.projectlombok:lombok:1.18.8'
+        
+        
+        testCompile 'junit:junit:4.12'
+        
+        testCompile             'org.projectlombok:lombok:1.18.8'
+        testAnnotationProcessor 'org.projectlombok:lombok:1.18.8'
     }
-}
-
-// Building/Publishing
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-            
-            artifact sourceJar
-            artifact packageJavadoc
+    
+    // IDE
+    
+    eclipse {
+        classpath {
+            downloadJavadoc = true
+            downloadSources = true
         }
     }
-}
-
-javadoc {
-    source = sourceSets.main.allJava
-    classpath = configurations.compileClasspath
+    idea {
+        module {
+            downloadJavadoc = true
+            downloadSources = true
+        }
+    }
     
-    options {
-        setMemberLevel JavadocMemberLevel.PUBLIC
-        setAuthor true
+    // Add Javadoc JAR and sources JAR to artifact
+    task javadocJar(type: Jar) {
+        classifier = 'javadoc'
+        from javadoc
+    }
+    task sourceJar(type: Jar) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+    
+    task packageJavadoc(type: Jar) {
+        from javadoc
+        classifier = 'javadoc'
+    }
+    
+    // Building/Publishing
+    
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
+                
+                artifact sourceJar
+                artifact packageJavadoc
+            }
+        }
+    }
+    
+    javadoc {
+        source = sourceSets.main.allJava
+        classpath = configurations.compileClasspath
         
-        links "https://docs.oracle.com/javase/8/docs/api/"
+        options {
+            setMemberLevel JavadocMemberLevel.PUBLIC
+            setAuthor true
+            
+            links "https://docs.oracle.com/javase/8/docs/api/"
+        }
     }
-}
-
-task sourceJar(type: Jar) {
-    classifier = 'sources'
-    from sourceSets.main.allJava
-}
-
-task packageJavadoc(type: Jar) {
-    from javadoc
-    classifier = 'javadoc'
-}
-gradle.projectsEvaluated {
-    tasks.withType(JavaCompile) {
-        options.compilerArgs << "-parameters"
-        options.compilerArgs << "-Xlint:unchecked"
-        options.incremental = true
-    }
-}
-
-
-jacocoTestReport {
-    group = "Reporting"
-    description = "Generate Jacoco coverage reports after running tests."
-    additionalSourceDirs = files(sourceSets.main.allJava.srcDirs)
-}
-
-jacocoTestReport {
-    group = "Reporting"
-    description = "Generate Jacoco coverage reports after running tests."
-    additionalSourceDirs = files(sourceSets.main.allJava.srcDirs)
-}
-
-// == Annotation processor
-
-task compileAnnotationProcessor (type: JavaCompile) {
-    options.compilerArgs << "-proc:none"
-    options.incremental = true
     
-    source         = file("src/main/annotationprocessor")
-    destinationDir = file('build/classes/java/main')
-    classpath      = sourceSets.main.compileClasspath
-}
-
-compileJava.dependsOn compileAnnotationProcessor
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-parameters"
+            options.compilerArgs << "-Xlint:unchecked"
+            options.incremental = true
+        }
+    }
+    
+    tasks.withType(Javadoc).all { enabled = false }
+    
+    // Deploying
+    artifacts {
+        archives javadocJar, sourceJar
+    }
+    
+    archivesBaseName = "${project.name}"
+    version = "${project.version}"
+    
+    if (project.gradle.startParameter.taskNames.contains('uploadArchives')) {
+        
+        // Build, sign, and upload
+        uploadArchives {
+            repositories {
+                mavenDeployer {
+                    
+                    // Signing
+                    apply plugin: 'signing'
+                    signing {
+                        sign configurations.archives
+                    }
+                    
+                    // Sign POM
+                    beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+                    
+                    // Destination
+                    repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                        authentication(userName: ossrhUsername, password: ossrhPassword)
+                    }
+                    snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                        authentication(userName: ossrhUsername, password: ossrhPassword)
+                    }
+                    
+                    // Add required metadata to POM
+                    pom.project {
+                        name project.name
+                        packaging 'jar'
+                        description 'Brining functional goodies to Java: ' + project.name
+                        url 'https://github.com/NawaMan/NullableJ'
+                        
+                        scm {
+                            connection 'scm:git:git://github.com/NawaMan/NullableJ.git'
+                                developerConnection 'scm:git:ssh://github.com/NawaMan/NullableJ.git'
+                                url 'http://github.com/NawaMan/NullableJ/tree/master'
+                        }
+                        
+                        licenses {
+                            license {
+                                name 'MIT License'
+                                url 'http://www.opensource.org/licenses/MIT'
+                            }
+                        }
+                        
+                        developers {
+                            developer {
+                                id 'NawaMan'
+                                name 'Nawapunth Manusitthipol'
+                                email 'nawa@nawaman.net'
+                                organization 'NawaMan'
+                                organizationUrl 'http://nawaman.net'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    // == Annotation processor
+    
+    task compileAnnotationProcessor (type: JavaCompile) {
+        options.compilerArgs << "-proc:none"
+        options.incremental = true
+        
+        source         = file("src/main/annotationprocessor")
+        destinationDir = file('build/classes/java/main')
+        classpath      = sourceSets.main.compileClasspath
+    }
+    
+    compileJava.dependsOn compileAnnotationProcessor
