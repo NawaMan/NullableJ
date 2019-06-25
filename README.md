@@ -118,7 +118,7 @@ Add the dependencies to Lombok and NullableJ.
 
 ```Groovy
     compileOnly 'org.projectlombok:lombok:1.16.16'   // Include this if @ExtensionMethod is needed.
-    compile     'nawaman:nullablej:4.0.0.1'          // Please lookup for the latest version.
+    compile     'io.nawaman:nullablej:4.0.0.1'       // Please lookup for the latest version.
 ```
 
 See [UseNullableJGradle](https://github.com/NawaMan/UseNullableJGradle) for more information.
@@ -130,7 +130,7 @@ Add the dependencies to Lombok and NullableJ.
 ```xml
 
 <dependency>
-	<groupId>nawaman</groupId>
+	<groupId>io.nullablej</groupId>
 	<artifactId>nullablej</artifactId>
 	<version>4.0.0.1</version> <!-- Please lookup for the latest version. -->
 </dependency>
