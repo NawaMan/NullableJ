@@ -1,5 +1,5 @@
 #!/bin/bash
-./gradlew clean build publishToMavenLocal
+./gradlew clean build publishToMavenLocal -x test
 
 PROJECTREPO=~/.m2/repository/nawaman
 PUBLISHREPO=../nawaman-maven-repository

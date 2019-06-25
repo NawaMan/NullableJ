@@ -27,8 +27,8 @@ import org.junit.Test;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import nawaman.nullablej.nullvalue.IFindNullValue;
-import nawaman.nullablej.nullvalue.NullValues;
+import nullablej.nullvalue.IFindNullValue;
+import nullablej.nullvalue.NullValues;
 
 @SuppressWarnings("javadoc")
 public class NullValuesTest {

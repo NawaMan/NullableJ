@@ -2,11 +2,11 @@ package nawaman.nullablej.nullable;
 
 import static org.junit.Assert.*;
 
-import nawaman.nullablej.nullable.Nullable;
-
 import java.util.function.Function;
 
 import org.junit.Test;
+
+import nullablej.nullable.Nullable;
 
 @SuppressWarnings("javadoc")
 public class NullableImplTest {

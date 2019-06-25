@@ -13,8 +13,9 @@ import static org.junit.Assert.assertTrue;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.val;
-import nawaman.nullablej.nullable.IAsNullable;
-import nawaman.nullablej.nullable.Nullable;
+import nullablej.nullable.IAsNullable;
+import nullablej.nullable.Nullable;
+import nullablej.nullabledata.NullableData;
 
 @SuppressWarnings("javadoc")
 public class NullableDataTest {
