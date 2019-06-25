@@ -114,44 +114,25 @@ Find more information [here](https://github.com/NawaMan/NullableJ/blob/master/do
 
 This project binary is published on [my maven repo](https://github.com/NawaMan/nawaman-maven-repository) hosted on GitHub. So to use NullableJ you will need to ...
 
-Add the maven repository ...
+Add the dependencies to Lombok and NullableJ.
 
 ```Groovy
-    maven { url 'https://raw.githubusercontent.com/nawmaman/nawaman-maven-repository/master/' }
-```
-
-and the dependencies to Lombok and NullableJ.
-
-```Groovy
-    compileOnly 'org.projectlombok:lombok:1.16.16'	// Include this if @ExtensionMethod is needed.
-    compile     'nawaman:nullablej:3.0.0.0'			// Please lookup for the latest version.
+    compileOnly 'org.projectlombok:lombok:1.16.16'   // Include this if @ExtensionMethod is needed.
+    compile     'nawaman:nullablej:4.0.0.0'          // Please lookup for the latest version.
 ```
 
 See [UseNullableJGradle](https://github.com/NawaMan/UseNullableJGradle) for more information.
 
 ### Using NullableJ in a Maven project
 
-Adding the required maven repository (hosted by github).
-
-```xml
-<repository>
-	<id>Nullable-mvn-repo</id>
-	<url>https://raw.githubusercontent.com/nawaman/nawaman-maven-repository/master/</url>
-	<snapshots>
-		<enabled>true</enabled>
-		<updatePolicy>always</updatePolicy>
-	</snapshots>
-</repository>
-```
-
-and the dependencies to Lombok and NullableJ.
+Add the dependencies to Lombok and NullableJ.
 
 ```xml
 
 <dependency>
 	<groupId>nawaman</groupId>
 	<artifactId>nullablej</artifactId>
-	<version>3.0.0.0</version> <!-- Please lookup for the latest version. -->
+	<version>4.0.0.0</version> <!-- Please lookup for the latest version. -->
 </dependency>
 <dependency>
 	<groupId>org.projectlombok</groupId>
