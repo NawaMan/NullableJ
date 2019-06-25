@@ -21,13 +21,18 @@
 //  SOFTWARE.
 package nullablej.utils.reflection;
 
+import static java.util.Arrays.asList;
+
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.invoke.MethodType;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -35,6 +40,7 @@ import java.util.TreeSet;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.val;
+import nullablej.utils.reflection.WithToStringHashCodeEquals;
 import nullablej.utils.reflection.exception.NotDefaultMethodException;
 
 /**
@@ -43,6 +49,64 @@ import nullablej.utils.reflection.exception.NotDefaultMethodException;
  * @author NawaMan -- nawa@nawaman.net
  */
 public class UProxy {
+    
+    private static final Random random = new Random();
+    
+    /**
+     * Create a dynamic proxy for the given interface that call all default method.
+     * 
+     * @param <OBJECT>              the main interface type.
+     * @param theGivenInterface     the main interface class.
+     * @param additionalInterfaces  additional interfaces.
+     * @return  the newly created dyamic proxy for the interface.
+     */
+    @SuppressWarnings("unchecked")
+    public static <OBJECT> OBJECT createDefaultProxy(@NonNull Class<OBJECT> theGivenInterface, Class<?> ... additionalInterfaces) {
+        val interfaces  = prepareInterfaces(theGivenInterface, additionalInterfaces);
+        val classLoader = theGivenInterface.getClassLoader();
+        val randomHash  = Math.abs(random.nextInt() / 2);
+        val theProxy    = (OBJECT)Proxy.newProxyInstance(classLoader, interfaces, (proxy, method, args)->{
+            // TODO Redirect this somewhere.
+            if ("toString".equals(method.getName()) && (method.getParameterCount() == 0)) {
+                if (proxy instanceof WithToStringHashCodeEquals)
+                    return ((WithToStringHashCodeEquals)proxy)._toString();
+                return theGivenInterface.getSimpleName() + "@" + randomHash;
+            }
+            if ("hashCode".equals(method.getName()) && (method.getParameterCount() == 0)) {
+                if (proxy instanceof WithToStringHashCodeEquals)
+                    return ((WithToStringHashCodeEquals)proxy)._hashCode();
+                return randomHash;
+            }
+            if ("equals".equals(method.getName()) && (method.getParameterCount() == 1)) {
+                if (proxy instanceof WithToStringHashCodeEquals)
+                    return ((WithToStringHashCodeEquals)proxy).equals(args[0]);
+                return proxy == args[0];
+            }
+            
+            return invokeDefaultMethod(proxy, method, args);
+        });
+        return (OBJECT)theProxy;
+    }
+    
+    private static <OBJECT> java.lang.Class<?>[] prepareInterfaces(Class<OBJECT> theGivenInterface,
+            Class<?>... additionalInterfaces) {
+        if (!theGivenInterface.isInterface())
+            throw new IllegalArgumentException("Interface is required: " + theGivenInterface);
+        
+        val interfaceList = new ArrayList<Class<?>>();
+        interfaceList.add(theGivenInterface);
+        if (additionalInterfaces != null) {
+            val additionalList = asList(additionalInterfaces);
+            additionalList.forEach(each->{
+                if (!each.isInterface())
+                    throw new IllegalArgumentException("Interface is required: " + each);
+            });
+            interfaceList.addAll(additionalList);
+        }
+        
+        val interfaces  = interfaceList.toArray(new Class<?>[interfaceList.size()]);
+        return interfaces;
+    }
     
     /**
      * Invoke the default of an interface method of the proxy object given the methodArgs.
