@@ -13,7 +13,7 @@
 //You may elect to redistribute this code under either of these licenses.
 //========================================================================
 
-package nawaman.nullablej.nullvalue.processor;
+package nullablej.nullvalue.processor;
 
 import static java.lang.String.format;
 import static javax.lang.model.element.ElementKind.FIELD;

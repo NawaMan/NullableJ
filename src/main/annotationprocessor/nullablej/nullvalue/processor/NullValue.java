@@ -12,10 +12,20 @@
 //
 //  You may elect to redistribute this code under either of these licenses.
 //  ========================================================================
+package nullablej.nullvalue.processor;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Classes in this package concern about annotation processing for @NullValue.
+ * This annotation can be used to mark a field/method that the field/method should be used as a null value.
  * 
  * @author NawaMan -- nawa@nawaman.net
  */
-package nawaman.nullablej.nullvalue.processor;
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ ElementType.FIELD, ElementType.METHOD })
+public @interface NullValue {
+    
+}

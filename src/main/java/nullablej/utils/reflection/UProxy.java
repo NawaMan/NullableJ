@@ -26,7 +26,13 @@ import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.invoke.MethodType;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
+import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.val;
 import nullablej.utils.reflection.exception.NotDefaultMethodException;
@@ -121,6 +127,52 @@ public class UProxy {
         }
         
         return null;
+    }
+    
+    /**
+     * Returns the map of method signature and the interface class it was in for all the non-default methods.
+     * 
+     * @param <T>           the interface data type.
+     * @param theInterface  the interface data class.
+     * @return  the map of method signature to interface full name or {@code null} if the class is not an interface.
+     */
+    public static <T> Map<String, String> getNonDefaultMethods(Class<T> theInterface) {
+        if (!theInterface.isInterface())
+            return null;
+        
+        return new InterfaceChecker<T>(theInterface).ensureDefaultInterface();
+    }
+    
+    @AllArgsConstructor
+    private static class InterfaceChecker<T> {
+        
+        private Class<T> orgInterface;
+        
+        private final Map<String, String> abstracts = new TreeMap<String, String>();
+        
+        private final Set<String> defaults = new TreeSet<String>();
+        
+        private Map<String, String> ensureDefaultInterface() {
+            ensureDefaultInterface(orgInterface);
+            defaults.forEach(m -> abstracts.remove(m));
+            return abstracts;
+        }
+        
+        private void ensureDefaultInterface(Class<?> element) {
+            for (Method method : element.getDeclaredMethods()) {
+                if (method.isDefault() || !java.lang.reflect.Modifier.isAbstract(method.getModifiers()))
+                     defaults.add(methodSignature(method));
+                else abstracts.put(methodSignature(method), element.getCanonicalName());
+            }
+            
+            for (Class<?> intf : element.getInterfaces()) {
+                ensureDefaultInterface(intf);
+            }
+        }
+        
+        private static String methodSignature(Method method) {
+            return method.getName() + "(" + Arrays.toString(method.getParameterTypes()) + "): " + method.getReturnType();
+        }
     }
     
 }
