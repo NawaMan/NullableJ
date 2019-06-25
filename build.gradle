@@ -16,11 +16,16 @@
     }
     
     dependencies {
-        compile     files("build/classes/java/main")
-        compileOnly 'org.projectlombok:lombok:1.18.8'
+        compile files("build/classes/java/main")
         
-        testCompile 'org.projectlombok:lombok:1.18.8'
+        compileOnly         'org.projectlombok:lombok:1.18.8'
+        annotationProcessor 'org.projectlombok:lombok:1.18.8'
+        
+        
         testCompile 'junit:junit:4.12'
+        
+        testCompile             'org.projectlombok:lombok:1.18.8'
+        testAnnotationProcessor 'org.projectlombok:lombok:1.18.8'
     }
     
     // IDE
