@@ -81,7 +81,7 @@ public class NullValueAnnotationValidator extends AbstractProcessor {
         }
         return hasError;
     }
-
+    
     private void ensureModifier(Element element, Modifier modifier) {
         if (element.getModifiers().contains(modifier))
             return;
