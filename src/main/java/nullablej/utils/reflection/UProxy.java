@@ -40,7 +40,6 @@ import java.util.TreeSet;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.val;
-import nullablej.utils.reflection.WithToStringHashCodeEquals;
 import nullablej.utils.reflection.exception.NotDefaultMethodException;
 
 /**
