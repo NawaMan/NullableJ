@@ -120,12 +120,10 @@ if (project.gradle.startParameter.taskNames.contains('uploadArchives')) {
                 
                 // Signing
                 apply plugin: 'signing'
-                signing {
-                    sign configurations.archives
-                }
                 
-                // Sign POM
-                // beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+                signing {
+                    sign publishing.publications.mavenJava
+                }
                 
                 // Destination
                 repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
