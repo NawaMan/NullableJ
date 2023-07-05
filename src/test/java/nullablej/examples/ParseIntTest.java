@@ -20,20 +20,28 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 
-package nullablej.nullvalue.processor;
+package nullablej.examples;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import static org.junit.Assert.assertEquals;
 
-/**
- * This annotation can be used to mark a field/method that the field/method should be used as a null value.
- * 
- * @author NawaMan -- nawa@nawaman.net
- */
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.FIELD, ElementType.METHOD })
-public @interface NullValue {
+import org.junit.Test;
+
+import lombok.experimental.ExtensionMethod;
+import nullablej.NullableJ;
+
+@ExtensionMethod({ NullableJ.class })
+public class ParseIntTest {
+    
+    public static int intOf(String intString) {
+        return intString._whenMatches("\\-?[0-9]+").map(Integer::parseInt).orElse(0);
+    }
+    
+    @Test
+    public void test() {
+        assertEquals(42, intOf("42"));
+        assertEquals(0,  intOf(null));
+        assertEquals(-5, intOf("-5"));
+        assertEquals(0,  intOf("Five"));
+    }
     
 }

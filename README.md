@@ -1,7 +1,5 @@
 # NullableJ
 
-![alt "Build status"](https://travis-ci.org/NawaMan/NullableJ.svg?branch=master)
-
 Java Library for dealing with `null`.
 
 `NullableJ` deploys multiple techniques to deal with `null`.
@@ -117,8 +115,8 @@ This project binary is published on [my maven repo](https://github.com/NawaMan/n
 Add the dependencies to Lombok and NullableJ.
 
 ```Groovy
-    compileOnly 'org.projectlombok:lombok:1.16.16'   // Include this if @ExtensionMethod is needed.
-    compile     'io.nawaman:nullablej:4.0.1.0'       // Please lookup for the latest version.
+    compileOnly 'org.projectlombok:lombok:1.18.28'   // Include this if @ExtensionMethod is needed.
+    compile     'io.nawaman:nullablej:4.0.4.0'       // Please lookup for the latest version.
 ```
 
 See [UseNullableJGradle](https://github.com/NawaMan/UseNullableJGradle) for more information.
@@ -132,17 +130,17 @@ Add the dependencies to Lombok and NullableJ.
 <dependency>
 	<groupId>io.nullablej</groupId>
 	<artifactId>nullablej</artifactId>
-	<version>4.0.1.0</version> <!-- Please lookup for the latest version. -->
+	<version>4.0.4.0</version> <!-- Please lookup for the latest version. -->
 </dependency>
 <dependency>
 	<groupId>org.projectlombok</groupId>
 	<artifactId>lombok</artifactId>
-	<version>1.16.16</version> <!-- Please lookup for the latest version. -->
+	<version>1.18.28</version> <!-- Please lookup for the latest version. -->
 </dependency>
 <dependency>
 	<groupId>junit</groupId>
 	<artifactId>junit</artifactId>
-	<version>4.11</version>
+	<version>4.13.2</version>
 	<scope>test</scope>
 </dependency>
 ```
