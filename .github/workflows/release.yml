@@ -36,12 +36,6 @@ jobs:
                 }
              ]
         
-      - name: Setup settings-security.xml
-        run: >
-          echo "<settingsSecurity>"                                     >  ~/.m2/settings-security.xml
-          echo "  <master>${{ secrets.GPG_MASTER_PASSWORD }}</master>"  >> ~/.m2/settings-security.xml
-          echo "</settingsSecurity>"                                    >> ~/.m2/settings-security.xml
-        
       - name: Publish package
         env:
           NEXUS2_USERNAME: ${{ secrets.NEXUS2_USERNAME }}
