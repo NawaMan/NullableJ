@@ -1,4 +1,4 @@
-package nullablej;
+package nullablej.examples;
 
 import static java.math.BigDecimal.ZERO;
 import static java.util.stream.Collectors.reducing;
@@ -14,19 +14,13 @@ import org.junit.Test;
 import lombok.Value;
 import lombok.val;
 import lombok.experimental.ExtensionMethod;
+import nullablej.NullableJ;
 
 @ExtensionMethod({ NullableJ.class })
-public class MapGet {
+public class MapGetTest {
     
     private ItemService itemService          = new ItemService();
     private SaleStateService saleStatService = new SaleStateService();
-
-    @SuppressWarnings("unused")
-    private BigDecimal totalMonthlySaleByPart_notNullSafe(String partNumber, Color color, int year) {
-        val item        = itemService.findItem(partNumber, color);
-        val salesByYear = saleStatService.findItemSalesByYear(item);
-        return salesByYear.get(year).stream().map(Sale::getTotal).collect(reducing(ZERO, BigDecimal::add));
-    }
     
     private BigDecimal totalMonthlySaleByPart(String partNumber, Color color, int year) {
         val item        = itemService.findItem(partNumber, color);
@@ -58,7 +52,5 @@ public class MapGet {
             return null;
         }
     }
-    
-    
     
 }

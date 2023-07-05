@@ -1,4 +1,4 @@
-package nullablej;
+package nullablej.examples;
 
 import static org.junit.Assert.assertEquals;
 
@@ -8,9 +8,10 @@ import java.util.function.Predicate;
 import org.junit.Test;
 
 import lombok.experimental.ExtensionMethod;
+import nullablej.NullableJ;
 
 @ExtensionMethod({ NullableJ.class })
-public class AutoCompleteSearch {
+public class AutoCompleteSearchTest {
     
     private static Predicate<String> thatStartsWith(String prefix) {
         return str->str.startsWith(prefix);

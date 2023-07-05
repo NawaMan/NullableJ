@@ -1,13 +1,14 @@
-package nullablej;
+package nullablej.examples;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
 import lombok.experimental.ExtensionMethod;
+import nullablej.NullableJ;
 
 @ExtensionMethod({ NullableJ.class })
-public class ParseInt {
+public class ParseIntTest {
     
     public static int intOf(String intString) {
         return intString._whenMatches("\\-?[0-9]+").map(Integer::parseInt).orElse(0);

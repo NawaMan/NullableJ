@@ -1,4 +1,4 @@
-package nullablej;
+package nullablej.examples;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -11,7 +11,6 @@ import static org.junit.Assert.assertEquals;
 import lombok.val;
 import nullablej.nullable.Nullable;
 
-@SuppressWarnings("javadoc")
 public class NullableArrayTest {
     
     public static interface NullableArray<T> extends Nullable<T[]> {
