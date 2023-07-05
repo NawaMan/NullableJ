@@ -24,6 +24,18 @@ jobs:
           gpg_private_key: ${{ secrets.GPG_SECRET_KEY }}
           passphrase:      ${{ secrets.GPG_PASSPHRASE }}
         
+      - name: maven-settings-xml-action
+        uses: whelk-io/maven-settings-xml-action@v20
+        with:
+          servers: >
+             [
+                {
+                   "id": "ossrh",
+                   "username": "nawaman",
+                   "password": "${secrets.NEXUS2_PASSWORD}"
+                }
+             ]
+        
       - name: Publish package
         env:
           NEXUS2_USERNAME: ${{ secrets.NEXUS2_USERNAME }}
