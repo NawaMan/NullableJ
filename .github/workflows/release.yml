@@ -11,16 +11,25 @@ jobs:
     environment: nexus-staging
     steps:
       - uses: actions/checkout@v3
+        
       - name: Set up Java
         uses: actions/setup-java@v3
         with:
           java-version: '8'
           distribution: 'adopt'
-      - name: Import GPG Key
-        uses: crazy-max/ghaction-import-gpg@v1
-        env:
-           GPG_PRIVATE_KEY: ${{ secrets.GPG_SECRET_KEY }}
-           PASSPHRASE:      ${{ secrets.GPG_PASSPHRASE }}
+        
+      - name: Decrypt GPG key
+        uses: crazy-max/decrypt-gpg-key@v1
+        with:
+          key:        ${{ secrets.GPG_SECRET_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+        
+      - name: Import GPG key
+        run: gpg --import ./gpg-private-key.asc
+        
+      - name: Set up Maven settings.xml
+        run: cp .github/settings.xml $HOME/.m2/settings.xml
+        
       - name: Publish package
         env:
           NEXUS2_USERNAME: ${{ secrets.NEXUS2_USERNAME }}
