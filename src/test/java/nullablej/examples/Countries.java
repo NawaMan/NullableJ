@@ -1,9 +1,8 @@
-package nullablej;
+package nullablej.examples;
 
 import java.util.Arrays;
 import java.util.List;
 
-@SuppressWarnings("javadoc")
 public class Countries {
     
     public static final List<String> list = Arrays.asList("Afghanistan", "Albania", "Algeria", "Andorra", "Angola",

@@ -46,7 +46,6 @@ import lombok.val;
 import lombok.experimental.ExtensionMethod;
 import nullablej.nullable.Nullable;
 
-@SuppressWarnings("javadoc")
 @ExtensionMethod({ NullableJ.class })
 public class NullableJTest {
     

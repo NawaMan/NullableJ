@@ -27,6 +27,7 @@ import org.junit.Test;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.val;
 
 public class NullValuesTest {
     
@@ -40,7 +41,7 @@ public class NullValuesTest {
     
     @Test
     public void testArray() {
-        String[] nObj = nullValues.findNullValueOf(String[].class);
+        val nObj = nullValues.findNullValueOf(String[].class);
         assertEquals(0,            nObj.length);
         assertEquals(String.class, nObj.getClass().getComponentType());
     }
