@@ -116,13 +116,16 @@ public class NullableTest {
     
     @Test
     public void testOr() {
-        Nullable<CharSequence> blah = Nullable.of((CharSequence)"ONE");
-        Nullable<CharSequence> or = blah.or(()->Nullable.of("TWO"));
+        val blah = Nullable.of("ONE");
+        val or   = blah.or(()->Nullable.of("TWO"));
         assertEquals("ONE", or.get());
         
-        Nullable<CharSequence> blah2 = Nullable.empty();
-        Nullable<CharSequence> or2 = blah2.or(()->Nullable.of("TWO"));
+        val blah2 = Nullable.<String>empty();
+        val or2   = blah2.or(()->Nullable.of("TWO"));
         assertEquals("TWO", or2.get());
+        
+        assertEquals("ONE", blah .or(Nullable.of("ONE")).get());
+        assertEquals("TWO", blah2.or(Nullable.of("TWO")).get());
     }
     
     private String getString(int i) {
