@@ -228,6 +228,18 @@ public interface Nullable<TYPE> extends Supplier<TYPE>, IAsNullable<TYPE> {
     }
     
     /**
+     * Returns the value if it is not null or the value from the fallbackNullable otherwise
+     * 
+     * @param fallbackNullable  the fallbackNullable.
+     * @return  the value or the fallback value.
+     */
+    @SuppressWarnings("unchecked")
+    public default Nullable<TYPE> or(Nullable<? extends TYPE> fallbackNullable) {
+        val value = get();
+        return (value != null) ? this : (Nullable<TYPE>)fallbackNullable;
+    }
+    
+    /**
      * Returns this Nullable object if the value is null or fail the condition test otherwise return empty Nullable.
      * 
      * @param theCondition  the condition to be filter in.

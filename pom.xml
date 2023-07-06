@@ -21,7 +21,8 @@
         
         <!--==== SECRET ====-->
         <gpg.executable>/usr/bin/gpg</gpg.executable>
-        <gpg.keyname>B48167EF9F2B8A81F596957B221B4460CCA97FD5</gpg.keyname>
+        <gpg.keyname>${env.NULLABLEJ_KEYNAME}</gpg.keyname>
+        <gpg.passphrase>${env.NAWAMAN_SIGNING_PASSWORD}</gpg.passphrase>
         
         <!--==== VERSIONS ====-->
         
@@ -193,7 +194,7 @@
                         </goals>
                         <configuration>
                             <keyname>${gpg.keyname}</keyname>
-                            <passphrase>${env.NAWAMAN_SIGNING_PASSWORD}</passphrase>
+                            <passphrase>${gpg.passphrase}</passphrase>
                         </configuration>
                     </execution>
                 </executions>
