@@ -10,4 +10,9 @@ if [[ "$NAWAMAN_SONATYPE_PASSWORD" == "" ]]; then
     exit -1
 fi
 
+if [[ "$NULLABLEJ_KEYNAME" == "" ]]; then
+    echo "NULLABLEJ_KEYNAME is not set."
+    exit -1
+fi
+
 ./mvnw clean install package deploy
