@@ -68,9 +68,10 @@ function build-release() {
     ensure-java-version
     set-version
     ./mvnw clean install package deploy
+    
+    increment-build-number
     push-release-branch
     push-release-tag
-    increment-build-number
 }
 
 function show-help() {
