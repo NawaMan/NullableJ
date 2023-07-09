@@ -27,3 +27,11 @@ output.json
 /.apt_generated_tests/
 /target/
 /nullablej/
+
+.classpath
+
+.project
+
+.settings/
+
+pom.xml.versionsBackup
