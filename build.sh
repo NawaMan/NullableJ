@@ -2,6 +2,9 @@
 
 set -e
 
+VERSION_NUMBER_FILE=project-version-number
+BUILD_NUMBER_FILE=project-build-number
+
 function main() {
     COMMAND="$1"
     shift || true
@@ -100,13 +103,13 @@ function ensure-variable() {
 }
 
 function current-version() {
-    if [[ ! -f project-version-number ]]; then
-        echo "The file 'project-version-number' does not exists or not accessible."
+    if [[ ! -f $VERSION_NUMBER_FILE ]]; then
+        echo "The file '$VERSION_NUMBER_FILE' does not exists or not accessible."
         show-help
         exit -1
     fi
-    if [[ ! -f project-build-number ]]; then
-        echo "The file 'project-build-number' does not exists or not accessible."
+    if [[ ! -f $BUILD_NUMBER_FILE ]]; then
+        echo "The file '$BUILD_NUMBER_FILE' does not exists or not accessible."
         show-help
         exit -1
     fi
@@ -117,8 +120,8 @@ function current-version() {
         SNAPSHOT=""
     fi
     
-    local PROJECT_VERSION=$(cat project-version-number)
-    local PROJECT_BUILD=$(cat project-build-number)
+    local PROJECT_VERSION=$(cat $VERSION_NUMBER_FILE)
+    local PROJECT_BUILD=$(cat $BUILD_NUMBER_FILE)
     echo -n "$PROJECT_VERSION"."$PROJECT_BUILD""$SNAPSHOT"
 }
 
@@ -148,9 +151,9 @@ function ensure-release() {
 }
 
 function increment-build-number() {
-    BUILD_NUMBER=$(cat project-build-number)
+    BUILD_NUMBER=$(cat $BUILD_NUMBER_FILE)
     ((BUILD_NUMBER++))
-    echo -n "$BUILD_NUMBER" > project-build-number
+    echo -n "$BUILD_NUMBER" > $BUILD_NUMBER_FILE
     echo "Up the build number to: $BUILD_NUMBER"
 }
 
@@ -161,11 +164,21 @@ function push-release-tag() {
 }
 
 function ensure-files-tracked() {
-    if [[ -n $(git status --porcelain | grep -v "pom.xml" |  grep -E '(^\?\? |^MM |^ M )') ]]; then
+    UNTRACKED_FILES=$(untracted-files)
+    if [[ -n "$UNTRACKED_FILES" ]]; then
         echo "There are untracked files. Please make sure all files are tracked."
         git status
+        echo $UNTRACKED_FILES
         exit 1
     fi
+}
+
+function untracted-files() {
+    git status --porcelain           \
+    | grep -v "pom.xml"              \
+    | grep -v "$VERSION_NUMBER_FILE" \
+    | grep -v "$BUILD_NUMBER_FILE"   \
+    | grep -E '(^\?\? |^MM |^ M )' || true
 }
 
 function push-release-branch() {
@@ -173,9 +186,10 @@ function push-release-branch() {
     
     # Add all pom.xml
     find . -type f -name "pom.xml" -exec git add {} + 2> /dev/null || true
+    git add $VERSION_NUMBER_FILE || true
+    git add $BUILD_NUMBER_FILE || true
     
     VERSION=$(current-version)
-    git add
     git commit -m "Release: v$VERSION"
     git push
 }
