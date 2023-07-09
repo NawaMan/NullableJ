@@ -40,6 +40,7 @@ function build-full() {
 }
 
 function build-package() {
+    prepackage-action
     ensure-variable NAWAMAN_SIGNING_PASSWORD
     ensure-variable NAWAMAN_SONATYPE_PASSWORD
     
@@ -52,6 +53,7 @@ function build-package() {
 }
 
 function build-release() {
+    prepackage-action
     ensure-release
     ensure-files-tracked
     
@@ -69,6 +71,7 @@ function build-release() {
     set-version
     ./mvnw clean install package deploy
     
+    set -x
     increment-build-number
     push-release-branch
     push-release-tag
@@ -139,6 +142,12 @@ function ensure-java-version() {
         echo "  Required: $REQUIRED"
         echo "  Current : $CURRENT"
         exit -1
+    fi
+}
+
+function prepackage-action() {
+    if [[ "$PREPACKAGE_ACTION" != "" ]]; then
+        source "$PREPACKAGE_ACTION"
     fi
 }
 
