@@ -64,6 +64,8 @@ function build-release() {
     ensure-java-version
     set-version
     ./mvnw clean install package deploy
+    
+    increment-build-number
 }
 
 function show-help() {
@@ -137,6 +139,13 @@ function ensure-release() {
         echo "Publish only allow on the release branch."
         exit -1
     fi
+}
+
+function increment-build-number() {
+    BUILD_NUMBER=$(cat project-build-number)
+    ((BUILD_NUMBER++))
+    echo -n "$BUILD_NUMBER" > project-build-number
+    echo "Up the build number to: $BUILD_NUMBER"
 }
 
 main "$@"
