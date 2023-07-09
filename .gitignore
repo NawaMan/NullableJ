@@ -33,3 +33,5 @@ output.json
 .project
 
 .settings/
+
+pom.xml.versionsBackup
