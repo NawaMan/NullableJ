@@ -50,6 +50,7 @@ function build-package() {
 
 function build-release() {
     ensure-release
+    ensure-files-tracked
     
     if [[ ! -f "key-var-name" ]]; then
         echo "The file 'key-var-name' does not exist or not accessible."
@@ -64,7 +65,8 @@ function build-release() {
     ensure-java-version
     set-version
     ./mvnw clean install package deploy
-    
+    push-release-branch
+    push-release-tag
     increment-build-number
 }
 
@@ -97,7 +99,7 @@ function ensure-variable() {
     fi
 }
 
-function set-version() {
+function current-version() {
     if [[ ! -f project-version-number ]]; then
         echo "The file 'project-version-number' does not exists or not accessible."
         show-help
@@ -117,7 +119,11 @@ function set-version() {
     
     local PROJECT_VERSION=$(cat project-version-number)
     local PROJECT_BUILD=$(cat project-build-number)
-    mvn versions:set -DnewVersion="$PROJECT_VERSION"."$PROJECT_BUILD""$SNAPSHOT"
+    echo -n "$PROJECT_VERSION"."$PROJECT_BUILD""$SNAPSHOT"
+}
+
+function set-version() {
+    mvn versions:set -DnewVersion="$(current-version)"
 }
 
 function ensure-java-version() {
@@ -146,6 +152,32 @@ function increment-build-number() {
     ((BUILD_NUMBER++))
     echo -n "$BUILD_NUMBER" > project-build-number
     echo "Up the build number to: $BUILD_NUMBER"
+}
+
+function push-release-tag() {
+    VERSION=$(current-version)
+    git tag -a v$VERSION -m "Release: v$VERSION"
+    git push --tags origin
+}
+
+function ensure-files-tracked() {
+    if [[ -n $(git status --porcelain | grep -v "pom.xml" |  grep -E '(^\?\? |^MM |^ M )') ]]; then
+        echo "There are untracked files. Please make sure all files are tracked."
+        git status
+        exit 1
+    fi
+}
+
+function push-release-branch() {
+    ensure-files-tracked
+    
+    # Add all pom.xml
+    find . -type f -name "pom.xml" -exec git add {} + 2> /dev/null || true
+    
+    VERSION=$(current-version)
+    git add
+    git commit -m "Release: v$VERSION"
+    git push
 }
 
 main "$@"
