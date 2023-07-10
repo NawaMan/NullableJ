@@ -58,8 +58,7 @@ public class KnownNewNullValuesFinder implements IFindNullValue {
         knownNewNullValues = unmodifiableSet(set);
     }
     
-    @SuppressWarnings("javadoc")
-	protected final DefaultConstructorFinder  defaultConstructorFinder  = new DefaultConstructorFinder();
+    protected final DefaultConstructorFinder  defaultConstructorFinder  = new DefaultConstructorFinder();
     
     /**
      * Checks if this finder can find a null value for the given class.
