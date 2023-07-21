@@ -47,7 +47,7 @@ import nullablej.nullvalue.IFindNullValue;
  */
 @SuppressWarnings("rawtypes")
 public class KnownNullValuesFinder implements IFindNullValue {
-
+    
     private static final Map<Class, Object> knownNullValues = new ConcurrentHashMap<>();
     static {
         Map<Class, Object> map = knownNullValues;
