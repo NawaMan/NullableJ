@@ -39,7 +39,7 @@ import nullablej.nullable.IAsNullable;
 import nullablej.nullable.Nullable;
 
 public class NullableDataTest {
-
+    
     public static interface Person {
         
         public String getFirstName();

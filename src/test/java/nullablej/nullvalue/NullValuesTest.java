@@ -73,7 +73,7 @@ public class NullValuesTest {
         Person1 nullPerson1 = nullValues.findNullValueOf(Person1.class);
         assertEquals(nullPerson1, Person1.nullPerson1);
     }
-
+    
     private static Person2 nullValueOfPerson2 = new Person2(null);
     @Data
     @AllArgsConstructor

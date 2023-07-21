@@ -386,7 +386,7 @@ public class NullableJ {
         
         return new Otherwise<CLASS, OBJECT>(theClass.cast(theGivenObject), theGivenObject);
     }
-
+    
     /**
      * Map the given object using the transformation if the given object is not null or else return null.
      * 
