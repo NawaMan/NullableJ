@@ -10,7 +10,9 @@
     <name>nullablej</name>
     
     <url>https://github.com/NawaMan/NullableJ</url>
-    <description>Help dealing with `null` in Java.</description>
+    <description>
+        Help dealing with `null` in Java.
+    </description>
     
     <properties>
         <!--==== JAVA+SOURCE ====-->
@@ -19,10 +21,15 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         
+        <!--==== SKIP ====-->
+        <gpg.signing.skip>true</gpg.signing.skip>
+        <sona.staging.skip>true</sona.staging.skip>
+        
         <!--==== SECRET ====-->
         <gpg.executable>/usr/bin/gpg</gpg.executable>
         <gpg.keyname>${env.NULLABLEJ_KEYNAME}</gpg.keyname>
         <gpg.passphrase>${env.NAWAMAN_SIGNING_PASSWORD}</gpg.passphrase>
+        <sona.site>https://oss.sonatype.org</sona.site>
         
         <!--==== VERSIONS ====-->
         
@@ -31,6 +38,7 @@
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
         <maven-gpg-plugin.version>3.1.0</maven-gpg-plugin.version>
         <maven-javadoc-plugin.version>3.5.0</maven-javadoc-plugin.version>
+        <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
         <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
         <nexus-staging-plugin.version>1.6.8</nexus-staging-plugin.version>
         
@@ -42,10 +50,15 @@
     </properties>
     
     <scm>
+        <url>http://github.com/NawaMan/NullableJ/tree/master</url>
         <connection>scm:git:git://github.com/NawaMan/NullableJ.git</connection>
         <developerConnection>scm:git:ssh://github.com/NawaMan/NullableJ.git</developerConnection>
-        <url>http://github.com/NawaMan/NullableJ/tree/master</url>
     </scm>
+    
+    <organization>
+        <name>nawaman.net</name>
+        <url>https://nawaman.net</url>
+    </organization>
     
     <licenses>
         <license>
@@ -59,8 +72,8 @@
             <id>NawaMan</id>
             <name>Nawapunth Manusitthipol</name>
             <email>nawa@nawaman.net</email>
-            <organization>NawaMan</organization>
-            <organizationUrl>http://nawaman.net</organizationUrl>
+            <organization>nawaman.net</organization>
+            <organizationUrl>https://nawaman.net</organizationUrl>
         </developer>
     </developers>
     
@@ -98,6 +111,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler-plugin.version}</version>
                 <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                     <compilerArgs>
                         <arg>-parameters</arg>
                     </compilerArgs>
@@ -136,6 +151,11 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${maven-resources-plugin.version}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
                 <version>${maven-source-plugin.version}</version>
                 <executions>
@@ -169,18 +189,7 @@
                 </executions>
             </plugin>
             
-            <!-- PUBLISH -->
-            <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>${nexus-staging-plugin.version}</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <serverId>ossrh</serverId>
-                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                </configuration>
-            </plugin>
+            <!-- PACKAGE -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
@@ -195,9 +204,24 @@
                         <configuration>
                             <keyname>${gpg.keyname}</keyname>
                             <passphrase>${gpg.passphrase}</passphrase>
+                            <skip>${gpg.signing.skip}</skip>
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            
+            <!-- PUBLISH -->
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>${nexus-staging-plugin.version}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>${sona.site}</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                    <skipNexusStagingDeployMojo>${sona.staging.skip}</skipNexusStagingDeployMojo>
+                </configuration>
             </plugin>
         </plugins>
     </build>
