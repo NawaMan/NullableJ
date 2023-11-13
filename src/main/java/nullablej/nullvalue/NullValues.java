@@ -59,26 +59,16 @@ public class NullValues implements IFindNullValue {
     /** The ready to use instance of NullValues.  */
     public static final NullValues instance = new NullValues();
     
-
-    @SuppressWarnings("javadoc")
-	protected final KnownNullValuesFinder    knownNullFinder          = new KnownNullValuesFinder();
-    @SuppressWarnings("javadoc")
+    
+    protected final KnownNullValuesFinder    knownNullFinder          = new KnownNullValuesFinder();
     protected final KnownNewNullValuesFinder KnownNewNullValuesFinder = new KnownNewNullValuesFinder();
-    @SuppressWarnings("javadoc")
     protected final AnnotatedFieldFinder     annotatedFieldFinder     = new AnnotatedFieldFinder(NULL_VALUE_ANNOTTION_NAME);
-    @SuppressWarnings("javadoc")
     protected final AnnotatedMethodFinder    annotatedMethodFinder    = new AnnotatedMethodFinder(NULL_VALUE_ANNOTTION_NAME);
-    @SuppressWarnings("javadoc")
     protected final NamedFieldFinder         namedFieldFinder1        = new NamedFieldFinder(NULL_VALUE_FIELD_NAME1);
-    @SuppressWarnings("javadoc")
     protected final NamedFieldFinder         namedFieldFinder2        = new NamedFieldFinder(NULL_VALUE_FIELD_NAME2);
-    @SuppressWarnings("javadoc")
     protected final NamedMethodFinder        namedMethodFinder1       = new NamedMethodFinder(NULL_VALUE_METHOD_NAME1);
-    @SuppressWarnings("javadoc")
     protected final NamedMethodFinder        namedMethodFinder2       = new NamedMethodFinder(NULL_VALUE_METHOD_NAME2);
-    @SuppressWarnings("javadoc")
     protected final DefaultConstructorFinder defaultConstructorFinder = new DefaultConstructorFinder();
-    @SuppressWarnings("javadoc")
     protected final NullableInterfaceFinder  nullableInterfaceFinder  = new NullableInterfaceFinder();
     
     /**

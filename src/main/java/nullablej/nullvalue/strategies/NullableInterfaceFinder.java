@@ -31,7 +31,7 @@ import nullablej.nullvalue.IFindNullValue;
  * @author NawaMan -- nawa@nawaman.net
  */
 public class NullableInterfaceFinder implements IFindNullValue {
-
+    
     @Override
     public <OBJECT> OBJECT findNullValueOf(Class<OBJECT> clzz) {
         return createNullValueForInterface(clzz);
