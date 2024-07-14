@@ -43,7 +43,7 @@
         <nexus-staging-plugin.version>1.6.8</nexus-staging-plugin.version>
         
         <!-- DEPENDENCY -->
-        <lombok.version>1.18.28</lombok.version>
+        <lombok.version>1.18.30</lombok.version>
         
         <!-- TEST -->
         <junit.version>4.13.2</junit.version>
