@@ -27,39 +27,42 @@ function main() {
 function build-quick() {
     ensure-java-version
     ./mvnw \
-        --no-transfer-progress    \
-        --batch-mode              \
-        -Dmaven.test.skip=true    \
-        -Dmaven.source.skip=true  \
-        -Dmaven.javadoc.skip=true \
-        -Dgpg.signing.skip=true   \
-        -Dsona.staging.skip=true  \
+        --no-transfer-progress        \
+        --batch-mode                  \
+        -Dmaven.test.skip=true        \
+        -Dmaven.source.skip=true      \
+        -Dmaven.javadoc.skip=true     \
+        -Dgpg.signing.skip=true       \
+        -Dsona.staging.skip=true      \
+        --settings   ./settings.xml   \
         clean install
 }
 
 function build-test() {
     ensure-java-version
     ./mvnw \
-        --no-transfer-progress    \
-        --batch-mode              \
-        -Dmaven.test.skip=false   \
-        -Dmaven.source.skip=true  \
-        -Dmaven.javadoc.skip=true \
-        -Dgpg.signing.skip=true   \
-        -Dsona.staging.skip=true  \
+        --no-transfer-progress        \
+        --batch-mode                  \
+        -Dmaven.test.skip=false       \
+        -Dmaven.source.skip=true      \
+        -Dmaven.javadoc.skip=true     \
+        -Dgpg.signing.skip=true       \
+        -Dsona.staging.skip=true      \
+        --settings   ./settings.xml   \
         clean compile test
 }
 
 function build-full() {
     ensure-java-version
     ./mvnw \
-        --no-transfer-progress     \
-        --batch-mode               \
-        -Dmaven.test.skip=false    \
-        -Dmaven.source.skip=false  \
-        -Dmaven.javadoc.skip=false \
-        -Dgpg.signing.skip=true    \
-        -Dsona.staging.skip=true   \
+        --no-transfer-progress        \
+        --batch-mode                  \
+        -Dmaven.test.skip=false       \
+        -Dmaven.source.skip=false     \
+        -Dmaven.javadoc.skip=false    \
+        -Dgpg.signing.skip=true       \
+        -Dsona.staging.skip=true      \
+        --settings   ./settings.xml   \
         clean install
 }
 
@@ -73,14 +76,15 @@ function build-package() {
     ensure-java-version
     set-version
     ./mvnw \
-        --no-transfer-progress \
-        --batch-mode           \
+        --no-transfer-progress                     \
+        --batch-mode                               \
         -Dgpg.passphrase=$NAWAMAN_SIGNING_PASSWORD \
-        -Dmaven.test.skip=false    \
-        -Dmaven.source.skip=false  \
-        -Dmaven.javadoc.skip=false \
-        -Dgpg.signing.skip=false   \
-        -Dsona.staging.skip=true   \
+        -Dmaven.test.skip=false                    \
+        -Dmaven.source.skip=false                  \
+        -Dmaven.javadoc.skip=false                 \
+        -Dgpg.signing.skip=false                   \
+        -Dsona.staging.skip=true                   \
+        --settings   ./settings.xml                \
         clean install package gpg:sign
 }
 
@@ -115,15 +119,16 @@ function build-release() {
         act git merge master --no-ff -m '"Release: v$VERSION"'
         
         set-version
-        act ./mvnw \
-            --no-transfer-progress \
-            --batch-mode           \
+        act ./mvnw                                     \
+            --no-transfer-progress                     \
+            --batch-mode                               \
             -Dgpg.passphrase=$NAWAMAN_SIGNING_PASSWORD \
-            -Dmaven.test.skip=false    \
-            -Dmaven.source.skip=false  \
-            -Dmaven.javadoc.skip=false \
-            -Dgpg.signing.skip=false   \
-            -Dsona.staging.skip=false  \
+            -Dmaven.test.skip=false                    \
+            -Dmaven.source.skip=false                  \
+            -Dmaven.javadoc.skip=false                 \
+            -Dgpg.signing.skip=false                   \
+            -Dsona.staging.skip=false                  \
+            --settings   ./settings.xml                \
             clean install package gpg:sign deploy
         act git push
         
