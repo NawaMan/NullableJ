@@ -29,7 +29,6 @@
         <gpg.executable>/usr/bin/gpg</gpg.executable>
         <gpg.keyname>${env.NULLABLEJ_KEYNAME}</gpg.keyname>
         <gpg.passphrase>${env.NAWAMAN_SIGNING_PASSWORD}</gpg.passphrase>
-        <sona.site>https://oss.sonatype.org</sona.site>
         
         <!--==== VERSIONS ====-->
         
@@ -40,10 +39,10 @@
         <maven-javadoc-plugin.version>3.5.0</maven-javadoc-plugin.version>
         <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
         <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
-        <nexus-staging-plugin.version>1.6.8</nexus-staging-plugin.version>
+        <central-publishing-maven-plugin.version>0.8.0</central-publishing-maven-plugin.version>
         
         <!-- DEPENDENCY -->
-        <lombok.version>1.18.28</lombok.version>
+        <lombok.version>1.18.30</lombok.version>
         
         <!-- TEST -->
         <junit.version>4.13.2</junit.version>
@@ -212,15 +211,13 @@
             
             <!-- PUBLISH -->
             <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>${nexus-staging-plugin.version}</version>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>${central-publishing-maven-plugin.version}</version>
                 <extensions>true</extensions>
                 <configuration>
-                    <serverId>ossrh</serverId>
-                    <nexusUrl>${sona.site}</nexusUrl>
-                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                    <skipNexusStagingDeployMojo>${sona.staging.skip}</skipNexusStagingDeployMojo>
+                    <publishingServerId>central</publishingServerId>
+                    <waitUntil>published</waitUntil>
                 </configuration>
             </plugin>
         </plugins>
