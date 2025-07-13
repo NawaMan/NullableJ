@@ -141,7 +141,7 @@ public class NullableData {
      * </pre>
      * Then, the nullable object might look like this:
      * <pre>
-     * public interface NullableData extends Data, Nullable<DATA> {
+     * public interface NullableData extends Data, Nullable&lt;DATA&gt; {
      * }
      * </pre>
      * And this method can be used to create an instance of NullableData like this.
