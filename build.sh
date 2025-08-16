@@ -70,7 +70,7 @@ function build-package() {
     run-prepackage-hook
     
     ensure-variable SIGNING_PASSWORD
-    ensure-variable MAVEN_PASSWORD
+    ensure-variable MAVEN_TOKEN
     ensure-variable "$(cat key-var-name)"
     
     ensure-java-version
@@ -108,7 +108,7 @@ function build-release() {
     fi
     
     ensure-variable SIGNING_PASSWORD
-    ensure-variable MAVEN_PASSWORD
+    ensure-variable MAVEN_TOKEN
     ensure-variable "$(cat key-var-name)"
     
     # Start of the subshell because the build.sh will be replaced with the one from release (older code).
@@ -166,7 +166,7 @@ function show-help() {
     echo ""
     echo "Release comand requires the following environmental variable."
     echo "  SIGNING_PASSWORD: The password for the signing key. Make sure the user name is in '~/.m2/settings.xml'".
-    echo "  MAVEN_PASSWORD  : The password for SONATYPE account."
+    echo "  MAVEN_TOKEN  : The password for SONATYPE account."
     echo "  <what-in-key-var-name>   : The name of the environmental variable holding the key name for signing."
     exit 0
 }
