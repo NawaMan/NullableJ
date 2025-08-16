@@ -69,22 +69,22 @@ function build-full() {
 function build-package() {
     run-prepackage-hook
     
-    ensure-variable NAWAMAN_SIGNING_PASSWORD
-    ensure-variable NAWAMAN_SONATYPE_PASSWORD
+    ensure-variable SIGNING_PASSWORD
+    ensure-variable MAVEN_TOKEN
     ensure-variable "$(cat key-var-name)"
     
     ensure-java-version
     set-version
     ./mvnw \
-        --no-transfer-progress                     \
-        --batch-mode                               \
-        -Dgpg.passphrase=$NAWAMAN_SIGNING_PASSWORD \
-        -Dmaven.test.skip=false                    \
-        -Dmaven.source.skip=false                  \
-        -Dmaven.javadoc.skip=false                 \
-        -Dgpg.signing.skip=false                   \
-        -Dsona.staging.skip=true                   \
-        --settings   ./settings.xml                \
+        --no-transfer-progress             \
+        --batch-mode                       \
+        -Dgpg.passphrase=$SIGNING_PASSWORD \
+        -Dmaven.test.skip=false            \
+        -Dmaven.source.skip=false          \
+        -Dmaven.javadoc.skip=false         \
+        -Dgpg.signing.skip=false           \
+        -Dsona.staging.skip=true           \
+        --settings   ./settings.xml        \
         clean install package gpg:sign
 }
 
@@ -107,8 +107,9 @@ function build-release() {
         exit -1
     fi
     
-    ensure-variable NAWAMAN_SIGNING_PASSWORD
-    ensure-variable NAWAMAN_SONATYPE_PASSWORD
+    ensure-variable SIGNING_PASSWORD
+    ensure-variable MAVEN_USERNAME
+    ensure-variable MAVEN_TOKEN
     ensure-variable "$(cat key-var-name)"
     
     # Start of the subshell because the build.sh will be replaced with the one from release (older code).
@@ -119,16 +120,16 @@ function build-release() {
         act git merge master --no-ff -m '"Release: v$VERSION"'
         
         set-version
-        act ./mvnw                                     \
-            --no-transfer-progress                     \
-            --batch-mode                               \
-            -Dgpg.passphrase=$NAWAMAN_SIGNING_PASSWORD \
-            -Dmaven.test.skip=false                    \
-            -Dmaven.source.skip=false                  \
-            -Dmaven.javadoc.skip=false                 \
-            -Dgpg.signing.skip=false                   \
-            -Dsona.staging.skip=false                  \
-            --settings   ./settings.xml                \
+        act ./mvnw                             \
+            --no-transfer-progress             \
+            --batch-mode                       \
+            -Dgpg.passphrase=$SIGNING_PASSWORD \
+            -Dmaven.test.skip=false            \
+            -Dmaven.source.skip=false          \
+            -Dmaven.javadoc.skip=false         \
+            -Dgpg.signing.skip=false           \
+            -Dsona.staging.skip=false          \
+            --settings   ./settings.xml        \
             clean install package gpg:sign deploy
         act git push
         
@@ -165,8 +166,8 @@ function show-help() {
     echo "  key-var-name          : Contains the environmental variable name that holds the key name, e.g., DEFAULTJ_KEYNAME."
     echo ""
     echo "Release comand requires the following environmental variable."
-    echo "  NAWAMAN_SIGNING_PASSWORD : The password for the signing key. Make sure the user name is in '~/.m2/settings.xml'".
-    echo "  NAWAMAN_SONATYPE_PASSWORD: The password for SONATYPE account."
+    echo "  SIGNING_PASSWORD: The password for the signing key. Make sure the user name is in '~/.m2/settings.xml'".
+    echo "  MAVEN_TOKEN  : The password for SONATYPE account."
     echo "  <what-in-key-var-name>   : The name of the environmental variable holding the key name for signing."
     exit 0
 }

@@ -5,7 +5,7 @@
     
     <groupId>io.nullablej</groupId>
     <artifactId>nullablej</artifactId>
-    <version>4.0.8.1</version>
+    <version>4.1.2</version>
     
     <name>nullablej</name>
     
@@ -28,7 +28,7 @@
         <!--==== SECRET ====-->
         <gpg.executable>/usr/bin/gpg</gpg.executable>
         <gpg.keyname>${env.NULLABLEJ_KEYNAME}</gpg.keyname>
-        <gpg.passphrase>${env.NAWAMAN_SIGNING_PASSWORD}</gpg.passphrase>
+        <gpg.passphrase>${env.SIGNING_PASSWORD}</gpg.passphrase>
         
         <!--==== VERSIONS ====-->
         
