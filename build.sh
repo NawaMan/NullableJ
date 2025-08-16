@@ -70,6 +70,7 @@ function build-package() {
     run-prepackage-hook
     
     ensure-variable SIGNING_PASSWORD
+    ensure-variable MAVEN_USERNAME
     ensure-variable MAVEN_TOKEN
     ensure-variable "$(cat key-var-name)"
     
