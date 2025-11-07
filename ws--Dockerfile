@@ -1,0 +1,41 @@
+# syntax=docker/dockerfile:1.7
+ARG VARIANT_TAG=container
+ARG VERSION_TAG=latest
+FROM nawaman/workspace:${VARIANT_TAG}-${VERSION_TAG}
+
+# The default value is the latest LTS
+ARG PY_VERSION=3.12
+ARG VARIANT_TAG=container
+ARG JDK_VERSION=8
+ARG JDK_VENDOR=temurin
+ARG MVN_VERSION=3.9.11
+
+SHELL ["/bin/bash","-o","pipefail","-lc"]
+USER root
+
+ENV SETUPS_DIR=/opt/workspace/setups
+ENV VARIANT_TAG="${VARIANT_TAG}"
+ENV WS_VARIANT_TAG="${VARIANT_TAG}"
+ENV PY_VERSION="${PY_VERSION}"
+ENV JDK_VERSION="${JDK_VERSION}"
+ENV JDK_VENDOR="${JDK_VENDOR}"
+
+
+# You only need one of the below.
+
+RUN "$SETUPS_DIR"/jdk--setup.sh 8
+RUN "$SETUPS_DIR"/jdk--setup.sh 21
+
+# Force jbang run to not show download afterward.
+# RUN jbang - 'class Hi { public static void main(String[]a){System.out.println("Hi again");}}'
+
+RUN "$SETUPS_DIR"/mvn--setup.sh
+RUN "$SETUPS_DIR"/gradle--setup.sh
+RUN "$SETUPS_DIR"/jenv--setup.sh
+
+RUN if [[ "$VARIANT_TAG" != container ]]; then "$SETUPS_DIR"/java-code-extension--setup.sh ; fi
+
+RUN if [[ "$VARIANT_TAG" == desktop-* ]]; then "$SETUPS_DIR"/eclipse--setup.sh                                ; fi
+RUN if [[ "$VARIANT_TAG" == desktop-* ]]; then "$SETUPS_DIR"/idea--setup.sh                                   ; fi
+RUN if [[ "$VARIANT_TAG" == desktop-* ]]; then "$SETUPS_DIR"/lombok-eclipse--setup.sh                         ; fi
+RUN if [[ "$VARIANT_TAG" == desktop-* ]]; then "$SETUPS_DIR"/jetbrains-plugin--setup.sh idea "Lombook Plugin" ; fi

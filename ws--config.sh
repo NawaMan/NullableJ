@@ -1,0 +1,2 @@
+VARIANT=desktop-xfce
+WORKSPACE_PORT=NEXT
